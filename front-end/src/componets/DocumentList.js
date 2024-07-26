@@ -1,14 +1,20 @@
 // src/components/DocumentList.js
 import React, { useEffect, useState } from 'react';
-import axios from '../api/axios';
+import { db } from '../firebase';
 
 const DocumentList = () => {
     const [documents, setDocuments] = useState([]);
 
     useEffect(() => {
-        axios.get('/documents')
-            .then(response => setDocuments(response.data))
-            .catch(error => console.error('Error fetching documents:', error));
+        const fetchData = async () => {
+            const docs = [];
+            const snapshot = await db.collection('documents').get();
+            snapshot.forEach(doc => {
+                docs.push({ id: doc.id, ...doc.data() });
+            });
+            setDocuments(docs);
+        };
+        fetchData();
     }, []);
 
     return (

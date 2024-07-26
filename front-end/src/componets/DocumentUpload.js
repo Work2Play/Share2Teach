@@ -1,6 +1,6 @@
 // src/components/DocumentUpload.js
 import React, { useState } from 'react';
-import axios from '../api/axios';
+import { db } from '../firebase';
 
 const DocumentUpload = () => {
     const [title, setTitle] = useState('');
@@ -8,14 +8,13 @@ const DocumentUpload = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const document = { title, content };
-
-        try {
-            await axios.post('/documents', document);
-            alert('Document uploaded successfully');
-        } catch (error) {
-            console.error('Error uploading document:', error);
-        }
+        await db.collection('documents').add({
+            title,
+            content,
+        });
+        setTitle('');
+        setContent('');
+        alert('Document uploaded successfully');
     };
 
     return (
