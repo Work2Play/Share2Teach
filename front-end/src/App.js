@@ -1,39 +1,69 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './Home';
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [hovering, setHovering] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const handleMouseEnter = () => {
+    setHovering(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovering(false);
+  };
+
+  useEffect(() => {
+    if (!hovering) {
+      const timer = setTimeout(() => setMenuOpen(false), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [hovering]);
+
   return (
     <Router>
       <div className="App">
         <header className="App-header">
-          <div className="header-content">
-            <Link to="/" className="logo-link">
-              Share2Teach
-            </Link>
-            <nav className="nav-links">
-              <Link to="/">Home</Link>
-              <Link to="/mathematics">Mathematics</Link>
-              <Link to="/business-studies">Business Studies</Link>
-              <Link to="/history">History</Link>
-              <Link to="/geography">Geography</Link>
-              <Link to="/natural-science">Natural Science</Link>
-              <Link to="/life-science">Life Science</Link>
-              <Link to="/english">English</Link>
-              <Link to="/technology">Technology</Link>
-              <Link to="/afrikaans">Afrikaans</Link>
-              <Link to="/life-skills">Life Skills</Link>
-              <Link to="/computer-science">Computer Science</Link>
-              <Link to="/other-oers">Other useful OER's</Link>
-              <Link to="/self-directed-learning">Self-Directed Learning</Link>
-              <Link to="/contributors">Contributors</Link>
-              <Link to="/about-us">About Us</Link>
-            </nav>
+          <div className="header-left">
+            <button className="menu-button" onClick={toggleMenu}>
+              Menu
+            </button>
+            {menuOpen && (
+              <nav
+                className="dropdown-menu"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <ul className="nav-links">
+                  <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
+                  <li><Link to="/mathematics" onClick={() => setMenuOpen(false)}>Mathematics</Link></li>
+                  <li><Link to="/business-studies" onClick={() => setMenuOpen(false)}>Business Studies</Link></li>
+                  <li><Link to="/history" onClick={() => setMenuOpen(false)}>History</Link></li>
+                  <li><Link to="/geography" onClick={() => setMenuOpen(false)}>Geography</Link></li>
+                  <li><Link to="/natural-science" onClick={() => setMenuOpen(false)}>Natural Science</Link></li>
+                  <li><Link to="/life-science" onClick={() => setMenuOpen(false)}>Life Science</Link></li>
+                  <li><Link to="/english" onClick={() => setMenuOpen(false)}>English</Link></li>
+                  <li><Link to="/technology" onClick={() => setMenuOpen(false)}>Technology</Link></li>
+                  <li><Link to="/afrikaans" onClick={() => setMenuOpen(false)}>Afrikaans</Link></li>
+                  <li><Link to="/life-skills" onClick={() => setMenuOpen(false)}>Life Skills</Link></li>
+                  <li><Link to="/computer-science" onClick={() => setMenuOpen(false)}>Computer Science</Link></li>
+                  <li><Link to="/other-oers" onClick={() => setMenuOpen(false)}>Other useful OER's</Link></li>
+                  <li><Link to="/self-directed-learning" onClick={() => setMenuOpen(false)}>Self-Directed Learning</Link></li>
+                  <li><Link to="/collaborators" onClick={() => setMenuOpen(false)}>Collaborators</Link></li>
+                  <li><Link to="/about-us" onClick={() => setMenuOpen(false)}>About Us</Link></li>
+                </ul>
+              </nav>
+            )}
           </div>
-          <div className="search-bar">
-            <input type="text" placeholder="Search..." />
-            <button>Search</button>
+          <h1 className="logo-title">Share2Teach</h1>
+          <div className="header-right">
+            <button className="login-button">Login</button>
           </div>
         </header>
         <main>
@@ -41,6 +71,22 @@ function App() {
             <Route path="/" element={<Home />} />
             {/* Add more routes for other subjects here */}
           </Routes>
+          <footer className="footer">
+            <div className="footer-content">
+              <div className="disclaimer">
+                <p><strong>Disclaimer:</strong></p>
+                <p>
+                  The resources available on this website are primarily the work of students. While we strive to maintain a high standard of quality, we cannot guarantee the accuracy, reliability, or completeness of the content provided. Users are encouraged to critically evaluate the materials and adopt them at their own discretion. Neither the founders nor North-West University assume responsibility for any errors, omissions, or for the results obtained from the use of this information. Design images are generated by ChatGPT (Open AI, 2023).
+                </p>
+              </div>
+              <div className="reference">
+                <p><strong>Reference:</strong></p>
+                <p>
+                  OpenAI. (2023). <em>ChatGPT (Mar 14 version)</em> [Large language model]. <a href="https://chat.openai.com/chat">https://chat.openai.com/chat</a>
+                </p>
+              </div>
+            </div>
+          </footer>
         </main>
       </div>
     </Router>
