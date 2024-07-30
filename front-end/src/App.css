@@ -96,6 +96,10 @@
   background-color: #21a1f1;
 }
 
+.main-content {
+  padding-top: 100px; /* Adjust this value based on the height of your header */
+}
+
 .search-bar {
   display: flex;
   margin-top: 1em;

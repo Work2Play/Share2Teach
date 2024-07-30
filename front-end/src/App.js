@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './Home';
+import MathPage from './MathPage';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -66,9 +67,10 @@ function App() {
             <button className="login-button">Login</button>
           </div>
         </header>
-        <main>
+        <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/mathematics" element={<MathPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <footer className="footer">
