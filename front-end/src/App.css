@@ -227,3 +227,11 @@
 .subject-card a:hover {
   color: #61dafb;
 }
+
+.cc-image {
+  display: block;
+  margin: 0 auto;
+  max-width: 300px;
+  height: auto;
+  margin-bottom: 20px;
+}

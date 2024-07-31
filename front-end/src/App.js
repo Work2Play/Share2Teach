@@ -18,6 +18,7 @@ import SelfDirectedLearningPage from './SelfDirectedLearningPage';
 
 // Adding auth for the login and logout button view
 import { Auth } from './components/auth';
+import CCImage from './Images/CC.png';
 
 function App() {
   // State to manage the visibility of the menu
@@ -111,6 +112,7 @@ function App() {
           </Routes>
           <footer className="footer">
             <div className="footer-content">
+              <img src={CCImage} alt="Creative Commons License" className="cc-image"/>
               <div className="disclaimer">
                 <p><strong>Disclaimer:</strong></p>
                 <p>

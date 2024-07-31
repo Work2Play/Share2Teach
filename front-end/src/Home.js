@@ -1,10 +1,11 @@
 import React from 'react';
-import './Home.css';
 import { Link } from 'react-router-dom';
+import './Home.css';
+import Logo from './Images/logo.png';
 
 function Home() {
     return (
-        <div className="home">
+        <div className="home-page">
         <div className="hero-image">
             <h1>Share2Teach</h1>
             <p>Open Educational Resources</p>
@@ -24,10 +25,10 @@ function Home() {
             <Link to="/geography">Geography</Link>
             </div>
             <div className="subject-card">
-            <Link to="/life-science">Life Science</Link>
+            <Link to="/natural-science">Natural Science</Link>
             </div>
             <div className="subject-card">
-            <Link to="/natural-science">Natural Science</Link>
+            <Link to="/life-science">Life Science</Link>
             </div>
             <div className="subject-card">
             <Link to="/english">English</Link>
@@ -56,6 +57,9 @@ function Home() {
             <div className="subject-card">
             <Link to="/about-us">About Us</Link>
             </div>
+        </div>
+        <div className="logo-container">
+            <img src={Logo} alt="Logo" className="home-logo" />
         </div>
         </div>
     );
