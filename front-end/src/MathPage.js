@@ -22,6 +22,7 @@ function MathPage() {
             //reading the resources
             try {
                 const data = await getDocs(resourceCollectionRef)
+                //geting the filtered data and only getting data that is verified
                 const filteredData = data.docs.map((doc) => ({...doc.data(), id: doc.id,})).filter((doc) => doc.verified)
                 setResources(filteredData)
             } catch (err) {
