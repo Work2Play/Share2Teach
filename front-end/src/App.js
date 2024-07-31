@@ -3,23 +3,29 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './Home';
 import MathPage from './MathPage';
+import BusinessStudiesPage from './BusinessStudiesPage';
 
 function App() {
+  // State to manage the visibility of the menu
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovering, setHovering] = useState(false);
 
+  // Toggle the menu visibility
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  // Handle mouse enter event to keep the menu open
   const handleMouseEnter = () => {
     setHovering(true);
   };
 
+  // Handle mouse leave event to close the menu after a delay
   const handleMouseLeave = () => {
     setHovering(false);
   };
 
+  // Close the menu if not hovering over it
   useEffect(() => {
     if (!hovering) {
       const timer = setTimeout(() => setMenuOpen(false), 1000);
@@ -32,6 +38,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <div className="header-left">
+            {/* Menu button to toggle the dropdown menu */}
             <button className="menu-button" onClick={toggleMenu}>
               Menu
             </button>
@@ -62,15 +69,19 @@ function App() {
               </nav>
             )}
           </div>
+          {/* Title of the website */}
           <h1 className="logo-title">Share2Teach</h1>
           <div className="header-right">
+            {/* Login button */}
             <button className="login-button">Login</button>
           </div>
         </header>
         <main className="main-content">
           <Routes>
+            {/* Define routes for the different pages */}
             <Route path="/" element={<Home />} />
             <Route path="/mathematics" element={<MathPage />} />
+            <Route path="/business-studies" element={<BusinessStudiesPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <footer className="footer">

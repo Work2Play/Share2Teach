@@ -1,7 +1,9 @@
+/* Center-align the text within the App component */
 .App {
   text-align: center;
 }
 
+/* Style for the header of the app */
 .App-header {
   background-color: #282c34;
   display: flex;
@@ -15,23 +17,27 @@
   color: white;
 }
 
+/* Style for the left side of the header, containing the menu button */
 .header-left {
   display: flex;
   align-items: center;
 }
 
+/* Style for the right side of the header, containing the login button */
 .header-right {
   display: flex;
   align-items: center;
 }
 
+/* Style for the logo/title of the website */
 .logo-title {
   font-size: 1.5em;
   font-weight: bold;
   margin: 0;
-  margin-right: auto; /* Add this line to push the login button left */
+  margin-right: auto; /* Push the login button to the left */
 }
 
+/* Style for the menu button */
 .menu-button {
   background-color: #61dafb;
   color: white;
@@ -42,10 +48,12 @@
   margin-right: 20px; /* Add some margin to separate from the title */
 }
 
+/* Change the background color of the menu button on hover */
 .menu-button:hover {
   background-color: #21a1f1;
 }
 
+/* Style for the dropdown menu */
 .dropdown-menu {
   position: absolute;
   top: 60px; /* Adjust according to your header height */
@@ -60,16 +68,19 @@
   z-index: 1000;
 }
 
+/* Remove default list styling for navigation links */
 .nav-links {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
+/* Style for each list item in the navigation */
 .nav-links li {
   margin: 0;
 }
 
+/* Style for the links in the navigation */
 .nav-links a {
   display: block;
   padding: 1em;
@@ -79,10 +90,12 @@
   border-bottom: 1px solid #61dafb;
 }
 
+/* Change the background color of the navigation links on hover */
 .nav-links a:hover {
   background-color: #21a1f1;
 }
 
+/* Style for the login button */
 .login-button {
   background-color: #61dafb;
   color: white;
@@ -92,24 +105,29 @@
   cursor: pointer;
 }
 
+/* Change the background color of the login button on hover */
 .login-button:hover {
   background-color: #21a1f1;
 }
 
+/* Add padding to the top of the main content to account for the fixed header */
 .main-content {
   padding-top: 100px; /* Adjust this value based on the height of your header */
 }
 
+/* Style for the search bar container */
 .search-bar {
   display: flex;
   margin-top: 1em;
 }
 
+/* Style for the search input */
 .search-bar input {
   padding: 0.5em;
   font-size: 1em;
 }
 
+/* Style for the search button */
 .search-bar button {
   padding: 0.5em 1em;
   font-size: 1em;
@@ -120,10 +138,12 @@
   margin-left: 0.5em;
 }
 
+/* Change the background color of the search button on hover */
 .search-bar button:hover {
   background-color: #21a1f1;
 }
 
+/* Style for the hero image section */
 .hero-image {
   height: 60vh;
   background-position: center;
@@ -137,16 +157,19 @@
   margin-top: 80px; /* to account for the fixed header */
 }
 
+/* Style for the main heading in the hero image */
 .hero-image h1 {
   font-size: 4em;
   margin: 0;
 }
 
+/* Style for the paragraph in the hero image */
 .hero-image p {
   font-size: 1.5em;
   margin: 0.5em 0;
 }
 
+/* Style for the button in the hero image */
 .hero-image button {
   padding: 1em 2em;
   font-size: 1em;
@@ -157,10 +180,12 @@
   margin-top: 1em;
 }
 
+/* Change the background color of the button in the hero image on hover */
 .hero-image button:hover {
   background-color: #21a1f1;
 }
 
+/* Style for the footer */
 .footer {
   background-color: #282c34;
   color: white;
@@ -170,18 +195,21 @@
   width: 100%;
 }
 
+/* Style for the content within the footer */
 .footer-content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/* Style for the disclaimer and reference text in the footer */
 .disclaimer,
 .reference {
   max-width: 800px;
   text-align: left;
 }
 
+/* Style for the subject gallery */
 .subject-gallery {
   display: flex;
   flex-wrap: wrap;
@@ -190,6 +218,7 @@
   margin-top: 20px;
 }
 
+/* Style for each subject card in the gallery */
 .subject-card {
   display: flex;
   flex-direction: column;
@@ -200,6 +229,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Style for the links in each subject card */
 .subject-card a {
   margin-top: 10px;
   font-size: 1.2em;
@@ -208,6 +238,7 @@
   font-weight: bold;
 }
 
+/* Change the color of the links in each subject card on hover */
 .subject-card a:hover {
   color: #61dafb;
 }
