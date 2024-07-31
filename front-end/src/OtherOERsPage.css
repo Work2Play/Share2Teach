@@ -1,44 +1,35 @@
-.other-oers-page {
-    text-align: left;
+.oers-page {
     padding: 20px;
-    padding-top: 100px; /* Adjust this value based on the height of your header */
 }
 
-.subject-title {
-font-size: 2.5em;
+.oer-section {
+margin-bottom: 40px;
+}
+
+h1, h2, h3 {
 text-align: center;
+color: #2c3e50;
+}
+
+p {
+font-size: 1em;
+line-height: 1.5;
+color: #7f8c8d;
 margin-bottom: 20px;
 }
 
-.section-subtitle {
-font-size: 1.8em;
-margin-bottom: 10px;
-}
-
-.subject-introduction {
-margin-bottom: 20px;
-}
-
-.subject-gallery {
-display: flex;
-flex-direction: column;
-align-items: center;
-margin-top: 20px;
-}
-
-.placeholder {
-width: 200px;
-height: 300px;
-background-color: #e0e0e0;
-display: flex;
-justify-content: center;
-align-items: center;
-margin-bottom: 20px;
-border: 1px solid #ccc;
-border-radius: 10px;
-}
-
-.placeholder a {
+a {
+color: #61dafb;
 text-decoration: none;
-color: inherit;
+}
+
+a:hover {
+text-decoration: underline;
+}
+
+.oer-image {
+display: block;
+margin: 20px auto;
+max-width: 200px;
+height: auto;
 }
