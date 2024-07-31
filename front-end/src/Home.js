@@ -52,7 +52,7 @@ function Home() {
             <Link to="/self-directed-learning">Self-Directed Learning</Link>
             </div>
             <div className="subject-card">
-            <Link to="/collaborators">Collaborators</Link>
+            <Link to="/contributors">Contributors</Link>
             </div>
             <div className="subject-card">
             <Link to="/about-us">About Us</Link>

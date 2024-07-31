@@ -15,6 +15,8 @@ import LifeSkillsPage from './LifeSkillsPage';
 import ComputerSciencePage from './ComputerSciencePage';
 import OtherOERsPage from './OtherOERsPage';
 import SelfDirectedLearningPage from './SelfDirectedLearningPage';
+import ContributorsPage from './ContributorsPage';
+import AboutUsPage from './AboutUsPage';
 
 // Adding auth for the login and logout button view
 import { Auth } from './components/auth';
@@ -78,7 +80,7 @@ function App() {
                   <li><Link to="/computer-science" onClick={() => setMenuOpen(false)}>Computer Science</Link></li>
                   <li><Link to="/other-oers" onClick={() => setMenuOpen(false)}>Other useful OER's</Link></li>
                   <li><Link to="/self-directed-learning" onClick={() => setMenuOpen(false)}>Self-Directed Learning</Link></li>
-                  <li><Link to="/collaborators" onClick={() => setMenuOpen(false)}>Collaborators</Link></li>
+                  <li><Link to="/contributors" onClick={() => setMenuOpen(false)}>Contributors</Link></li>
                   <li><Link to="/about-us" onClick={() => setMenuOpen(false)}>About Us</Link></li>
                 </ul>
               </nav>
@@ -108,11 +110,13 @@ function App() {
             <Route path="/computer-science" element={<ComputerSciencePage />} />
             <Route path="/other-oers" element={<OtherOERsPage />} />
             <Route path="/self-directed-learning" element={<SelfDirectedLearningPage />} />
+            <Route path="/contributors" element={<ContributorsPage />} />
+            <Route path="/about-us" element={<AboutUsPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <footer className="footer">
             <div className="footer-content">
-              <img src={CCImage} alt="Creative Commons License" className="cc-image"/>
+              <img src={CCImage} alt="Creative Commons License" className="cc-image" />
               <div className="disclaimer">
                 <p><strong>Disclaimer:</strong></p>
                 <p>
