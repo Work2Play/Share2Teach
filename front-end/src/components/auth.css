@@ -1,0 +1,37 @@
+/* Style for the login button */
+.login-button {
+    background-color: #61dafb;
+    color: white;
+    border: none;
+    padding: 1em;
+    font-size: 1em;
+    cursor: pointer;
+  }
+  
+/* Change the background color of the login button on hover */
+.login-button:hover {
+  background-color: #21a1f1;
+}
+
+/* Style for the logout button */
+.logout-button {
+  background-color: #61dafb;
+  color: white;
+  border: none;
+  padding: 1em;
+  font-size: 1em;
+  cursor: pointer;
+}
+  
+/* Change the background color of the logout button on hover */
+.logout-button:hover {
+  background-color: #21a1f1;
+}
+
+/* Style for the userLoged of the website */
+.userLoged {
+  font-size: 0.8em;
+  font-weight: normal;
+  margin: 0;
+  margin-right: auto; /* Push the login button to the left */
+}

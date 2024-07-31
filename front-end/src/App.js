@@ -3,23 +3,46 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './Home';
 import MathPage from './MathPage';
+import BusinessStudiesPage from './BusinessStudiesPage';
+import HistoryPage from './HistoryPage';
+import GeographyPage from './GeographyPage';
+import NaturalSciencePage from './NaturalSciencePage';
+import LifeSciencePage from './LifeSciencePage';
+import EnglishPage from './EnglishPage';
+import TechnologyPage from './TechnologyPage';
+import AfrikaansPage from './AfrikaansPage';
+import LifeSkillsPage from './LifeSkillsPage';
+import ComputerSciencePage from './ComputerSciencePage';
+import OtherOERsPage from './OtherOERsPage';
+import SelfDirectedLearningPage from './SelfDirectedLearningPage';
+import ContributorsPage from './ContributorsPage';
+import AboutUsPage from './AboutUsPage';
+
+// Adding auth for the login and logout button view
+import { Auth } from './components/auth';
+import CCImage from './Images/CC.png';
 
 function App() {
+  // State to manage the visibility of the menu
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovering, setHovering] = useState(false);
 
+  // Toggle the menu visibility
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  // Handle mouse enter event to keep the menu open
   const handleMouseEnter = () => {
     setHovering(true);
   };
 
+  // Handle mouse leave event to close the menu after a delay
   const handleMouseLeave = () => {
     setHovering(false);
   };
 
+  // Close the menu if not hovering over it
   useEffect(() => {
     if (!hovering) {
       const timer = setTimeout(() => setMenuOpen(false), 1000);
@@ -32,6 +55,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <div className="header-left">
+            {/* Menu button to toggle the dropdown menu */}
             <button className="menu-button" onClick={toggleMenu}>
               Menu
             </button>
@@ -56,25 +80,43 @@ function App() {
                   <li><Link to="/computer-science" onClick={() => setMenuOpen(false)}>Computer Science</Link></li>
                   <li><Link to="/other-oers" onClick={() => setMenuOpen(false)}>Other useful OER's</Link></li>
                   <li><Link to="/self-directed-learning" onClick={() => setMenuOpen(false)}>Self-Directed Learning</Link></li>
-                  <li><Link to="/collaborators" onClick={() => setMenuOpen(false)}>Collaborators</Link></li>
+                  <li><Link to="/contributors" onClick={() => setMenuOpen(false)}>Contributors</Link></li>
                   <li><Link to="/about-us" onClick={() => setMenuOpen(false)}>About Us</Link></li>
                 </ul>
               </nav>
             )}
           </div>
+          {/* Title of the website */}
           <h1 className="logo-title">Share2Teach</h1>
           <div className="header-right">
-            <button className="login-button">Login</button>
+            {/* Applying the auth stuff here */}
+            <Auth />
           </div>
         </header>
         <main className="main-content">
           <Routes>
+            {/* Define routes for the different pages */}
             <Route path="/" element={<Home />} />
             <Route path="/mathematics" element={<MathPage />} />
+            <Route path="/business-studies" element={<BusinessStudiesPage />} />
+            <Route path="/history" element={<HistoryPage />} />
+            <Route path="/geography" element={<GeographyPage />} />
+            <Route path="/natural-science" element={<NaturalSciencePage />} />
+            <Route path="/life-science" element={<LifeSciencePage />} />
+            <Route path="/english" element={<EnglishPage />} />
+            <Route path="/technology" element={<TechnologyPage />} />
+            <Route path="/afrikaans" element={<AfrikaansPage />} />
+            <Route path="/life-skills" element={<LifeSkillsPage />} />
+            <Route path="/computer-science" element={<ComputerSciencePage />} />
+            <Route path="/other-oers" element={<OtherOERsPage />} />
+            <Route path="/self-directed-learning" element={<SelfDirectedLearningPage />} />
+            <Route path="/contributors" element={<ContributorsPage />} />
+            <Route path="/about-us" element={<AboutUsPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <footer className="footer">
             <div className="footer-content">
+              <img src={CCImage} alt="Creative Commons License" className="cc-image" />
               <div className="disclaimer">
                 <p><strong>Disclaimer:</strong></p>
                 <p>
