@@ -22,7 +22,7 @@ function MathPage() {
             //reading the resources
             try {
                 const data = await getDocs(resourceCollectionRef)
-                const filteredData = data.docs.map((doc) => ({...doc.data(), id: doc.id,}))
+                const filteredData = data.docs.map((doc) => ({...doc.data(), id: doc.id,})).filter((doc) => doc.verified)
                 setResources(filteredData)
             } catch (err) {
                 console.error(err)
