@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './Home';
 import MathPage from './MathPage';
+import BusinessStudiesPage from './BusinessStudiesPage';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -71,6 +72,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/mathematics" element={<MathPage />} />
+            <Route path="/business-studies" element={<BusinessStudiesPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <footer className="footer">
