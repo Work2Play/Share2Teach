@@ -12,6 +12,8 @@ import EnglishPage from './EnglishPage';
 import TechnologyPage from './TechnologyPage';
 import AfrikaansPage from './AfrikaansPage';
 import LifeSkillsPage from './LifeSkillsPage';
+import ComputerSciencePage from './ComputerSciencePage';
+import OtherOERsPage from './OtherOERsPage';
 
 // Adding auth for the login and logout button view
 import { Auth } from './components/auth';
@@ -101,6 +103,8 @@ function App() {
             <Route path="/technology" element={<TechnologyPage />} />
             <Route path="/afrikaans" element={<AfrikaansPage />} />
             <Route path="/life-skills" element={<LifeSkillsPage />} />
+            <Route path="/computer-science" element={<ComputerSciencePage />} />
+            <Route path="/other-oers" element={<OtherOERsPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <footer className="footer">
