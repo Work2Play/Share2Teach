@@ -28,15 +28,15 @@ export const Auth = () => {
         {
             console.error(err);
         }
+    }
 
-        //creating basic display for the buttons
-        return (
-            <div>
-                <button className="login-button" onclick={signInWithGoogle}>Login</button>
-                <h1 className="userLoged">{logedIn}</h1>
-                <button className="logout-button" onclick={logout}>Logout</button>
-            </div>
+    //creating basic display for the buttons
+    return (
+        <div>
+            <button className="login-button" onclick={signInWithGoogle}>Login</button>
+            <h1 className="userLoged">{logedIn}</h1>
+            <button className="logout-button" onclick={logout}>Logout</button>
+        </div>
+    )
 
-
-        )
 }
