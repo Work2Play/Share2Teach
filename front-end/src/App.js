@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './Home';
 import MathPage from './MathPage';
 import BusinessStudiesPage from './BusinessStudiesPage';
+import HistoryPage from './HistoryPage';
+import GeographyPage from './GeographyPage';
 
 //adding auth for the login and logout button view
 import { Auth } from './components/auth';
@@ -85,6 +87,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/mathematics" element={<MathPage />} />
             <Route path="/business-studies" element={<BusinessStudiesPage />} />
+            <Route path="/history" element={<HistoryPage />} />
+            <Route path="/geography" element={<GeographyPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <footer className="footer">
