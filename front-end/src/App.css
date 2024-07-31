@@ -95,21 +95,6 @@
   background-color: #21a1f1;
 }
 
-/* Style for the login button */
-.login-button {
-  background-color: #61dafb;
-  color: white;
-  border: none;
-  padding: 1em;
-  font-size: 1em;
-  cursor: pointer;
-}
-
-/* Change the background color of the login button on hover */
-.login-button:hover {
-  background-color: #21a1f1;
-}
-
 /* Add padding to the top of the main content to account for the fixed header */
 .main-content {
   padding-top: 100px; /* Adjust this value based on the height of your header */

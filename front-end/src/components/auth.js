@@ -4,6 +4,9 @@ import { useState } from "react";
 import { auth, googleProvider } from ".../config/firebase"
 import { createUserWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 
+//importing the .css
+import './auth.css';
+
 export const Auth = () => {
     //gets the user that is currently logged in
     const [logedIn, setLoggedIn] = useState("");
