@@ -6,8 +6,16 @@ import MathPage from './MathPage';
 import BusinessStudiesPage from './BusinessStudiesPage';
 import HistoryPage from './HistoryPage';
 import GeographyPage from './GeographyPage';
+import NaturalSciencePage from './NaturalSciencePage';
+import LifeSciencePage from './LifeSciencePage';
+import EnglishPage from './EnglishPage';
+import TechnologyPage from './TechnologyPage';
+import AfrikaansPage from './AfrikaansPage';
+import LifeSkillsPage from './LifeSkillsPage';
+import ComputerSciencePage from './ComputerSciencePage';
+import OtherOERsPage from './OtherOERsPage';
 
-//adding auth for the login and logout button view
+// Adding auth for the login and logout button view
 import { Auth } from './components/auth';
 
 function App() {
@@ -77,7 +85,7 @@ function App() {
           {/* Title of the website */}
           <h1 className="logo-title">Share2Teach</h1>
           <div className="header-right">
-            {/*applying the auth stuff here*/}
+            {/* Applying the auth stuff here */}
             <Auth />
           </div>
         </header>
@@ -89,6 +97,14 @@ function App() {
             <Route path="/business-studies" element={<BusinessStudiesPage />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/geography" element={<GeographyPage />} />
+            <Route path="/natural-science" element={<NaturalSciencePage />} />
+            <Route path="/life-science" element={<LifeSciencePage />} />
+            <Route path="/english" element={<EnglishPage />} />
+            <Route path="/technology" element={<TechnologyPage />} />
+            <Route path="/afrikaans" element={<AfrikaansPage />} />
+            <Route path="/life-skills" element={<LifeSkillsPage />} />
+            <Route path="/computer-science" element={<ComputerSciencePage />} />
+            <Route path="/other-oers" element={<OtherOERsPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <footer className="footer">
