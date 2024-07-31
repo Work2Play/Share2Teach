@@ -5,6 +5,9 @@ import Home from './Home';
 import MathPage from './MathPage';
 import BusinessStudiesPage from './BusinessStudiesPage';
 
+//adding auth for the login and logout button view
+import { Auth } from './components/auth';
+
 function App() {
   // State to manage the visibility of the menu
   const [menuOpen, setMenuOpen] = useState(false);
@@ -72,8 +75,8 @@ function App() {
           {/* Title of the website */}
           <h1 className="logo-title">Share2Teach</h1>
           <div className="header-right">
-            {/* Login button */}
-            <button className="login-button">Login</button>
+            {/*applying the auth stuff here*/}
+            <Auth />
           </div>
         </header>
         <main className="main-content">

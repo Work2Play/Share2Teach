@@ -1,8 +1,8 @@
 //all related to login and logout button
 import { useState } from "react";
 
-import { auth, googleProvider } from ".../config/firebase"
-import { createUserWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { auth, googleProvider } from "../config/firebase"
+import { signInWithPopup, signOut } from "firebase/auth";
 
 //importing the .css
 import './auth.css';
@@ -36,9 +36,9 @@ export const Auth = () => {
     //creating basic display for the buttons
     return (
         <div>
-            <button className="login-button" onclick={signInWithGoogle}>Login</button>
+            <button className="login-button" onClick={signInWithGoogle}>Login</button>
             <h1 className="userLoged">{logedIn}</h1>
-            <button className="logout-button" onclick={logout}>Logout</button>
+            <button className="logout-button" onClick={logout}>Logout</button>
         </div>
     )
 
