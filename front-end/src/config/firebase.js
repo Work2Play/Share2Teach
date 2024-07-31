@@ -5,6 +5,9 @@ import { getAnalytics } from "firebase/analytics";
 //for user login
 import { getAuth, GoogleAuthProvider} from "firebase/auth";
 
+//getting the firestore database
+import { getFirestore } from 'firebase/firestore';
+
 const firebaseConfig = {
   apiKey: "AIzaSyCppEPoO_OkUSoV6KpYf8P4z8dF4nGF6aU",
   authDomain: "share2teach-be.firebaseapp.com",
@@ -23,3 +26,6 @@ const analytics = getAnalytics(app);
 //for user login
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
+
+//the adding a variable to store the database
+export const db = getFirestore(app);
