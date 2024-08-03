@@ -36,8 +36,9 @@ margin-top: 1em;
 }
 
 .hero-image button:hover {
-background-color: #21a1f1;
+    background-color: #21a1f1;
 }
+
 
 .subject-gallery {
 display: flex;
