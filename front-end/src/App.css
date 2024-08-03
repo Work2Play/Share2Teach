@@ -37,6 +37,7 @@ html, body {
   font-size: 1.5em;
   font-weight: bold;
   margin: 0;
+  color: rgb(255, 255, 255);
   margin-right: auto; /* Push the login button to the left */
 }
 

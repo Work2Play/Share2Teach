@@ -22,6 +22,11 @@ import AboutUsPage from './AboutUsPage';
 import { Auth } from './components/auth';
 import CCImage from './Images/CC.png';
 
+//Adding fileupload for the upload file button view
+import fileupload from './components/fileupload';
+
+
+
 function App() {
   // State to manage the visibility of the menu
   const [menuOpen, setMenuOpen] = useState(false);
