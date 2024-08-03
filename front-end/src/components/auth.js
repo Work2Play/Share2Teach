@@ -1,6 +1,6 @@
 //all related to login and logout button
 import { useState } from "react";
-
+import React from 'react';
 import { auth, googleProvider } from "../config/firebase"
 import { signInWithPopup, signOut } from "firebase/auth";
 
