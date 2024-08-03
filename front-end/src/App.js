@@ -17,6 +17,9 @@ import OtherOERsPage from './OtherOERsPage';
 import SelfDirectedLearningPage from './SelfDirectedLearningPage';
 import ContributorsPage from './ContributorsPage';
 import AboutUsPage from './AboutUsPage';
+import FAQPage from './FAQPage';
+import SearchComponent from './SearchComponent';
+import SearchResultsPage from './SearchResultsPage';
 
 // Adding auth for the login and logout button view
 import { Auth } from './components/auth';
@@ -31,7 +34,7 @@ function App() {
   // State to manage the visibility of the menu
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovering, setHovering] = useState(false);
-
+  const [faqOpen, setFaqOpen] = useState(false);
   // Toggle the menu visibility
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -95,6 +98,9 @@ function App() {
           <h1 className="logo-title">Share2Teach</h1>
           <div className="header-right">
             {/* Applying the auth stuff here */}
+
+            <button onClick={() => setFaqOpen(true)} className="faq-button">FAQ</button>
+            <SearchComponent />
             <Auth />
           </div>
         </header>
@@ -117,8 +123,10 @@ function App() {
             <Route path="/self-directed-learning" element={<SelfDirectedLearningPage />} />
             <Route path="/contributors" element={<ContributorsPage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
+            <Route path="/search" element={<SearchResultsPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
+          <FAQPage isOpen={faqOpen} onClose={() => setFaqOpen(false)} />
           <footer className="footer">
             <div className="footer-content">
               <img src={CCImage} alt="Creative Commons License" className="cc-image" />
