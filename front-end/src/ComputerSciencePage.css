@@ -42,3 +42,9 @@ border-radius: 10px;
 text-decoration: none;
 color: inherit;
 }
+.oer-image {
+display: block;
+margin: 20px auto;
+max-width: 200px;
+height: auto;
+}
