@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link,} from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop'; // Import ScrollToTop component
 import Home from './Home';
 import MathPage from './MathPage';
@@ -19,8 +19,9 @@ import SelfDirectedLearningPage from './SelfDirectedLearningPage';
 import ContributorsPage from './ContributorsPage';
 import AboutUsPage from './AboutUsPage';
 import FAQPage from './FAQPage';
-import SearchComponent from './SearchComponent';
+import SearchComponent from './components/SearchComponent';
 import SearchResultsPage from './SearchResultsPage';
+
 
 
 // Adding auth for the login and logout button view
@@ -28,7 +29,7 @@ import { Auth } from './components/auth';
 import CCImage from './Images/CC.png';
 
 //Adding fileupload for the upload file button view
-import fileupload from './components/fileupload';
+//import fileupload from './components/fileupload';
 
 
 
@@ -37,9 +38,12 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovering, setHovering] = useState(false);
   const [faqOpen, setFaqOpen] = useState(false);
+
   // Toggle the menu visibility
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+
+    
   };
 
   // Handle mouse enter event to keep the menu open
@@ -59,6 +63,7 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [hovering]);
+
 
   return (
     <Router>
@@ -97,13 +102,17 @@ function App() {
               </nav>
             )}
           </div>
+          
           {/* Title of the website */}
           <h1 className="logo-title">Share2Teach</h1>
-          <div className="header-right">
-            {/* Applying the auth stuff here */}
 
+          <div className="header-right">
+            
+              <div className="header-center">
+                <SearchComponent />
+              </div>
             <button onClick={() => setFaqOpen(true)} className="faq-button">FAQ</button>
-            <SearchComponent />
+            
             <Auth />
           </div>
         </header>
