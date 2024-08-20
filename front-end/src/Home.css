@@ -45,7 +45,7 @@
     gap: 20px;
     justify-items: center;
     margin-top: 20px;
-    height: 768px; /* Set a height if needed */
+    height: 750px; /* Set a height if needed */
 }
 
 .subject-card {
@@ -56,6 +56,11 @@
     width: 100%;
     max-width: 300px; /* Ensures all buttons are the same width */
     text-align: center;
+}
+/* Target the last button and make it span both columns */
+.subject-card:last-child {
+    grid-column: span 2;
+    justify-self: center; /* Center the button */
 }
 
 .subject-card a {
@@ -69,11 +74,7 @@
     color: #61dafb;
 }
 
-/* Target the last button and make it span both columns */
-.subject-card:last-child {
-    grid-column: span 2;
-    justify-self: center; /* Center the button */
-}
+
 
 .logo-container {
     margin-top: 40px;
