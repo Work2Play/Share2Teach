@@ -20,6 +20,7 @@ import AboutUsPage from './AboutUsPage';
 import FAQPage from './FAQPage';
 import SearchComponent from './SearchComponent';
 import SearchResultsPage from './SearchResultsPage';
+import ScrollToTop from './components/ScrollToTop'; // Import ScrollToTop component
 
 // Adding auth for the login and logout button view
 import { Auth } from './components/auth';
@@ -60,6 +61,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop /> {/* Add ScrollToTop here */}
       <div className="App">
         <header className="App-header">
           <div className="header-left">

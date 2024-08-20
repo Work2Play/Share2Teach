@@ -35,8 +35,8 @@ function OtherOERsPage() {
                 Embarking on a journey through the rich landscapes of learning theories in CAT and IT education, this textbook unveils the multifaceted dimensions of teaching and learning strategies that resonate with the demands of contemporary education. It meticulously navigates through the intricacies of effective pedagogical approaches, ensuring that educators are well-equipped to foster environments where learning is not just absorbed but experienced and enacted.
                 </p>
                 <p>Download Open Textbook here:</p>
-                <a href="./bookpdf/CSE_boek.pdf" target="_blank" rel="noopener noreferrer">
-                <img src={CSEBoek} alt="Computer Science Book" className="oer-image" />
+                <a href="/bookpdf/Computer Science_Knowledge for Educators.pdf" target="_blank" rel="noopener noreferrer">
+                    <img src={CSEBoek} alt="Computer Science Book" className="oer-image" />
                 </a>
             </div>
             </div>

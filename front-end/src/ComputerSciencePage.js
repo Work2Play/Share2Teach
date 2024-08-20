@@ -20,9 +20,10 @@ function ComputerSciencePage() {
         <img src={InnovateEducate} alt="Innovate Educate" className="oer-image" />
         <h2 className="section-subtitle">Download Open Textbook here:</h2>
         
-        <a href="./bookpdf/CSE_boek.pdf" target="_blank" rel="noopener noreferrer">
-                <img src={CSEBoek} alt="Computer Science Book" className="oer-image" />
-                </a>
+        <a href="/bookpdf/Computer Science_Knowledge for Educators.pdf" target="_blank" rel="noopener noreferrer">
+            <img src={CSEBoek} alt="Computer Science Book" className="oer-image" />
+        </a>
+
         </div>
         
     );
