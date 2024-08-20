@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop'; // Import ScrollToTop component
 import Home from './Home';
 import MathPage from './MathPage';
 import BusinessStudiesPage from './BusinessStudiesPage';
@@ -20,7 +21,7 @@ import AboutUsPage from './AboutUsPage';
 import FAQPage from './FAQPage';
 import SearchComponent from './SearchComponent';
 import SearchResultsPage from './SearchResultsPage';
-import ScrollToTop from './components/ScrollToTop'; // Import ScrollToTop component
+
 
 // Adding auth for the login and logout button view
 import { Auth } from './components/auth';
