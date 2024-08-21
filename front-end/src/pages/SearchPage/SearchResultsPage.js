@@ -18,11 +18,13 @@ const SearchResultsPage = () => {
 
     const fetchResults = async () => {
       try {
-        const q = query(
-          collection(db, "PDFS"), // Target the broader "PDFS" collection
-          where('keywords', 'array-contains', queryTerm)
+        const searchQuery = query(
+          collection(db, "PDFS"), // Adjust the collection name as needed
+          where('title', '>=', queryTerm),
+          where('title', '<=', queryTerm + '\uf8ff')
         );
-        const data = await getDocs(q);
+
+        const data = await getDocs(searchQuery);
         const filteredData = data.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
