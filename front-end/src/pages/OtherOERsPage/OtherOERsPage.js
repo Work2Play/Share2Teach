@@ -1,22 +1,13 @@
 import React from 'react';
 import './OtherOERsPage.css';
-import InnovateEducate from './Images/InnovateEducate.png';
-import CSEBoek from './Images/CSE_boek.png';
+import InnovateEducate from '../../Images/InnovateEducate.png';
+import CSEBoek from '../../Images/CSE_boek.png';
 
-const otherOERsIntroduction = "Merlot";
-
-const merlotLink = "https://www.merlot.org/merlot/materials.htm?sort.property=overallRating";
-
-const computerScienceIntroduction = "Computer Science: Knowledge for Educators";
-
-const computerScienceText = `In the digital tapestry of the 21st century, education, particularly in the realms of Computer Applications Technology (CAT) and Information Technology (IT), stands at the forefront of innovation and transformation. It is with immense pride and enthusiasm that we present this pioneering Open Educational Resource (OER) textbook: a testament to the collaborative spirit and intellectual rigor of a group of distinguished postgraduate students from North-West University, South Africa: L. Van der Walt, B. Mokholwane, and N. Mbebe. Under the editorship of Dr. C. Bosch, this textbook emerges as a beacon of knowledge, co-creation, and dissemination, meticulously crafted to serve the vibrant community of computer science educators.
-
-Embarking on a journey through the rich landscapes of learning theories in CAT and IT education, this textbook unveils the multifaceted dimensions of teaching and learning strategies that resonate with the demands of contemporary education. It meticulously navigates through the intricacies of effective pedagogical approaches, ensuring that educators are well-equipped to foster environments where learning is not just absorbed but experienced and enacted.`;
 
 function OtherOERsPage() {
     return (
         <div className="oers-page">
-            <p>\n</p>
+            
             <h1>Other useful OER's</h1>
             <div className="oer-section">
                 <h2>Merlot</h2>

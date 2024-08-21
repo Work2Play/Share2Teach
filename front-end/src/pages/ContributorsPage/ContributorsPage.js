@@ -1,6 +1,6 @@
 import React from 'react';
 import './ContributorsPage.css';
-import NWU_UNESCO from './Images/NWU&UNESCO.png';
+import NWU_UNESCO from '../../Images/NWU&UNESCO.png';
 
 function ContributorsPage() {
     return (

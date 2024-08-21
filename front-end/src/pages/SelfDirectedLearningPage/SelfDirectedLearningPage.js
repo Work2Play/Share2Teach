@@ -1,19 +1,19 @@
 import React from 'react';
 import './SelfDirectedLearningPage.css';
-import SDLImage from './Images/SDL_image.png';
-import InnovativeCurriculum from './Images/Innovative_curriculum.png';
-import PB_Learning from './Images/PB_learning.png';
-import ContextualisedPractices from './Images/Contextualised_practices.png';
-import Covid19 from './Images/Covid19.png';
-import LearningAssessment from './Images/Learning_assesment.png';
-import BlendedLearning from './Images/Blended_learning.png';
-import BecomingTeacher from './Images/Becoming_teacher.png';
-import SelfDirectedLearning from './Images/Self-directed_learning.png';
-import SelfDirectedComplex from './Images/Self-directed_complex.png';
-import SelfDirected21st from './Images/Self-directed_21st.png';
-import SelfDirectedImpact from './Images/Self-directed_impact.png';
-import DecolonisationCP from './Images/Decolonisation_CP.png';
-import SDLWebBanner from './Images/SDL-WebBanner-2B.jpg'; // Adjusted the file name
+import SDLImage from '../../Images/SDL_image.png';
+import InnovativeCurriculum from '../../Images/Innovative_curriculum.png';
+import PB_Learning from '../../Images/PB_learning.png';
+import ContextualisedPractices from '../../Images/Contextualised_practices.png';
+import Covid19 from '../../Images/Covid19.png';
+import LearningAssessment from '../../Images/Learning_assesment.png';
+import BlendedLearning from '../../Images/Blended_learning.png';
+import BecomingTeacher from '../../Images/Becoming_teacher.png';
+import SelfDirectedLearning from '../../Images/Self-directed_learning.png';
+import SelfDirectedComplex from '../../Images/Self-directed_complex.png';
+import SelfDirected21st from '../../Images/Self-directed_21st.png';
+import SelfDirectedImpact from '../../Images/Self-directed_impact.png';
+import DecolonisationCP from '../../Images/Decolonisation_CP.png';
+import SDLWebBanner from '../../Images/SDL-WebBanner-2B.jpg'; // Adjusted the file name
 
 function SelfDirectedLearningPage() {
     return (

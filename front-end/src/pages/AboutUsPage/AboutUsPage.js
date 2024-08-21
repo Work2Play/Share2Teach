@@ -1,8 +1,8 @@
 import React from 'react';
 import './AboutUsPage.css';
-import Chantelle from './Images/Chantelle.jpg';
-import Dorothy from './Images/Dorothy.jpg';
-import NWU_UNESCO from './Images/NWU&UNESCO.png';
+import Chantelle from '../../Images/Chantelle.jpg';
+import Dorothy from '../../Images/Dorothy.jpg';
+import NWU_UNESCO from '../../Images/NWU&UNESCO.png';
 
 function AboutUsPage() {
     return (

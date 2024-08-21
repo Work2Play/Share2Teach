@@ -1,7 +1,7 @@
 import React from 'react';
 import './ComputerSciencePage.css';
-import InnovateEducate from './Images/InnovateEducate.png';
-import CSEBoek from './Images/CSE_boek.png';
+import InnovateEducate from '../../Images/InnovateEducate.png';
+import CSEBoek from '../../Images/CSE_boek.png';
 const computerScienceIntroduction = "Computer Science: Knowledge for Educators";
 
 const computerScienceText = `In the digital tapestry of the 21st century, education, particularly in the realms of Computer Applications Technology (CAT) and Information Technology (IT), stands at the forefront of innovation and transformation. It is with immense pride and enthusiasm that we present this pioneering Open Educational Resource (OER) textbook: a testament to the collaborative spirit and intellectual rigor of a group of distinguished postgraduate students from North-West University, South Africa: L. Van der Walt, B. Mokholwane, and N. Mbebe. Under the editorship of Dr. C. Bosch, this textbook emerges as a beacon of knowledge, co-creation, and dissemination, meticulously crafted to serve the vibrant community of computer science educators.

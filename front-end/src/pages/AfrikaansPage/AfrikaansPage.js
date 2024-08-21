@@ -2,22 +2,22 @@
 import React, { useEffect, useState } from 'react';
 
 //importing the database
-import { db } from './config/firebase';
+import { db } from '../../config/firebase';
 
 //functionality to make use of the docs
 import { getDocs, collection } from 'firebase/firestore';
-import './LifeSkillsPage.css';
+import './AfrikaansPage.css';
 
-const lifeSkillsIntroduction = "Welcome to our Life Skills Resources page, a treasure trove of educational materials crafted with care by students from the Faculty of Education at North-West University. Our collection is diverse, ranging from detailed explanations on specific topics to comprehensive semester-long planning guides. Designed with a focus on self-directed learning, these resources incorporate cooperative learning and project-based learning strategies to foster a more engaging and effective learning environment. While all materials have undergone peer evaluation to ensure quality, we value your feedback to further enhance their effectiveness. Please take a moment to complete the evaluation form (at the bottom of the page) for any resource you use. Your insights are crucial in identifying areas for improvement and recognizing outstanding contributions. These open educational resources (OER) are freely available, reflecting our commitment to accessible and collaborative education.";
+const afrikaansIntroduction = "Welcome to our Afrikaans Resources page, a treasure trove of educational materials crafted with care by students from the Faculty of Education at North-West University. Our collection is diverse, ranging from detailed explanations on specific topics to comprehensive semester-long planning guides. Designed with a focus on self-directed learning, these resources incorporate cooperative learning and project-based learning strategies to foster a more engaging and effective learning environment. While all materials have undergone peer evaluation to ensure quality, we value your feedback to further enhance their effectiveness. Please take a moment to complete the evaluation form (at the bottom of the page) for any resource you use. Your insights are crucial in identifying areas for improvement and recognizing outstanding contributions. These open educational resources (OER) are freely available, reflecting our commitment to accessible and collaborative education.";
 
-function LifeSkillsPage() {
+function AfrikaansPage() {
     //the constrant that will store all the values
     const [resources, setResources] = useState([])
 
     //making use of use effect sothat it is more dynamic
     useEffect(() => {
-        //a collection that will store the overall values of LifeSkills_Main
-        const resourceCollectionRef = collection(db, "PDFS", "LifeSkills_Main", "lifeSkills")
+        //a collection that will store the overall values of Afrikaans_Main
+        const resourceCollectionRef = collection(db, "PDFS", "Afrikaans_Main", "afrikaans")
 
         const getResources = async () => {
             //reading the resources
@@ -33,13 +33,13 @@ function LifeSkillsPage() {
         //getting the resources
         getResources();
     }, [])
-
+    
     return (
-        <div className="life-skills-page">
-        <h1 className="subject-title">Life Skills</h1>
-        <h2 className="section-subtitle">Introduction to Life Skills Resources</h2>
+        <div className="afrikaans-page">
+        <h1 className="subject-title">Afrikaans</h1>
+        <h2 className="section-subtitle">Introduction to Afrikaans Resources</h2>
         <div className="subject-introduction">
-            <p>{lifeSkillsIntroduction}</p>
+            <p>{afrikaansIntroduction}</p>
         </div>
         <h2 className="section-subtitle">Resources</h2>
         <div className="subject-gallery">
@@ -70,4 +70,4 @@ function LifeSkillsPage() {
     );
 }
 
-export default LifeSkillsPage;
+export default AfrikaansPage;
