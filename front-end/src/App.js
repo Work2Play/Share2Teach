@@ -20,7 +20,7 @@ import ContributorsPage from './pages/ContributorsPage/ContributorsPage';
 import AboutUsPage from './pages/AboutUsPage/AboutUsPage';
 import FAQPage from './FAQPage';
 import SearchComponent from './components/SearchComponent';
-import SearchResultsPage from './SearchResultsPage';
+import SearchResultsPage from './pages/SearchPage/SearchResultsPage';
 
 
 

@@ -136,35 +136,6 @@ html, body {
   z-index: 1; /* Ensure content appears above the scrollbar */
 }
 
-/* Style for the search bar container */
-.search-bar {
-  display: flex;
-  margin-top: 1em;
-  align-items: center;
-}
-.search-bar
-/* Style for the search input */
-.search-bar input {
-  padding: 0.5em;
-  font-size: 1em;
-}
-
-/* Style for the search button */
-.search-bar button {
-  padding: 0.5em 1em;
-  font-size: 1em;
-  border: none;
-  background-color: #61dafb;
-  color: white;
-  cursor: pointer;
-  margin-left: 0.5em;
-}
-
-/* Change the background color of the search button on hover */
-.search-bar button:hover {
-  background-color: #21a1f1;
-}
-
 /* Style for the hero image section */
 .hero-image {
   height: 60vh;

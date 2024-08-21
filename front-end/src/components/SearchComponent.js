@@ -9,6 +9,7 @@ const SearchComponent = () => {
     e.preventDefault();
     // Navigate to search results page with the search term
     navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+    setSearchTerm(''); // Clear the search term after navigating
   };
 
   return (
