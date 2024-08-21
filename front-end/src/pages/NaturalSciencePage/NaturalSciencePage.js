@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react';
 //importing the database
 import { db } from '../../config/firebase';
 
+//importing create table
+import { CreateTable } from '../../components/table/table';
+
 //functionality to make use of the docs
 import { getDocs, collection } from 'firebase/firestore';
 import './NaturalSciencePage.css';
@@ -43,28 +46,7 @@ function NaturalSciencePage() {
         </div>
         <h2 className="section-subtitle">Resources</h2>
         <div className="subject-gallery">
-            <table className="resource-table">
-            <thead>
-                <tr>
-                <th>Title</th>
-                <th>Last Modified Date</th>
-                <th>Last Modified User</th>
-                <th>Rating</th>
-                <th>Amount Of Ratings Recieved</th>
-                </tr>
-            </thead>
-            <tbody>
-                {resources.map((resource) => (
-                <tr key={resource.id}>
-                    <td>{resource.title}</td>
-                    <td>{resource.dateMod}</td>
-                    <td>{resource.userMod}</td>
-                    <td>{resource.rating}</td>
-                    <td>{resource.ratingAmount}</td>
-                </tr>
-                ))}
-            </tbody>
-            </table>
+            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"NaturalScience_Main"} CollectionTwo={"naturalScience"}/>
         </div>
         </div>
     );

@@ -33,4 +33,5 @@ export const googleProvider = new GoogleAuthProvider();
 //the adding a variable to store the database
 export const db = getFirestore(app);
 
+//a variable to get the storae of the firestore
 export const storage = getStorage(app);
