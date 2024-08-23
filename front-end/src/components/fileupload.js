@@ -1,103 +1,124 @@
-import React, { useState } from "react";
-import { db, storage} from "../config/firebase";
-//import { getUnpackedSettings } from "http2";
-
-//Importing .css
+import React, { useEffect, useState } from 'react'; // useState is to manage the state variables, and useEffect perfrom side effects such as fetching data when the component loads
+import { db, storage } from '../config/firebase'; 
+import { ref, uploadBytesResumable, getDownloadURL, listAll } from 'firebase/storage'; //ref creates a reference to a location in firebase storage, uploadBytesResumable uploads files to firebase storage that also can monitor the upload progress, and listAll lists all the folders within the firebase storage
+import { collection, addDoc, Timestamp } from 'firebase/firestore'; // collection to get a reference to  a firestore collection, addDoc to add a new document to a collcetion in firestore
 import './fileupload.css';
 
-//Create state variables for storing 
-export function Upload( {isOpen, onClose} ) {
-    const [userID, getUserID] = useState("");
-    const [subject, getSubject] = useState("");
-    const [title, getTitle] = useState("");
-    const [file, getFile] = useState(null);
-    const [uploadprog, getUploadprog] = useState(0);
+export function Upload({ isOpen, onClose }) {
+    //Create state variables for storing
+  const [userID, setUserID] = useState('');
+  const [subject, setSubject] = useState('');
+  const [title, setTitle] = useState('');
+  const [file, setFile] = useState(null);
+  const [uploadProg, setUploadProg] = useState(0);
+  const [subjects, setSubjects] = useState([]);
 
-    if (!isOpen) return null;
+  // call fetchSubjects function to populate the subjects state with folder names from Storage
+  useEffect(() => {
+    fetchSubjects();
+  }, []);
 
-    //sets File state to first selected file when a file is chosen from the file input
-    const filechange = (e) => {
-        getFile(e.target.files[0]);
-    };
-
-    //handles document submission 
-    const uploadhandler = async (e) => {
-        e.preventDefault();
-
-        if(!file){
-            alert("File not selected!");
-        return;
+  // fetches subject folders from Storage
+  const fetchSubjects = async () => {
+    try {
+      const rootRef = ref(storage);
+      const result = await listAll(rootRef);
+      const subjectNames = result.prefixes.map((folderRef) => folderRef.name);
+      setSubjects(subjectNames);
+    } catch (error) {
+      console.error('Error fetching subjects:', error);
     }
-        // gets reference for firebase storage root, reffile creates ref to location where file will be stored in the storage, and finally starts upload process
-        const refstorage = storage.ref();
-        const reffile = refstorage.child('${subject}/${file.name}')
-        const uploadprocess = reffile.put(file);
+  };
+  //sets File state to first selected file when a file is chosen from the file input
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  
+  //handles the actual file upload
+  const uploadHandler = async (e) => {
+    // e.preventDefault() stop the form from refreshing the page when file is submitted
+    e.preventDefault();
 
-        //tracks the progress of the upload and handles completion
-        uploadprocess.on(
-            "state_changed", 
-            (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                getUploadprog(progress);
-            },
-            (error) => {
-                console.error("Error Uploading:", error);
-            },
+    //checks if a file was selected
+    if (!file) {
+      alert('Please select a file to upload.');
+      return;
+    }
 
-            async () => {
-                const file_url = await reffile.getDownloadURL(); //waits for firebase storage to give the download url for the file that was uploaded and database
-                const refdoc = db.collection("documents").doc();
+    try {
+      const storageRef = ref(storage, `${subject}/${file.name}`); //storage ref is created with the selected subject and file name
+      const uploadTask = uploadBytesResumable(storageRef, file); //the file is uploaded using uploadBytesResumable that can track the progress of the upload
 
-                //waits for firestore to create new document with the given details
-                await refdoc.set({
-                    userID,
-                    subject,
-                    title,
-                    file_url,   //Stores the file's download urls in firestore
-                    modifiedAt: Date.getTime()
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setUploadProg(progress); //state_changed event listener updates the uploadProg state as the file upload happens
+        },
+        (error) => {
+          console.error('Upload error:', error); //Logs the upload errors
+        },
+        //when the upload is completed this part is for storing the metadata in firestore where it gets the download url and a new document is added to firestore with the metadata of the file
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            //storing the metadata in the correct Firestore path
+          await addDoc(collection(db, `PDFS/${subject}_Main/${subject}`), { //uses the subject name that was selected in dropdown list
+            userID,
+            subject,
+            title,
+            file_url: downloadURL,
+            modifiedAt: Timestamp.now(),
+          });
+          alert('File uploaded successfully!');
+          setUploadProg(0);
+          setUserID('');
+          setSubject('');
+          setTitle('');
+          setFile(null);
+          onClose();
+        }
+      );
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
 
-                });
+  if (!isOpen) return null; //The form is rendered the isOpen prop is true
 
-                alert("Successfully uploaded document.");
-                getUploadprog(0);
-                getFile(null);
-                getSubject("");
-                getTitle("");
-            }
-        );
-    };
-
-    //captures the required fields
-    return (
-        <form onSubmit={uploadhandler}>
-            <input
-                type="text"
-                placeholder="User Id"
-                value={userID}
-                onChange={(e) => getUserID(e.target.value)}
-                required
-            />
-            <input
-                type="text"
-                placeholder="subject"
-                value={subject}
-                onChange={(e) => getSubject(e.target.value)}
-                required
-            />
-            <input
-                type="text"
-                placeholder="title"
-                value={title}
-                onChange={(e) => getTitle(e.target.value)}
-                required
-            />
-            <input type="file" onChange={filechange} required />
-            <button type="submit" onClick={onClose}>Upload Document</button>
-            {uploadprog >0 && <progress value={uploadprog} max="100" />}
-        </form>
-    );
-};
-
-
-
-
+  //captures the required fields, a dropdown list to choose the subject, a progress bar is displayed and the uploadHandler function handles the form submission 
+  return (
+    <form onSubmit={uploadHandler} className="upload-form">
+      <input
+        type="text"
+        placeholder="User ID"
+        value={userID}
+        onChange={(e) => setUserID(e.target.value)}
+        required
+      />
+      <select
+        value={subject}
+        onChange={(e) => setSubject(e.target.value)}
+        required
+      >
+        <option value="" disabled>
+          Select Subject
+        </option>
+        {subjects.map((subj) => (
+          <option key={subj} value={subj}>
+            {subj}
+          </option>
+        ))}
+      </select>
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
+      <input type="file" onChange={handleFileChange} required />
+      <button type="submit">Upload Document</button>
+      {uploadProg > 0 && <progress value={uploadProg} max="100" />}
+    </form>
+  );
+}
