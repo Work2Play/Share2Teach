@@ -27,9 +27,7 @@ import SearchResultsPage from './pages/SearchPage/SearchResultsPage';
 // Adding auth for the login and logout button view
 import { Auth } from './components/auth';
 import CCImage from './Images/CC.png';
-
-//Adding fileupload for the upload file button view
-//import fileupload from './components/fileupload';
+import { Upload } from './components/fileupload';
 
 
 

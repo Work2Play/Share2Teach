@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { db, storage} from "../config/firebase";
 //import { getUnpackedSettings } from "http2";
-import firebase from "firebase/app"; 
 
 //Importing .css
 import './fileupload.css';
 
 //Create state variables for storing 
-export const upload = () => {
+export function Upload( {isOpen, onClose} ) {
     const [userID, getUserID] = useState("");
     const [subject, getSubject] = useState("");
     const [title, getTitle] = useState("");
     const [file, getFile] = useState(null);
     const [uploadprog, getUploadprog] = useState(0);
 
+    if (!isOpen) return null;
 
     //sets File state to first selected file when a file is chosen from the file input
     const filechange = (e) => {
@@ -54,7 +54,8 @@ export const upload = () => {
                     subject,
                     title,
                     file_url,   //Stores the file's download urls in firestore
-                    modifiedAt: FirebaseError.firestore.FieldValue.serverTimestamp()
+                    modifiedAt: Date.getTime()
+
                 });
 
                 alert("Successfully uploaded document.");
@@ -91,7 +92,7 @@ export const upload = () => {
                 required
             />
             <input type="file" onChange={filechange} required />
-            <button type="submit">Upload Document</button>
+            <button type="submit" onClick={onClose}>Upload Document</button>
             {uploadprog >0 && <progress value={uploadprog} max="100" />}
         </form>
     );

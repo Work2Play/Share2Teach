@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 import Logo from '../../Images/logo.png';
 
+//contribute stuff
+import { Upload } from '../../components/fileupload';
+
 function Home() {
+    const [contriOpen, setContriOpen] = useState(false);
+
     return (
         <div className="home-page">
         <div className="hero-image">
             <h1>Share2Teach</h1>
             <p>Open Educational Resources</p>
-            <button>Contribute Resources</button>
+            <button onClick={() => setContriOpen(true)}>Contribute Resources</button>
+            <Upload isOpen={contriOpen} onClose={() => setContriOpen(false)} />
         </div>
         <div className="subject-gallery">
             <div className="subject-card">

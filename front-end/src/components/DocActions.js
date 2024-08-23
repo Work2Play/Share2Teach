@@ -88,7 +88,7 @@ export function DocumentActions({ document, oneCollection, docMain, twoCollectio
           </style>
         </head>
         <body>
-          <input type="number" id="ratingInput" min="1" max="5" step="0.1" />
+          <input type="number" id="ratingInput" min="1" max="5" step="0.5" />
           <button id="rateButton" class="rateButton">Rate</button> 
           <script>
             ${ratingPopUp.toString()} 
