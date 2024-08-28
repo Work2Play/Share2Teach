@@ -21,6 +21,7 @@ import AboutUsPage from './pages/AboutUsPage/AboutUsPage';
 import FAQPage from './FAQPage';
 import SearchComponent from './components/SearchComponent';
 import SearchResultsPage from './pages/SearchPage/SearchResultsPage';
+import RoleAssign from './pages/RoleAssignPage/RoleAssign';
 
 
 
@@ -96,6 +97,7 @@ function App() {
                   <li><Link to="/self-directed-learning" onClick={() => setMenuOpen(false)}>Self-Directed Learning</Link></li>
                   <li><Link to="/contributors" onClick={() => setMenuOpen(false)}>Contributors</Link></li>
                   <li><Link to="/about-us" onClick={() => setMenuOpen(false)}>About Us</Link></li>
+                  <li><Link to="/role-assign" onClick={() => setMenuOpen(false)}>Role Assign</Link></li>
                 </ul>
               </nav>
             )}
@@ -134,6 +136,7 @@ function App() {
             <Route path="/contributors" element={<ContributorsPage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
             <Route path="/search" element={<SearchResultsPage />} />
+            <Route path="/role-assign" element={<RoleAssign />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <FAQPage isOpen={faqOpen} onClose={() => setFaqOpen(false)} />
