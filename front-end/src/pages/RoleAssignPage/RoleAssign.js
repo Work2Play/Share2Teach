@@ -6,7 +6,7 @@ import { db } from '../../config/firebase'; // Adjust the import path as necessa
 
 import { getDocs, collection } from 'firebase/firestore';
 
-const UserListPage = () => {
+const RoleAssignPage = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -60,4 +60,4 @@ const UserListPage = () => {
   );
 };
 
-export default UserListPage;
+export default RoleAssignPage;

@@ -22,6 +22,8 @@ import FAQPage from './FAQPage';
 import SearchComponent from './components/SearchComponent';
 import SearchResultsPage from './pages/SearchPage/SearchResultsPage';
 import RoleAssign from './pages/RoleAssignPage/RoleAssign';
+import SignUpPage from './pages/SignUpPage/SignUpPage';
+import SignInPage from './pages/SignInPage/SignInPage';
 
 
 
@@ -137,6 +139,8 @@ function App() {
             <Route path="/about-us" element={<AboutUsPage />} />
             <Route path="/search" element={<SearchResultsPage />} />
             <Route path="/role-assign" element={<RoleAssign />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="/sign-in" element={<SignInPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <FAQPage isOpen={faqOpen} onClose={() => setFaqOpen(false)} />

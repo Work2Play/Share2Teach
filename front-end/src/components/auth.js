@@ -1,53 +1,113 @@
-//all related to login and logout button
 import { useState } from "react";
 import React from 'react';
-import { auth, googleProvider } from "../config/firebase"
-import { signInWithPopup, signOut } from "firebase/auth";
+import { auth, googleProvider } from "../config/firebase";
+import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 
-//importing the .css
+// Importing the .css
 import './auth.css';
 
 export const Auth = () => {
-    //gets the user that is currently logged in
-    const [logedIn, setLoggedIn] = useState("");
-
-    //variables to hide or show the buttons and loggedin text
-    const [showLogin, setLogin] = useState(true);
+    // State to track login status and user email
+    const [loggedIn, setLoggedIn] = useState("");
+    
+    // State to manage visibility of login options
+    const [showLoginOptions, setShowLoginOptions] = useState(false);
     const [showLogout, setLogOut] = useState(false);
+    
+    // State to manage form inputs
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    //creates a popup window for user to sign in with their google account
+    // Google sign-in method
     const signInWithGoogle = async () => {
         try {
-            await signInWithPopup(auth, googleProvider)
-            setLoggedIn(auth.currentUser.email)
-            setLogin(false)
-            setLogOut(true)
-        } catch (err)
-        {
+            await signInWithPopup(auth, googleProvider);
+            setLoggedIn(auth.currentUser.email);
+            setShowLoginOptions(false);
+            setLogOut(true);
+        } catch (err) {
             console.error(err);
         }
-    }
+    };
 
-    //created a button for user to logout from current account
+    // Email and password sign-in method
+    const signInWithEmail = async () => {
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            setLoggedIn(auth.currentUser.email);
+            setShowLoginOptions(false);
+            setLogOut(true);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    // Email and password sign-up method
+    const signUpWithEmail = async () => {
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            setLoggedIn(auth.currentUser.email);
+            setShowLoginOptions(false);
+            setLogOut(true);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    // Logout method
     const logout = async () => {
         try {
-            await signOut(auth)
-            setLoggedIn()
-            setLogin(true)
-            setLogOut(false)
-        } catch (err)
-        {
+            await signOut(auth);
+            setLoggedIn("");
+            setShowLoginOptions(false);
+            setLogOut(false);
+        } catch (err) {
             console.error(err);
         }
-    }
+    };
 
-    //creating basic display for the buttons
+    // Handle the initial login button click
+    const handleLoginClick = () => {
+        setShowLoginOptions(true);
+    };
+
+    // Creating the display for buttons and form
     return (
         <div>
-            {showLogin && <button className="login-button" onClick={signInWithGoogle}>Login</button>}
-            {showLogout && <p className="userLoged">{logedIn}</p>}
-            {showLogout && <button className="logout-button" onClick={logout}>Logout</button>}
+            {!loggedIn && !showLoginOptions && (
+                <button className="login-button" onClick={handleLoginClick}>
+                    Login
+                </button>
+            )}
+            {showLoginOptions && (
+                <>
+                    <button className="login-button" onClick={signInWithGoogle}>Login with Google</button>
+                    <form onSubmit={(e) => e.preventDefault()}>
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <button className="login-button" onClick={signInWithEmail}>Login with Email</button>
+                        <button className="signup-button" onClick={signUpWithEmail}>Sign Up</button>
+                    </form>
+                </>
+            )}
+            {showLogout && (
+                <>
+                    <p className="userLogged">{loggedIn}</p>
+                    <button className="logout-button" onClick={logout}>Logout</button>
+                </>
+            )}
         </div>
-        
-    )
-}
+    );
+};
