@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { auth, googleProvider } from "../../config/firebase";
-import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider} from "../../config/firebase";
+import { signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { useNavigate } from "react-router-dom";
 import "./SignUpPage.css";
 
 const SignUpPage = () => {
@@ -8,17 +11,48 @@ const SignUpPage = () => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-    const handleSignUp = (e) => {
+    const db = getFirestore();
+
+    const handleSignUp = async (e) => {
         e.preventDefault();
-        // Add your sign-up logic here
-        console.log("Sign Up", { firstName, lastName, email, password });
+        try {
+            // Create user with email and password
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Combine first name and last name
+            const full_name = `${firstName} ${lastName}`;
+
+            // Save user data to Firestore
+            await setDoc(doc(db, "users", user.uid), {
+                full_name: full_name,
+                email: email,
+                role: "open access user"
+            });
+
+            console.log("User signed up successfully:", user.email);
+            navigate("/");
+            // You can redirect the user or perform other actions here
+        } catch (error) {
+            console.error("Error signing up:", error);
+        }
     };
 
     const handleGoogleSignIn = async () => {
         try {
-            await signInWithPopup(auth, googleProvider);
-            console.log("User signed in with Google:", auth.currentUser.email);
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+
+            // Save Google user data to Firestore
+            await setDoc(doc(db, "users", user.uid), {
+                full_name: user.displayName,
+                email: user.email,
+                role: "open access user"
+            });
+
+            console.log("User signed in with Google:", user.email);
             // You can redirect the user or perform other actions here
         } catch (err) {
             console.error("Google sign-in error:", err);
@@ -71,7 +105,8 @@ const SignUpPage = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" className="sign-up-button">
+                        <button type="submit" className="sign-up-button"
+                            onClick={handleSignUp}>
                             Sign Up
                         </button>
                     </form>

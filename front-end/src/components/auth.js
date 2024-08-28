@@ -2,6 +2,7 @@ import { useState } from "react";
 import React from 'react';
 import { auth, googleProvider } from "../config/firebase";
 import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 // Importing the .css
 import './auth.css';
@@ -18,6 +19,8 @@ export const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const navigate = useNavigate();
+
     // Google sign-in method
     const signInWithGoogle = async () => {
         try {
@@ -30,37 +33,13 @@ export const Auth = () => {
         }
     };
 
-    // Email and password sign-in method
-    const signInWithEmail = async () => {
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            setLoggedIn(auth.currentUser.email);
-            setShowLoginOptions(false);
-            setLogOut(true);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-    // Email and password sign-up method
-    const signUpWithEmail = async () => {
-        try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            setLoggedIn(auth.currentUser.email);
-            setShowLoginOptions(false);
-            setLogOut(true);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
     // Logout method
-    const logout = async () => {
+    const handleLogout = async () => {
         try {
             await signOut(auth);
-            setLoggedIn("");
-            setShowLoginOptions(false);
-            setLogOut(false);
+            setLoggedIn(false);
+            console.log("User logged out.")
+            navigate("/"); 
         } catch (err) {
             console.error(err);
         }
@@ -68,45 +47,20 @@ export const Auth = () => {
 
     // Handle the initial login button click
     const handleLoginClick = () => {
-        setShowLoginOptions(true);
+        window.location.href = "/sign-in";
     };
 
     // Creating the display for buttons and form
     return (
         <div>
-            {!loggedIn && !showLoginOptions && (
-                <button className="login-button" onClick={handleLoginClick}>
+            {!loggedIn ? (
+                <button className="login-button" onClick={() => navigate("/sign-in")}>
                     Login
                 </button>
-            )}
-            {showLoginOptions && (
-                <>
-                    <button className="login-button" onClick={signInWithGoogle}>Login with Google</button>
-                    <form onSubmit={(e) => e.preventDefault()}>
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <button className="login-button" onClick={signInWithEmail}>Login with Email</button>
-                        <button className="signup-button" onClick={signUpWithEmail}>Sign Up</button>
-                    </form>
-                </>
-            )}
-            {showLogout && (
-                <>
-                    <p className="userLogged">{loggedIn}</p>
-                    <button className="logout-button" onClick={logout}>Logout</button>
-                </>
+            ) : (
+                <button className="logout-button" onClick={handleLogout}>
+                    Logout
+                </button>
             )}
         </div>
     );
