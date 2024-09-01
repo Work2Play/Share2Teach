@@ -24,6 +24,7 @@ import SearchResultsPage from './pages/SearchPage/SearchResultsPage';
 import RoleAssign from './pages/RoleAssignPage/RoleAssign';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
 import SignInPage from './pages/SignInPage/SignInPage';
+import { AuthContext } from './components/auth';
 
 
 
@@ -99,7 +100,7 @@ function App() {
                   <li><Link to="/self-directed-learning" onClick={() => setMenuOpen(false)}>Self-Directed Learning</Link></li>
                   <li><Link to="/contributors" onClick={() => setMenuOpen(false)}>Contributors</Link></li>
                   <li><Link to="/about-us" onClick={() => setMenuOpen(false)}>About Us</Link></li>
-                  <li><Link to="/role-assign" onClick={() => setMenuOpen(false)}>Role Assign</Link></li>
+                    <li><Link to="/role-assign" onClick={() => setMenuOpen(false)}>Role Assign</Link></li>
                 </ul>
               </nav>
             )}

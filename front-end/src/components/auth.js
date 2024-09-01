@@ -1,67 +1,67 @@
-import { useState } from "react";
-import React from 'react';
-import { auth, googleProvider } from "../config/firebase";
-import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import React, { useState, useEffect } from "react";
+import { auth } from "../config/firebase";
+import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-// Importing the .css
+// Importing the CSS file
 import './auth.css';
 
 export const Auth = () => {
     // State to track login status and user email
-    const [loggedIn, setLoggedIn] = useState("");
-    
-    // State to manage visibility of login options
-    const [showLoginOptions, setShowLoginOptions] = useState(false);
-    const [showLogout, setLogOut] = useState(false);
-    
-    // State to manage form inputs
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [userEmail, setUserEmail] = useState("");
 
     const navigate = useNavigate();
-
-    // Google sign-in method
-    const signInWithGoogle = async () => {
-        try {
-            await signInWithPopup(auth, googleProvider);
-            setLoggedIn(auth.currentUser.email);
-            setShowLoginOptions(false);
-            setLogOut(true);
-        } catch (err) {
-            console.error(err);
-        }
-    };
 
     // Logout method
     const handleLogout = async () => {
         try {
             await signOut(auth);
             setLoggedIn(false);
-            console.log("User logged out.")
-            navigate("/"); 
+            setUserEmail("");
+            console.log("User logged out.");
+            navigate("/"); // Redirect to home page after logout
         } catch (err) {
-            console.error(err);
+            console.error("Logout error:", err);
         }
     };
 
-    // Handle the initial login button click
+    // Handle the initial login button click to redirect to sign-in page
     const handleLoginClick = () => {
-        window.location.href = "/sign-in";
+        navigate("/sign-in"); // Redirect to the sign-in page
     };
 
-    // Creating the display for buttons and form
+    // Check if the user is already logged in
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                setLoggedIn(true);
+                setUserEmail(user.email);
+            } else {
+                setLoggedIn(false);
+                setUserEmail("");
+            }
+        });
+
+        return () => unsubscribe(); // Clean up the listener on unmount
+    }, []);
+
     return (
-        <div>
-            {!loggedIn ? (
-                <button className="login-button" onClick={() => navigate("/sign-in")}>
-                    Login
-                </button>
+        <div className="your-component-container">
+            {loggedIn ? (
+                <div className="logged-in-section">
+                    <p>Signed in as {userEmail}</p>
+                    <button className="logout-button" onClick={handleLogout}>
+                        Logout
+                    </button>
+                </div>
             ) : (
-                <button className="logout-button" onClick={handleLogout}>
-                    Logout
+                <button className="login-button" onClick={handleLoginClick}>
+                    Login
                 </button>
             )}
         </div>
     );
 };
+
+export default Auth;
