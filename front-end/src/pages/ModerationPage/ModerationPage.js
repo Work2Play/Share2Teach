@@ -74,9 +74,9 @@ const ModerationPage = () => {
                 const storageRef = ref(storage, pdf.file_url); // Create a reference from the URL
                 await deleteObject(storageRef);
                 console.log('File deleted successfully');
-              } catch (error) {
+                } catch (error) {
                 console.error('Error deleting file:', error);   
-              }
+                }
             setUnverifiedPDFs(unverifiedPDFs.filter((item) => item.id !== pdf.id));
         } catch (err) {
             console.error("Error approving PDF:", err);
@@ -106,10 +106,10 @@ const ModerationPage = () => {
                 const storageRef = ref(storage, pdf.file_url); // Create a reference from the URL
                 await deleteObject(storageRef);
                 console.log('File deleted successfully');
-              } catch (error) {
+                } catch (error) {
                 console.error('Error deleting file:', error);   
-              }
-              
+                }
+                
             setReportedPDFs(reportedPDFs.filter((item) => item.id !== pdf.id));
         } catch (err) {
             console.error("Error deleting reported PDF:", err);

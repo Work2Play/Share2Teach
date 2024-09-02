@@ -1,6 +1,7 @@
 /* Search form container */
 .search-form {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   background-color: #f1f1f1;
@@ -9,7 +10,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   transition: box-shadow 0.3s ease-in-out;
   width: 100%;
-  max-width: 300px; /* Adjust max-width for a sleek look */
+  max-width: 350px; /* Adjust max-width for a sleek look */
 }
 
 .search-form:hover {

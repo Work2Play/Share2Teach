@@ -4,7 +4,7 @@ import './SearchResultsPage.css'; // Assuming you have a separate CSS file for s
 
 // Importing Firebase database
 import { db } from '../../config/firebase';
-import { getDocs, collection, query, where } from 'firebase/firestore';
+import { getDocs, collectionGroup, query, where } from 'firebase/firestore';
 
 const SearchResultsPage = () => {
   const [results, setResults] = useState([]);
@@ -13,31 +13,49 @@ const SearchResultsPage = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const queryTerm = searchParams.get('q');
-    setSearchTerm(queryTerm);
+    const queryTerm = searchParams.get('query'); // Changed to match SearchComponent.js
+    setSearchTerm(queryTerm); // Save the search term for display
 
     const fetchResults = async () => {
-      try {
-        const searchQuery = query(
-          collection(db, "PDFS"), // Adjust the collection name as needed
-          where('title', '>=', queryTerm),
-          where('title', '<=', queryTerm + '\uf8ff')
-        );
+      if (queryTerm) {
+        try {
+          const collectionsToQuery = [
+            collectionGroup(db, "Afrikaans"),
+            collectionGroup(db, "Business"),
+            collectionGroup(db, "English"),
+            collectionGroup(db, "Geography"),
+            collectionGroup(db, "History"),
+            collectionGroup(db, "LifeScience"),
+            collectionGroup(db, "LifeSkills"),
+            collectionGroup(db, "Math"),
+            collectionGroup(db, "NaturalScience"),
+            collectionGroup(db, "Technology")
+          ];
 
-        const data = await getDocs(searchQuery);
-        const filteredData = data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setResults(filteredData);
-      } catch (err) {
-        console.error("Error fetching search results:", err);
+          const queryPromises = collectionsToQuery.map(collectionRef =>
+            getDocs(query(
+              collectionRef,
+              where('title', '>=', queryTerm),
+              where('title', '<=', queryTerm + '\uf8ff')
+            ))
+          );
+
+          const querySnapshots = await Promise.all(queryPromises);
+          const allDocs = querySnapshots.flatMap(snapshot => snapshot.docs);
+
+          const filteredData = allDocs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+
+          setResults(filteredData);
+        } catch (err) {
+          console.error("Error fetching search results:", err);
+        }
       }
     };
 
-    if (queryTerm) {
-      fetchResults();
-    }
+    fetchResults();
   }, [location]);
 
   return (
@@ -61,7 +79,11 @@ const SearchResultsPage = () => {
             <tbody>
               {results.map((result) => (
                 <tr key={result.id}>
-                  <td>{result.title}</td>
+                  <td>
+                    <a href={result.file_url} target="_blank" rel="noopener noreferrer">
+                      {result.title}
+                    </a>
+                  </td>
                   <td>{result.dateMod}</td>
                   <td>{result.userMod}</td>
                   <td>{result.rating}</td>
