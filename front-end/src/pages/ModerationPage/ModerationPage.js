@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ModerationPage.css';
 import { db, storage } from '../../config/firebase'; // Update this path if necessary
 import { getDocs, collectionGroup, updateDoc, deleteDoc } from 'firebase/firestore';
+import { deleteObject, ref } from 'firebase/storage';
 
 const ModerationPage = () => {
     const [unverifiedPDFs, setUnverifiedPDFs] = useState([]);
@@ -67,6 +68,13 @@ const ModerationPage = () => {
     const deletePDF = async (pdf) => {
         try {
             await deleteDoc(pdf.ref);
+            try {
+                const storageRef = ref(storage, pdf.file_url); // Create a reference from the URL
+                await deleteObject(storageRef);
+                console.log('File deleted successfully');
+              } catch (error) {
+                console.error('Error deleting file:', error);   
+              }
             setUnverifiedPDFs(unverifiedPDFs.filter((item) => item.id !== pdf.id));
         } catch (err) {
             console.error("Error approving PDF:", err);
