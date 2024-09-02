@@ -52,6 +52,8 @@ function SearchComponent() {
 
       // Redirect to results page with search data
       navigate('/results', { state: { results, searchQuery, selectedSubject } });
+      setSearchQuery("");
+      setSelectedSubject("");
     } catch (error) {
       console.error('Error searching documents:', error);
     }
