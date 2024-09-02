@@ -19,7 +19,7 @@ function MathPage() {
     //making use of use effect sothat it is more dynamic
     useEffect(() => {
         //a collection that will store the overall values of Math_Main
-        const resourceCollectionRef = collection(db, "PDFS", "Math_Main", "math")
+        const resourceCollectionRef = collection(db, "PDFS", "Math_Main", "Math")
 
         const getResources = async () => {
             //reading the resources
@@ -46,7 +46,7 @@ function MathPage() {
         </div>
         <h2 className="section-subtitle">Resources</h2>
         <div className="subject-gallery">
-            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"Math_Main"} CollectionTwo={"math"}/>
+            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"Math_Main"} CollectionTwo={"Math"}/>
         </div>
         </div>
     );

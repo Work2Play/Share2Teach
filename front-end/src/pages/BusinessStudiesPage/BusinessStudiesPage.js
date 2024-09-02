@@ -21,7 +21,7 @@ function BusinessStudiesPage() {
     //making use of use effect sothat it is more dynamic
     useEffect(() => {
         //a collection that will store the overall values of Business_Main
-        const resourceCollectionRef = collection(db, "PDFS", "Business_Main", "business")
+        const resourceCollectionRef = collection(db, "PDFS", "Business_Main", "Business")
 
         const getResources = async () => {
             //reading the resources
@@ -47,7 +47,7 @@ function BusinessStudiesPage() {
         </div>
         <h2 className="section-subtitle">Resources</h2>
         <div className="subject-gallery">
-            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"Business_Main"} CollectionTwo={"business"}/>
+            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"Business_Main"} CollectionTwo={"Business"}/>
         </div>
         </div>
     );

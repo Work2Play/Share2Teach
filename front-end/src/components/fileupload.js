@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'; // useState is to manage the
 import { db, storage } from '../config/firebase'; 
 import { ref, uploadBytesResumable, getDownloadURL, listAll } from 'firebase/storage'; //ref creates a reference to a location in firebase storage, uploadBytesResumable uploads files to firebase storage that also can monitor the upload progress, and listAll lists all the folders within the firebase storage
 import { collection, addDoc, Timestamp } from 'firebase/firestore'; // collection to get a reference to  a firestore collection, addDoc to add a new document to a collcetion in firestore
+import { auth } from '../config/firebase'; //the userID, the person currently signed
 import './fileupload.css';
 
 export function Upload({ isOpen, onClose }) {
@@ -16,6 +17,7 @@ export function Upload({ isOpen, onClose }) {
   // call fetchSubjects function to populate the subjects state with folder names from Storage
   useEffect(() => {
     fetchSubjects();
+    setUserID(auth.currentUser.email)
   }, []);
 
   // fetches subject folders from Storage
@@ -71,7 +73,6 @@ export function Upload({ isOpen, onClose }) {
           });
           alert('File uploaded successfully!');
           setUploadProg(0);
-          setUserID('');
           setSubject('');
           setTitle('');
           setFile(null);
@@ -88,13 +89,7 @@ export function Upload({ isOpen, onClose }) {
   //captures the required fields, a dropdown list to choose the subject, a progress bar is displayed and the uploadHandler function handles the form submission 
   return (
     <form onSubmit={uploadHandler} className="upload-form">
-      <input
-        type="text"
-        placeholder="User ID"
-        value={userID}
-        onChange={(e) => setUserID(e.target.value)}
-        required
-      />
+      <p>{userID}</p>
       <select
         value={subject}
         onChange={(e) => setSubject(e.target.value)}

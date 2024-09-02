@@ -21,7 +21,7 @@ function GeographyPage() {
     //making use of use effect sothat it is more dynamic
     useEffect(() => {
         //a collection that will store the overall values of Geography_Main
-        const resourceCollectionRef = collection(db, "PDFS", "Geography_Main", "geography")
+        const resourceCollectionRef = collection(db, "PDFS", "Geography_Main", "Geography")
 
         const getResources = async () => {
             //reading the resources
@@ -47,7 +47,7 @@ function GeographyPage() {
         </div>
         <h2 className="section-subtitle">Resources</h2>
         <div className="subject-gallery">
-            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"Geography_Main"} CollectionTwo={"geography"}/>
+            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"Geography_Main"} CollectionTwo={"Geography"}/>
         </div>
         </div>
     );

@@ -20,7 +20,7 @@ function HistoryPage() {
     //making use of use effect sothat it is more dynamic
     useEffect(() => {
         //a collection that will store the overall values of History_Main
-        const resourceCollectionRef = collection(db, "PDFS", "History_Main", "history")
+        const resourceCollectionRef = collection(db, "PDFS", "History_Main", "History")
 
         const getResources = async () => {
             //reading the resources
@@ -46,7 +46,7 @@ function HistoryPage() {
         </div>
         <h2 className="section-subtitle">Resources</h2>
         <div className="subject-gallery">
-            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"History_Main"} CollectionTwo={"history"}/>
+            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"History_Main"} CollectionTwo={"History"}/>
         </div>
         </div>
     );

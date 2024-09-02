@@ -20,7 +20,7 @@ function LifeSkillsPage() {
     //making use of use effect sothat it is more dynamic
     useEffect(() => {
         //a collection that will store the overall values of LifeSkills_Main
-        const resourceCollectionRef = collection(db, "PDFS", "LifeSkills_Main", "lifeSkills")
+        const resourceCollectionRef = collection(db, "PDFS", "LifeSkills_Main", "LifeSkills")
 
         const getResources = async () => {
             //reading the resources
@@ -46,7 +46,7 @@ function LifeSkillsPage() {
         </div>
         <h2 className="section-subtitle">Resources</h2>
         <div className="subject-gallery">
-            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"LifeSkills_Main"} CollectionTwo={"lifeSkills"}/>
+            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"LifeSkills_Main"} CollectionTwo={"LifeSkills"}/>
         </div>
         </div>
     );

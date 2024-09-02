@@ -20,7 +20,7 @@ function NaturalSciencePage() {
     //making use of use effect sothat it is more dynamic
     useEffect(() => {
         //a collection that will store the overall values of NaturalScience_Main
-        const resourceCollectionRef = collection(db, "PDFS", "NaturalScience_Main", "naturalScience")
+        const resourceCollectionRef = collection(db, "PDFS", "NaturalScience_Main", "NaturalScience")
 
         const getResources = async () => {
             //reading the resources
@@ -46,7 +46,7 @@ function NaturalSciencePage() {
         </div>
         <h2 className="section-subtitle">Resources</h2>
         <div className="subject-gallery">
-            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"NaturalScience_Main"} CollectionTwo={"naturalScience"}/>
+            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"NaturalScience_Main"} CollectionTwo={"NaturalScience"}/>
         </div>
         </div>
     );
