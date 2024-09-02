@@ -11,7 +11,7 @@ const ModerationPage = () => {
         const fetchData = async () => {
             try {
                 // Fetch documents from subcollections like 'Afrikaans'
-                const pdfQuerySnapshot = await getDocs(collectionGroup(db, "Afrikaans"));
+                const pdfQuerySnapshot = await getDocs(collectionGroup(db, "Afrikaans", "Business", "English", "Geography", "History", "LifeScience", "LifeSkills", "Maths", "NaturalScience", "Technology"));
 
                 const allPDFs = pdfQuerySnapshot.docs.map((doc) => ({
                     ...doc.data(),
