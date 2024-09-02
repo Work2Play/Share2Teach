@@ -2,6 +2,7 @@ import React from 'react';
 
 //importing the rating and report button
 import { RatingReview, DocumentActions } from '../../components/DocActions';
+
 import "./table.css";
 
 export function CreateTable({ resources, collectionOne, mainDoc, CollectionTwo }) { 
@@ -32,8 +33,8 @@ export function CreateTable({ resources, collectionOne, mainDoc, CollectionTwo }
                                     <a href={resource.file_url} target="_blank" rel="noopener noreferrer">{resource.title}</a>
                                 </td>
                             
-                            <td>{resource.dateMod}</td>
-                            <td>{resource.userMod}</td>
+                            <td>{resource.modifiedAt ? resource.modifiedAt.toDate().toLocaleString() : 'N/A'}</td>
+                            <td>{resource.userID}</td>
                             <td><RatingReview rating={displayRating} /></td>
                             <td>
                             <DocumentActions 

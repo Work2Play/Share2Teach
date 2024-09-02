@@ -19,7 +19,7 @@
 }
 
 .resource-table th {
-    background-color: #4CAF50; /* Green background for table headers */
+    background-color: #61dafb; /* Green background for table headers */
     color: rgb(2, 2, 2); /* White text for headers */
     font-weight: bold; /* Bold text for headers */
     text-transform: uppercase; /* Uppercase headers for a modern look */

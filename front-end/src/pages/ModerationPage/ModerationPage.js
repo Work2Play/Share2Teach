@@ -68,6 +68,8 @@ const ModerationPage = () => {
     const deletePDF = async (pdf) => {
         try {
             await deleteDoc(pdf.ref);
+
+            //to delete the file in firebase storage aswell
             try {
                 const storageRef = ref(storage, pdf.file_url); // Create a reference from the URL
                 await deleteObject(storageRef);
@@ -98,6 +100,16 @@ const ModerationPage = () => {
     const deleteReportedPDF = async (pdf) => {
         try {
             await deleteDoc(pdf.ref);
+
+            //to delete the file in firebase storage aswell
+            try {
+                const storageRef = ref(storage, pdf.file_url); // Create a reference from the URL
+                await deleteObject(storageRef);
+                console.log('File deleted successfully');
+              } catch (error) {
+                console.error('Error deleting file:', error);   
+              }
+              
             setReportedPDFs(reportedPDFs.filter((item) => item.id !== pdf.id));
         } catch (err) {
             console.error("Error deleting reported PDF:", err);
@@ -150,6 +162,7 @@ const ModerationPage = () => {
                         <tr>
                             <th>Title</th>
                             <th>Subject</th>
+                            <th>Amount Reported</th>
                             <th>Uploaded By</th>
                             <th>Upload Date</th>
                             <th>Actions</th>
@@ -164,6 +177,7 @@ const ModerationPage = () => {
                                     </a>
                                 </td>
                                 <td>{pdf.subject}</td>
+                                <td>{pdf.reportAmount}</td>
                                 <td>{pdf.userID}</td>
                                 <td>{pdf.modifiedAt ? pdf.modifiedAt.toDate().toLocaleString() : 'N/A'}</td>
                                 <td>

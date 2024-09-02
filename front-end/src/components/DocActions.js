@@ -15,34 +15,36 @@ export function RatingReview({ rating }) {
 
   return (
     <div>
-      {[1, 2, 3, 4, 5].map((star) => {
-        if (star <= fullStars) {
-          // Full star for normal integers
+      {[...Array(5)].map((_, index) => {
+        const starValue = index + 1;
+
+        if (starValue <= fullStars) {
+          // Full star
           return (
-            <span key={star} className='start' style={{ cursor: 'pointer', color: 'gold', fontSize: '35px' }}>
+            <span key={starValue} className="star" style={{ color: 'gold', fontSize: '35px' }}>
               ★
             </span>
           );
-        } else if (star === fullStars + 1) {
-          // Partially filled star sothat it isnt completely filled
+        } else if (starValue === fullStars + 1) {
+          // Partially filled star (handle all decimal values)
           return (
-            <span key={star} className='start' style={{ cursor: 'pointer', fontSize: '35px', position: 'relative' }}>
-              <span style={{ color: 'gold', position: 'absolute', left: 0, top: 0, width: `${(decimalPart - 0.1) * 100}%`, overflow: 'hidden' }}>
+            <span key={starValue} className="star" style={{ fontSize: '35px', position: 'relative' }}>
+              <span style={{ color: 'gold', position: 'absolute', left: 0, top: 0, width: `${decimalPart * 100}%`, overflow: 'hidden' }}>
                 ★
               </span>
-              <span style={{ color: 'gray' }}>★</span> {/* Gray star as background */}
+              <span style={{ color: 'gray' }}>★</span> 
             </span>
           );
         } else {
           // Empty star
           return (
-            <span key={star} className='start' style={{ cursor: 'pointer', color: 'gray', fontSize: '35px' }}>
+            <span key={starValue} className="star" style={{ color: 'gray', fontSize: '35px' }}>
               ★
             </span>
           );
         }
       })}
-      {rating} Stars
+      <span>{rating}</span>
     </div>
   );
 }
@@ -80,28 +82,60 @@ export function DocumentActions({ document, oneCollection, docMain, twoCollectio
     try {
       const popupContent = `
         <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Rate Us</title>
-          <style>
-            /* Add custom styles here */
-          </style>
-        </head>
-        <body>
-          <input type="number" id="ratingInput" min="1" max="5" step="0.5" />
-          <button id="rateButton" class="rateButton">Rate</button> 
-          <script>
-            ${ratingPopUp.toString()} 
-            ratingPopUp(); 
-          </script>
-        </body>
-        </html>
-      `;
+  <html>
+  <head>
+    <title>Rate Us</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+
+      #ratingInput {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 80%;
+        text-align: center;
+      }
+
+      .rateButton {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Rate Document</h2>
+    <input type="number" id="ratingInput" min="1" max="5" step="0.5" />
+    <button id="rateButton" class="rateButton">Rate</button> 
+    <script>
+      ${ratingPopUp.toString()} 
+      ratingPopUp(); 
+    </script>
+  </body>
+  </html>
+`;
 
       const screenWidth = window.screen.width;
       const screenHeight = window.screen.height;
-      const popupWidth = 210;
-      const popupHeight = 210;
+      const popupWidth = 300;
+      const popupHeight = 300;
       const left = (screenWidth - popupWidth) / 2;
       const top = (screenHeight - popupHeight) / 2;
 
