@@ -28,7 +28,10 @@ export function CreateTable({ resources, collectionOne, mainDoc, CollectionTwo }
                     const displayRating = roundToDecimalPlaces(resource.rating, 2);
                     return (
                         <tr key={resource.id}>
-                            <td>{resource.title}</td>
+                                <td>
+                                    <a href={resource.file_url} target="_blank" rel="noopener noreferrer">{resource.title}</a>
+                                </td>
+                            
                             <td>{resource.dateMod}</td>
                             <td>{resource.userMod}</td>
                             <td><RatingReview rating={displayRating} /></td>
