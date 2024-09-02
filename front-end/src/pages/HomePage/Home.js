@@ -16,6 +16,7 @@ function Home() {
             <p>Open Educational Resources</p>
             <button onClick={() => setContriOpen(true)}>Contribute Resources</button>
             <Upload isOpen={contriOpen} onClose={() => setContriOpen(false)} />
+            <Link to="/moderation" className="moderation-link">Go to Moderation</Link> {/* Moderation link */}
         </div>
         <div className="subject-gallery">
             <div className="subject-card">

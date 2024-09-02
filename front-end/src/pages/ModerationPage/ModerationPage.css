@@ -1,0 +1,53 @@
+.moderation-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.moderation-page h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.moderation-page h2 {
+    font-size: 1.5em;
+    margin-top: 30px;
+}
+
+.moderation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.moderation-table th, .moderation-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.moderation-table th {
+    background-color: #f2f2f2;
+}
+
+.approve-button, .reject-button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.approve-button {
+    background-color: #4CAF50; /* Green for approve */
+}
+
+.reject-button {
+    background-color: #f44336; /* Red for delete/reject */
+}
+
+.approve-button:hover, .reject-button:hover {
+    opacity: 0.8;
+}

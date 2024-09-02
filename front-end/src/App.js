@@ -24,14 +24,17 @@ import SearchResultsPage from './pages/SearchPage/SearchResultsPage';
 import RoleAssign from './pages/RoleAssignPage/RoleAssign';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
 import SignInPage from './pages/SignInPage/SignInPage';
-import { AuthContext } from './components/auth';
+import ModerationPage from './pages/ModerationPage/ModerationPage'; // Import Moderation Page
+
+//import { AuthContext } from './components/auth';
+
 
 
 
 // Adding auth for the login and logout button view
 import { Auth } from './components/auth';
 import CCImage from './Images/CC.png';
-import { Upload } from './components/fileupload';
+//import { Upload } from './components/fileupload';
 
 
 
@@ -69,11 +72,10 @@ function App() {
 
   return (
     <Router>
-      <ScrollToTop /> {/* Add ScrollToTop here */}
+      <ScrollToTop />
       <div className="App">
         <header className="App-header">
           <div className="header-left">
-            {/* Menu button to toggle the dropdown menu */}
             <button className="menu-button" onClick={toggleMenu}>
               Menu
             </button>
@@ -104,21 +106,25 @@ function App() {
                 </ul>
               </nav>
             )}
+            {/* Title of the website with a link to home */}
+            <Link to="/" className="logo-title">Share2Teach</Link>
           </div>
           
-          {/* Title of the website */}
-          <h1 className="logo-title">Share2Teach</h1>
+
 
           <div className="header-right">
-            
-              <div className="header-center">
-                <SearchComponent />
-              </div>
-            <button onClick={() => setFaqOpen(true)} className="faq-button">FAQ</button>
-            
+            <div className="header-center">
+            <Link to="/moderation" className="moderation-button">Moderation</Link> {/* Moderation button link */}
+              
+            </div>
+
+            <SearchComponent />
+              <button onClick={() => setFaqOpen(true)} className="faq-button">FAQ</button>
             <Auth />
           </div>
         </header>
+
+
         <main className="main-content">
           <Routes>
             {/* Define routes for the different pages */}
@@ -142,6 +148,7 @@ function App() {
             <Route path="/role-assign" element={<RoleAssign />} />
             <Route path="/sign-up" element={<SignUpPage />} />
             <Route path="/sign-in" element={<SignInPage />} />
+            <Route path="/moderation" element={<ModerationPage />} /> {/* Moderation page route */}
             {/* Add more routes for other subjects here */}
           </Routes>
           <FAQPage isOpen={faqOpen} onClose={() => setFaqOpen(false)} />

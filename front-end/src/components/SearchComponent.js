@@ -1,29 +1,28 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
+import './SearchComponent.css';
 
-const SearchComponent = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate();
+function SearchComponent() {
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Navigate to search results page with the search term
-    navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
-    setSearchTerm(''); // Clear the search term after navigating
+    if (searchQuery.trim() === "") return; // Prevent empty searches
+    console.log("Search for:", searchQuery); // Placeholder logic for search
   };
 
   return (
-    <form onSubmit={handleSearch} className="search-form">
+    <form className="search-form" onSubmit={handleSearch}>
       <input
         type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search..."
         className="search-input"
+        placeholder="Search..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
-      <button type="submit" className="search-button">Search</button>
+      <button type="submit" className="search-button">Search</button> {/* Moved inline with input */}
     </form>
   );
-};
+}
 
 export default SearchComponent;

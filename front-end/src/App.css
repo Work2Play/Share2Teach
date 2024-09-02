@@ -7,12 +7,15 @@
 
 html, body {
   margin: 0;
-  padding: 0;     
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4; /* Light background for better readability */
 }
+
 /* Center-align the text within the App component */
 .App {
   text-align: center;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -35,82 +38,80 @@ html, body {
 .header-left {
   display: flex;
   align-items: center;
-  justify-content: left;
 }
 
 /* Style for the right side of the header, containing the login button */
 .header-right {
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: space-between;
+  width: 50%;
 }
 
 .header-center {
   display: flex;
+  align-items: center;
   justify-content: center;
-  flex-grow: 1; /* This allows the center to grow and push content to the sides */
+  gap: 10px; /* Space between elements like the FAQ button and search bar */
+  flex-grow: 1;
 }
 
 /* Style for the logo/title of the website */
 .logo-title {
   font-size: 1.5em;
   font-weight: bold;
-  margin: 0;
-  color: rgb(255, 255, 255);
-  margin-right: auto; /* Push the login button to the left */
+  color: white;
+  text-decoration: none;
+  margin: 0 auto;
+  cursor: pointer;
 }
 
-/* Style for the menu button */
-.menu-button {
-  background-color: #61dafb; /* Light blue background */
-  color: white; /* White text */
-  border: none; /* No border */
-  padding: 10px 20px; /* Padding for the button */
-  font-size: 16px; /* Font size */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effects */
-  margin-right: 10px; /* Add some spacing between elements */
+/* Button styles for consistency across menu, FAQ, moderation, etc. */
+button, .menu-button, .faq-button, .moderation-button {
+  background-color: #61dafb;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin: 0 10px;
 }
 
-.menu-button:hover {
-  background-color: #21a1f1; /* Darker blue on hover */
-  transform: scale(1.05); /* Slightly increase size on hover */
+button:hover, .menu-button:hover, .faq-button:hover, .moderation-button:hover {
+  background-color: #21a1f1;
+  transform: scale(1.05);
 }
 
-.menu-button:focus {
-  outline: none; /* Remove the default outline on focus */
-  box-shadow: 0 0 5px rgba(33, 161, 241, 0.5); /* Add a subtle shadow when focused */
+button:focus, .menu-button:focus, .faq-button:focus, .moderation-button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(33, 161, 241, 0.5);
 }
+
 
 /* Style for the dropdown menu */
 .dropdown-menu {
   position: absolute;
-  top: 60px; /* Adjust according to your header height */
+  top: 60px;
   left: 10px;
   background-color: #282c34;
   border: 1px solid #61dafb;
   border-radius: 5px;
   width: 200px;
-  max-height: 300px; /* Limit height for scroll */
-  overflow-y: auto; /* Enable vertical scroll */
+  max-height: 300px;
+  overflow-y: auto;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }
 
-/* Remove default list styling for navigation links */
+/* Style for the links in the dropdown menu */
 .nav-links {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* Style for each list item in the navigation */
-.nav-links li {
-  margin: 0;
-}
-
-/* Style for the links in the navigation */
 .nav-links a {
   display: block;
   padding: 1em;
@@ -120,20 +121,14 @@ html, body {
   border-bottom: 1px solid #61dafb;
 }
 
-.container {
-  max-width: 100%; /* Prevents overflowing horizontally */
-  width: auto; /* Allows the width to be flexible */
-}
-
-/* Change the background color of the navigation links on hover */
 .nav-links a:hover {
   background-color: #21a1f1;
 }
 
-/* Add padding to the top of the main content to account for the fixed header */
+/* Style for the main content area */
 .main-content {
-  padding-top: 80px; /* Adjust according to your header height */
-  z-index: 1; /* Ensure content appears above the scrollbar */
+  padding-top: 80px; /* Adjust for fixed header */
+  flex-grow: 1;
 }
 
 /* Style for the hero image section */
@@ -147,22 +142,19 @@ html, body {
   align-items: center;
   justify-content: center;
   color: white;
-  margin-top: 80px; /* to account for the fixed header */
+  margin-top: 80px;
 }
 
-/* Style for the main heading in the hero image */
 .hero-image h1 {
   font-size: 4em;
   margin: 0;
 }
 
-/* Style for the paragraph in the hero image */
 .hero-image p {
   font-size: 1.5em;
   margin: 0.5em 0;
 }
 
-/* Style for the button in the hero image */
 .hero-image button {
   padding: 1em 2em;
   font-size: 1em;
@@ -173,58 +165,39 @@ html, body {
   margin-top: 1em;
 }
 
-/* Change the background color of the button in the hero image on hover */
 .hero-image button:hover {
   background-color: #21a1f1;
 }
 
-.faq-button {
-  background-color: #61dafb; /* Light blue background */
-  color: white; /* White text */
-  border: none; /* No border */
-  padding: 10px 20px; /* Padding for the button */
-  font-size: 16px; /* Font size */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effects */
-  margin-left: 10px; /* Add some spacing between elements */
-}
-
-.faq-button:hover {
-  background-color: #21a1f1; /* Darker blue on hover */
-  transform: scale(1.05); /* Slightly increase size on hover */
-}
-
-.faq-button:focus {
-  outline: none; /* Remove the default outline on focus */
-  box-shadow: 0 0 5px rgba(33, 161, 241, 0.5); /* Add a subtle shadow when focused */
-}
-
-/* Style for the footer */
+/* Footer styles */
 .footer {
   background-color: #282c34;
   color: white;
   padding: 1em;
-  position: relative;
-  bottom: 0;
   width: 100%;
 }
 
-/* Style for the content within the footer */
 .footer-content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Style for the disclaimer and reference text in the footer */
 .disclaimer,
 .reference {
   max-width: 800px;
   text-align: left;
 }
 
-/* Style for the subject gallery */
+.cc-image {
+  display: block;
+  margin: 0 auto;
+  max-width: 300px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Subject gallery styling */
 .subject-gallery {
   display: flex;
   flex-wrap: wrap;
@@ -233,7 +206,6 @@ html, body {
   margin-top: 20px;
 }
 
-/* Style for each subject card in the gallery */
 .subject-card {
   display: flex;
   flex-direction: column;
@@ -244,8 +216,6 @@ html, body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-
-/* Style for the links in each subject card */
 .subject-card a {
   margin-top: 10px;
   font-size: 1.2em;
@@ -254,88 +224,11 @@ html, body {
   font-weight: bold;
 }
 
-/* Change the color of the links in each subject card on hover */
 .subject-card a:hover {
   color: #61dafb;
 }
 
-.cc-image {
-  display: block;
-  margin: 0 auto;
-  max-width: 300px;
-  height: auto;
-  margin-bottom: 20px;
-}
-/* Style the search bar and button */
-/* Search form container */
-.search-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f1f1f1;
-  border-radius: 25px;
-  padding: 5px 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-  transition: box-shadow 0.3s ease-in-out;
-  width: 100%; /* Ensure the search form takes full width */
-  max-width: 400px; /* Set a max-width for the search bar */
-}
-
-.search-form:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Search input */
-.search-input {
-  border: none;
-  background: none;
-  padding: 10px;
-  outline: none;
-  font-size: 16px;
-  flex-grow: 1;
-  border-radius: 25px;
-  color: #333;
-}
-
-.search-input::placeholder {
-  color: #888;
-}
-
-/* Search button */
-.search-button {
-  background-color: #61dafb;
-  border: none;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.search-button:hover {
-  background-color: #21a1f1;
-}
-
-.search-button:focus {
-  outline: none;
-  box-shadow: 0 0 5px #61dafb;
-}
-
-
-.search-results {
-  padding: 20px;
-}
-
-.search-results ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.search-results li {
-  margin-bottom: 10px;
-}
-
-/* Custom Scrollbar for WebKit Browsers */
+/* Custom scrollbar styles */
 body::-webkit-scrollbar {
   width: 12px;
 }
@@ -354,7 +247,6 @@ body::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
 
-/* Custom Scrollbar for Firefox */
 body {
   scrollbar-width: thin;
   scrollbar-color: #888 #f1f1f1;

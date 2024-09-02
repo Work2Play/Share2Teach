@@ -20,7 +20,7 @@ function AfrikaansPage() {
     //making use of use effect sothat it is more dynamic
     useEffect(() => {
         //a collection that will store the overall values of Afrikaans_Main
-        const resourceCollectionRef = collection(db, "PDFS", "Afrikaans_Main", "afrikaans")
+        const resourceCollectionRef = collection(db, "PDFS", "Afrikaans_Main", "Afrikaans")
 
         const getResources = async () => {
             //reading the resources
@@ -46,7 +46,7 @@ function AfrikaansPage() {
         </div>
         <h2 className="section-subtitle">Resources</h2>
         <div className="subject-gallery">
-            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"Afrikaans_Main"} CollectionTwo={"afrikaans"}/>
+            <CreateTable resources={resources} collectionOne={"PDFS"} mainDoc={"Afrikaans_Main"} CollectionTwo={"Afrikaans"}/>
         </div>
         </div>
     );
