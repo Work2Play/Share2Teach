@@ -17,7 +17,13 @@ export function Upload({ isOpen, onClose }) {
   // call fetchSubjects function to populate the subjects state with folder names from Storage
   useEffect(() => {
     fetchSubjects();
-    setUserID(auth.currentUser.email)
+    if (auth.currentUser.email == null)
+    {
+      setUserID("Default")
+    } else
+    {
+      setUserID(auth.currentUser.email)
+    }
   }, []);
 
   // fetches subject folders from Storage

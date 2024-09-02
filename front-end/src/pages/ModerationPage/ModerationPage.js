@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './ModerationPage.css';
-import { db } from '../../config/firebase'; // Update this path if necessary
+import { db, storage } from '../../config/firebase'; // Update this path if necessary
 import { getDocs, collectionGroup, updateDoc, deleteDoc } from 'firebase/firestore';
 
 const ModerationPage = () => {
@@ -11,7 +11,6 @@ const ModerationPage = () => {
         const fetchData = async () => {
             try {
                 // Fetch documents from subcollections like 'Afrikaans'
-
                 const collectionsToQuery = [collectionGroup(db, "Afrikaans"), 
                     collectionGroup(db, "Business"), 
                     collectionGroup(db, "English"), 
@@ -65,6 +64,15 @@ const ModerationPage = () => {
         }
     };
 
+    const deletePDF = async (pdf) => {
+        try {
+            await deleteDoc(pdf.ref);
+            setUnverifiedPDFs(unverifiedPDFs.filter((item) => item.id !== pdf.id));
+        } catch (err) {
+            console.error("Error approving PDF:", err);
+        }
+    };
+
     // Approve reported PDF and reset reportAmount to 0
     const approveReportedPDF = async (pdf) => {
         try {
@@ -98,6 +106,7 @@ const ModerationPage = () => {
                     <thead>
                         <tr>
                             <th>Title</th>
+                            <th>Subject</th>
                             <th>Uploaded By</th>
                             <th>Upload Date</th>
                             <th>Actions</th>
@@ -111,10 +120,12 @@ const ModerationPage = () => {
                                         {pdf.title}
                                     </a>
                                 </td>
+                                <td>{pdf.subject}</td>
                                 <td>{pdf.userID}</td>
                                 <td>{pdf.modifiedAt ? pdf.modifiedAt.toDate().toLocaleString() : 'N/A'}</td>
                                 <td>
                                     <button className="approve-button" onClick={() => approvePDF(pdf)}>Approve</button>
+                                    <button className="reject-button" onClick={() => deletePDF(pdf)}>Delete</button>
                                 </td>
                             </tr>
                         ))}
@@ -130,6 +141,7 @@ const ModerationPage = () => {
                     <thead>
                         <tr>
                             <th>Title</th>
+                            <th>Subject</th>
                             <th>Uploaded By</th>
                             <th>Upload Date</th>
                             <th>Actions</th>
@@ -143,6 +155,7 @@ const ModerationPage = () => {
                                         {pdf.title}
                                     </a>
                                 </td>
+                                <td>{pdf.subject}</td>
                                 <td>{pdf.userID}</td>
                                 <td>{pdf.modifiedAt ? pdf.modifiedAt.toDate().toLocaleString() : 'N/A'}</td>
                                 <td>
