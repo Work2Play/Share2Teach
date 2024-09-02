@@ -1,33 +1,81 @@
-// Import necessary modules
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // For programmatic navigation
+import React, { useState, useEffect } from 'react';
+import { db } from '../config/firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 import './SearchComponent.css';
-
-const SearchComponent = () => {
-  const [searchTerm, setSearchTerm] = useState(''); // State to store the search input
-  const navigate = useNavigate(); // Hook to navigate programmatically
-
-  // Function to handle form submission
-  const handleSearch = (event) => {
-    event.preventDefault(); // Prevent default form submission
-    if (searchTerm.trim()) {
-      navigate(`/search?query=${encodeURIComponent(searchTerm)}`); // Navigate to SearchResultsPage with the search term as a query parameter
-      setSearchTerm(''); // Clear the search input
+function SearchComponent() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const navigate = useNavigate();
+  useEffect(() => {
+    fetchSubjects();
+  }, []);
+  const fetchSubjects = async () => {
+    try {
+      const subjectsCollection = collection(db, 'PDFS');
+      const subjectsSnapshot = await getDocs(subjectsCollection);
+      const subjectsList = subjectsSnapshot.docs.map(doc => doc.id.replace('_Main', ''));
+      setSubjects(subjectsList);
+    } catch (error) {
+      console.error('Error fetching subjects:', error);
     }
   };
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (searchQuery.trim() === "") return; // Prevent empty searches
+    try {
+      let results = [];
+      if (selectedSubject) {
+        const q = query(
+          collection(db, `PDFS/${selectedSubject}_Main/${selectedSubject}`),
+          where('tags', 'array-contains', searchQuery)
+        );
+        const querySnapshot = await getDocs(q);
+        results = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      } else {
+        // Search across all subjects
+        for (const subject of subjects) {
+          const subjectQuery = query(
+            collection(db, `PDFS/${subject}_Main/${subject}`),
+            where('tags', 'array-contains', searchQuery)
+          );
+          const subjectSnapshot = await getDocs(subjectQuery);
+          results.push(...subjectSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        }
+      }
 
+      // Redirect to results page with search data
+      navigate('/results', { state: { results, searchQuery, selectedSubject } });
+      setSearchQuery("");
+      setSelectedSubject("");
+    } catch (error) {
+      console.error('Error searching documents:', error);
+    }
+  };
   return (
-    <form className="search-form" onSubmit={handleSearch}>
-      <input
-        type="text"
-        className="search-input"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)} // Update state with input value
-      />
-      <button type="submit" className="search-button">Search</button>
-    </form>
+    <div className="search-container">
+      <form className="search-form" onSubmit={handleSearch}>
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Search by tag..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <select
+          className="subject-select"
+          value={selectedSubject}
+          onChange={(e) => setSelectedSubject(e.target.value)}
+        >
+          <option value="">All Subjects</option>
+          {subjects.map((subject) => (
+            <option key={subject} value={subject}>{subject}</option>
+          ))}
+        </select>
+        <button type="submit" className="search-button">Search</button>
+      </form>
+    </div>
   );
-};
-
+}
 export default SearchComponent;

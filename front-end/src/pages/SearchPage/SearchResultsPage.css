@@ -5,48 +5,69 @@
     min-height: 100vh;
     }
     
+/* Header for search results */
 .search-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-    
-.search-term {
-        font-size: 1.2em;
-        color: #555;
-        text-align: right;
-    }
-    
-.results-container {
-        background: white;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    
-.results-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-    }
-    
-.results-table th,
-    .results-table td {
-        padding: 12px 15px;
-        border: 1px solid #ddd;
-        text-align: left;
-    }
-    
-.results-table th {
-        background-color: #f4f4f4;
-        font-weight: bold;
-    }
-    
-.results-table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-    
-.results-table tr:hover {
-        background-color: #f1f1f1;
-    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  /* Style for the search term display */
+  .search-term {
+    font-size: 1.2em;
+    color: #555;
+    text-align: right;
+  }
+
+  /* Container for results */
+  .results-container {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  /* List of search results */
+  .results-list {
+    margin-top: 20px;
+  }
+
+  /* Individual result items */
+  .result-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  /* Table for displaying results in tabular format */
+  .results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+
+  /* Table header and data cells */
+  .results-table th,
+  .results-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  /* Table header styling */
+  .results-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+
+  /* Zebra striping for table rows */
+  .results-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  /* Hover effect for table rows */
+  .results-table tr:hover {
+    background-color: #f1f1f1;
+  }
