@@ -43,6 +43,7 @@ html, body {
 /* Style for the right side of the header, containing the login button */
 .header-right {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   width: 50%;
@@ -50,6 +51,7 @@ html, body {
 
 .header-center {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 10px; /* Space between elements like the FAQ button and search bar */
@@ -129,6 +131,7 @@ button:focus, .menu-button:focus, .faq-button:focus, .moderation-button:focus {
 .main-content {
   padding-top: 80px; /* Adjust for fixed header */
   flex-grow: 1;
+  margin-bottom: 200px;
 }
 
 /* Style for the hero image section */

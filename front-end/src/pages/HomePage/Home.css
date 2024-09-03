@@ -1,5 +1,6 @@
 .home-page {
     text-align: center;
+    margin-top: auto;
 }
 
 .hero-image {
@@ -12,7 +13,8 @@
     align-items: center;
     justify-content: center;
     color: rgb(0, 0, 0);
-    margin-top: 80px; /* to account for the fixed header */
+    margin-top: 180px; /* to account for the fixed header */
+    margin-bottom: 100px;
 }
 
 .hero-image h1 {
