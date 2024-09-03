@@ -45,7 +45,12 @@
     gap: 20px;
     justify-items: center;
     margin-top: 20px;
-    height: 750px; /* Set a height if needed */
+    height: 510px; /* Set a height if needed */
+}
+
+.subject-gallery:last-child {
+    grid-column: span 2;
+    justify-self: center;
 }
 
 .subject-card {
