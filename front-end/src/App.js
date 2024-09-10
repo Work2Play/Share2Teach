@@ -1,35 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Home from './Home';
-import MathPage from './MathPage';
-import BusinessStudiesPage from './BusinessStudiesPage';
-import HistoryPage from './HistoryPage';
-import GeographyPage from './GeographyPage';
-import NaturalSciencePage from './NaturalSciencePage';
-import LifeSciencePage from './LifeSciencePage';
-import EnglishPage from './EnglishPage';
-import TechnologyPage from './TechnologyPage';
-import AfrikaansPage from './AfrikaansPage';
-import LifeSkillsPage from './LifeSkillsPage';
-import ComputerSciencePage from './ComputerSciencePage';
-import OtherOERsPage from './OtherOERsPage';
-import SelfDirectedLearningPage from './SelfDirectedLearningPage';
-import ContributorsPage from './ContributorsPage';
-import AboutUsPage from './AboutUsPage';
+import { BrowserRouter as Router, Route, Routes, Link,} from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop'; // Import ScrollToTop component
+import Home from './pages/HomePage/Home';
+import MathPage from './pages/MathPage/MathPage';
+import BusinessStudiesPage from './pages/BusinessStudiesPage/BusinessStudiesPage';
+import HistoryPage from './pages/HistoryPage/HistoryPage';
+import GeographyPage from './pages/GeographyPage/GeographyPage';
+import NaturalSciencePage from './pages/NaturalSciencePage/NaturalSciencePage';
+import LifeSciencePage from './pages/LifeSciencePage/LifeSciencePage';
+import EnglishPage from './pages/EnglishPage/EnglishPage';
+import TechnologyPage from './pages/TechnologyPage/TechnologyPage';
+import AfrikaansPage from './pages/AfrikaansPage/AfrikaansPage';
+import LifeSkillsPage from './pages/LifeSkillsPage/LifeSkillsPage';
+import ComputerSciencePage from './pages/ComputerSciencePage/ComputerSciencePage';
+import OtherOERsPage from './pages/OtherOERsPage/OtherOERsPage';
+import SelfDirectedLearningPage from './pages/SelfDirectedLearningPage/SelfDirectedLearningPage';
+import ContributorsPage from './pages/ContributorsPage/ContributorsPage';
+import AboutUsPage from './pages/AboutUsPage/AboutUsPage';
+import FAQPage from './FAQPage';
+import SearchComponent from './components/SearchComponent';
+import SearchResultsPage from './pages/SearchPage/SearchResultsPage';
+import RoleAssign from './pages/RoleAssignPage/RoleAssign';
+import SignUpPage from './pages/SignUpPage/SignUpPage';
+import SignInPage from './pages/SignInPage/SignInPage';
+import ModerationPage from './pages/ModerationPage/ModerationPage'; // Import Moderation Page
+
+//import { AuthContext } from './components/auth';
+
+
+
 
 // Adding auth for the login and logout button view
 import { Auth } from './components/auth';
 import CCImage from './Images/CC.png';
+//import { Upload } from './components/fileupload';
+
+
 
 function App() {
   // State to manage the visibility of the menu
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovering, setHovering] = useState(false);
+  const [faqOpen, setFaqOpen] = useState(false);
 
   // Toggle the menu visibility
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+
+    
   };
 
   // Handle mouse enter event to keep the menu open
@@ -50,12 +69,13 @@ function App() {
     }
   }, [hovering]);
 
+
   return (
     <Router>
+      <ScrollToTop />
       <div className="App">
         <header className="App-header">
           <div className="header-left">
-            {/* Menu button to toggle the dropdown menu */}
             <button className="menu-button" onClick={toggleMenu}>
               Menu
             </button>
@@ -82,17 +102,29 @@ function App() {
                   <li><Link to="/self-directed-learning" onClick={() => setMenuOpen(false)}>Self-Directed Learning</Link></li>
                   <li><Link to="/contributors" onClick={() => setMenuOpen(false)}>Contributors</Link></li>
                   <li><Link to="/about-us" onClick={() => setMenuOpen(false)}>About Us</Link></li>
+                    <li><Link to="/role-assign" onClick={() => setMenuOpen(false)}>Role Assign</Link></li>
                 </ul>
               </nav>
             )}
+            {/* Title of the website with a link to home */}
+            <Link to="/" className="logo-title">Share2Teach</Link>
           </div>
-          {/* Title of the website */}
-          <h1 className="logo-title">Share2Teach</h1>
+          
+
+
           <div className="header-right">
-            {/* Applying the auth stuff here */}
+            <div className="header-center">
+            <Link to="/moderation" className="moderation-button">Moderation</Link> {/* Moderation button link */}
+              
+            </div>
+
+            <SearchComponent />
+              <button onClick={() => setFaqOpen(true)} className="faq-button">FAQ</button>
             <Auth />
           </div>
         </header>
+
+
         <main className="main-content">
           <Routes>
             {/* Define routes for the different pages */}
@@ -112,8 +144,14 @@ function App() {
             <Route path="/self-directed-learning" element={<SelfDirectedLearningPage />} />
             <Route path="/contributors" element={<ContributorsPage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
+            <Route path="/search" element={<SearchResultsPage />} />
+            <Route path="/role-assign" element={<RoleAssign />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="/sign-in" element={<SignInPage />} />
+            <Route path="/moderation" element={<ModerationPage />} /> {/* Moderation page route */}
             {/* Add more routes for other subjects here */}
           </Routes>
+          <FAQPage isOpen={faqOpen} onClose={() => setFaqOpen(false)} />
           <footer className="footer">
             <div className="footer-content">
               <img src={CCImage} alt="Creative Commons License" className="cc-image" />

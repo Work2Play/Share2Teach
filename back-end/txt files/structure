@@ -1,0 +1,10 @@
+backend/
+├── firebase.js
+├── userManagement.js
+├── dataManagement.js
+├── securityRules.js
+├── cloudFunctions/
+│   ├── http.js
+│   ├── firestore.js
+│   └── auth.js
+└── server.js

@@ -1,0 +1,52 @@
+.theTable {
+    margin-top: 20px;
+    padding: 20px; /* Added padding for spacing around the table */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background-color: #ffffff; /* White background for contrast */
+}
+
+.resource-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden; /* Prevent overflow of table content */
+}
+
+.resource-table th, .resource-table td {
+    border: 1px solid #ffffff;
+    padding: 12px; /* Increased padding for better readability */
+    text-align: left; /* Align text to the left for better structure */
+}
+
+.resource-table th {
+    background-color: #61dafb; /* Green background for table headers */
+    color: rgb(2, 2, 2); /* White text for headers */
+    font-weight: bold; /* Bold text for headers */
+    text-transform: uppercase; /* Uppercase headers for a modern look */
+}
+
+.resource-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light grey background for even rows */
+}
+
+.resource-table tr:hover {
+    background-color: #f1f1f1; /* Slightly darker background on hover */
+}
+
+.resource-table a {
+    color: #007BFF; /* Blue color for links */
+    text-decoration: none; /* No underline on links */
+}
+
+.resource-table a:hover {
+    text-decoration: underline; /* Underline links on hover */
+}
+
+.resource-table td {
+    vertical-align: middle; /* Center-align content vertically */
+}
+
+.resource-table .actions {
+    display: flex;
+    gap: 10px; /* Space between action buttons */
+}

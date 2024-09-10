@@ -1,0 +1,39 @@
+.star {
+    display: inline-block;
+    font-size: 30px; 
+    position: relative; /* Add relative positioning to the star container */
+}
+
+.star span {
+    cursor: pointer;
+}
+
+.star .full-star {
+    color: gold;
+}
+
+.star .empty-star {
+    color: lightgray;
+}
+
+.star .half-star .gold-star {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+}
+
+.RateButton {
+    padding: 1em 2em;
+    font-size: 1em;
+    border: none;
+    background-color: #61dafb;
+    color: white;
+    cursor: pointer;
+    margin-top: 1em;
+}
+
+.ReportButton:hover {
+    background-color: #21a1f1;
+}

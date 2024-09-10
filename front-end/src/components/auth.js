@@ -1,53 +1,67 @@
-//all related to login and logout button
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { auth } from "../config/firebase";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
-import { auth, googleProvider } from "../config/firebase"
-import { signInWithPopup, signOut } from "firebase/auth";
-
-//importing the .css
+// Importing the CSS file
 import './auth.css';
 
 export const Auth = () => {
-    //gets the user that is currently logged in
-    const [logedIn, setLoggedIn] = useState("");
+    // State to track login status and user email
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [userEmail, setUserEmail] = useState("");
 
-    //variables to hide or show the buttons and loggedin text
-    const [showLogin, setLogin] = useState(true);
-    const [showLogout, setLogOut] = useState(false);
+    const navigate = useNavigate();
 
-    //creates a popup window for user to sign in with their google account
-    const signInWithGoogle = async () => {
+    // Logout method
+    const handleLogout = async () => {
         try {
-            await signInWithPopup(auth, googleProvider)
-            setLoggedIn(auth.currentUser.email)
-            setLogin(false)
-            setLogOut(true)
-        } catch (err)
-        {
-            console.error(err);
+            await signOut(auth);
+            setLoggedIn(false);
+            setUserEmail("");
+            console.log("User logged out.");
+            navigate("/"); // Redirect to home page after logout
+        } catch (err) {
+            console.error("Logout error:", err);
         }
-    }
+    };
 
-    //created a button for user to logout from current account
-    const logout = async () => {
-        try {
-            await signOut(auth)
-            setLoggedIn()
-            setLogin(true)
-            setLogOut(false)
-        } catch (err)
-        {
-            console.error(err);
-        }
-    }
+    // Handle the initial login button click to redirect to sign-in page
+    const handleLoginClick = () => {
+        navigate("/sign-in"); // Redirect to the sign-in page
+    };
 
-    //creating basic display for the buttons
+    // Check if the user is already logged in
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                setLoggedIn(true);
+                setUserEmail(user.email);
+            } else {
+                setLoggedIn(false);
+                setUserEmail("");
+            }
+        });
+
+        return () => unsubscribe(); // Clean up the listener on unmount
+    }, []);
+
     return (
-        <div>
-            {showLogin && <button className="login-button" onClick={signInWithGoogle}>Login</button>}
-            {showLogout && <p className="userLoged">{logedIn}</p>}
-            {showLogout && <button className="logout-button" onClick={logout}>Logout</button>}
+        <div className="your-component-container">
+            {loggedIn ? (
+                <div className="logged-in-section">
+                    <p>Signed in as {userEmail}</p>
+                    <button className="logout-button" onClick={handleLogout}>
+                        Logout
+                    </button>
+                </div>
+            ) : (
+                <button className="login-button" onClick={handleLoginClick}>
+                    Login
+                </button>
+            )}
         </div>
-        
-    )
-}
+    );
+};
+
+export default Auth;

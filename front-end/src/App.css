@@ -1,6 +1,23 @@
+/* Global box-sizing rule */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4; /* Light background for better readability */
+}
+
 /* Center-align the text within the App component */
 .App {
   text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Style for the header of the app */
@@ -26,61 +43,77 @@
 /* Style for the right side of the header, containing the login button */
 .header-right {
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.header-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Space between elements like the FAQ button and search bar */
+  flex-grow: 1;
 }
 
 /* Style for the logo/title of the website */
 .logo-title {
   font-size: 1.5em;
   font-weight: bold;
-  margin: 0;
-  margin-right: auto; /* Push the login button to the left */
+  color: white;
+  text-decoration: none;
+  margin: 0 auto;
+  cursor: pointer;
 }
 
-/* Style for the menu button */
-.menu-button {
+/* Button styles for consistency across menu, FAQ, moderation, etc. */
+button, .menu-button, .faq-button, .moderation-button {
   background-color: #61dafb;
   color: white;
   border: none;
-  padding: 1em;
-  font-size: 1em;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
   cursor: pointer;
-  margin-right: 20px; /* Add some margin to separate from the title */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin: 0 10px;
 }
 
-/* Change the background color of the menu button on hover */
-.menu-button:hover {
+button:hover, .menu-button:hover, .faq-button:hover, .moderation-button:hover {
   background-color: #21a1f1;
+  transform: scale(1.05);
 }
+
+button:focus, .menu-button:focus, .faq-button:focus, .moderation-button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(33, 161, 241, 0.5);
+}
+
 
 /* Style for the dropdown menu */
 .dropdown-menu {
   position: absolute;
-  top: 60px; /* Adjust according to your header height */
+  top: 60px;
   left: 10px;
   background-color: #282c34;
   border: 1px solid #61dafb;
   border-radius: 5px;
   width: 200px;
-  max-height: 300px; /* Limit height for scroll */
-  overflow-y: auto; /* Enable vertical scroll */
+  max-height: 300px;
+  overflow-y: auto;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }
 
-/* Remove default list styling for navigation links */
+/* Style for the links in the dropdown menu */
 .nav-links {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* Style for each list item in the navigation */
-.nav-links li {
-  margin: 0;
-}
-
-/* Style for the links in the navigation */
 .nav-links a {
   display: block;
   padding: 1em;
@@ -90,42 +123,15 @@
   border-bottom: 1px solid #61dafb;
 }
 
-/* Change the background color of the navigation links on hover */
 .nav-links a:hover {
   background-color: #21a1f1;
 }
 
-/* Add padding to the top of the main content to account for the fixed header */
+/* Style for the main content area */
 .main-content {
-  padding-top: 100px; /* Adjust this value based on the height of your header */
-}
-
-/* Style for the search bar container */
-.search-bar {
-  display: flex;
-  margin-top: 1em;
-}
-
-/* Style for the search input */
-.search-bar input {
-  padding: 0.5em;
-  font-size: 1em;
-}
-
-/* Style for the search button */
-.search-bar button {
-  padding: 0.5em 1em;
-  font-size: 1em;
-  border: none;
-  background-color: #61dafb;
-  color: white;
-  cursor: pointer;
-  margin-left: 0.5em;
-}
-
-/* Change the background color of the search button on hover */
-.search-bar button:hover {
-  background-color: #21a1f1;
+  padding-top: 80px; /* Adjust for fixed header */
+  flex-grow: 1;
+  margin-bottom: 200px;
 }
 
 /* Style for the hero image section */
@@ -139,22 +145,19 @@
   align-items: center;
   justify-content: center;
   color: white;
-  margin-top: 80px; /* to account for the fixed header */
+  margin-top: 80px;
 }
 
-/* Style for the main heading in the hero image */
 .hero-image h1 {
   font-size: 4em;
   margin: 0;
 }
 
-/* Style for the paragraph in the hero image */
 .hero-image p {
   font-size: 1.5em;
   margin: 0.5em 0;
 }
 
-/* Style for the button in the hero image */
 .hero-image button {
   padding: 1em 2em;
   font-size: 1em;
@@ -165,36 +168,39 @@
   margin-top: 1em;
 }
 
-/* Change the background color of the button in the hero image on hover */
 .hero-image button:hover {
   background-color: #21a1f1;
 }
 
-/* Style for the footer */
+/* Footer styles */
 .footer {
   background-color: #282c34;
   color: white;
   padding: 1em;
-  position: relative;
-  bottom: 0;
   width: 100%;
 }
 
-/* Style for the content within the footer */
 .footer-content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Style for the disclaimer and reference text in the footer */
 .disclaimer,
 .reference {
   max-width: 800px;
   text-align: left;
 }
 
-/* Style for the subject gallery */
+.cc-image {
+  display: block;
+  margin: 0 auto;
+  max-width: 300px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Subject gallery styling */
 .subject-gallery {
   display: flex;
   flex-wrap: wrap;
@@ -203,7 +209,6 @@
   margin-top: 20px;
 }
 
-/* Style for each subject card in the gallery */
 .subject-card {
   display: flex;
   flex-direction: column;
@@ -214,7 +219,6 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Style for the links in each subject card */
 .subject-card a {
   margin-top: 10px;
   font-size: 1.2em;
@@ -223,15 +227,30 @@
   font-weight: bold;
 }
 
-/* Change the color of the links in each subject card on hover */
 .subject-card a:hover {
   color: #61dafb;
 }
 
-.cc-image {
-  display: block;
-  margin: 0 auto;
-  max-width: 300px;
-  height: auto;
-  margin-bottom: 20px;
+/* Custom scrollbar styles */
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
 }
