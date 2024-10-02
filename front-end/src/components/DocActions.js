@@ -180,7 +180,7 @@ export function DocumentActions({ document, oneCollection, docMain, twoCollectio
   const handleRating = async () => {
     try {
       const rating = await doRating();
-
+      console.log("cuttent rating: " + rating)
       // Ensure we have a rating before updating
       if (rating != null) {
         const docRef = doc(db, oneCollection, docMain, twoCollection, document.id);
@@ -189,18 +189,17 @@ export function DocumentActions({ document, oneCollection, docMain, twoCollectio
         const tempRate = document.rating;
         const tempAmount = document.ratingAmount;
         const tempTotal = tempRate * tempAmount;
-        const newAverageRating = (tempTotal + rating) / (tempAmount + 1);
+        const newAverageRating = (tempTotal + Number(rating)) / (tempAmount + 1);
 
         // Update Firestore
         await updateDoc(docRef, {
           rating: newAverageRating,
           ratingAmount: tempAmount + 1
         });
-
         console.log('Document successfully updated');
 
         // reloading page toi update database
-        window.location.reload();
+        //window.location.reload(); not needed anymore
       }
     } catch (err) {
       console.error('Error updating document:', err);
@@ -220,7 +219,7 @@ export function DocumentActions({ document, oneCollection, docMain, twoCollectio
       console.log('Document successfully reported');
 
       // reloading page toi update database
-      window.location.reload();
+      //window.location.reload(); not needed anymore
     }catch(err) {
       console.error(err)
     }

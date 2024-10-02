@@ -8,7 +8,7 @@ import { db } from '../../config/firebase';
 import { CreateTable } from '../../components/table/table';
 
 //functionality to make use of the docs
-import { getDocs, collection } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import './BusinessStudiesPage.css';
 
 
@@ -18,25 +18,26 @@ function BusinessStudiesPage() {
     //the constrant that will store all the values
     const [resources, setResources] = useState([])
 
-    //making use of use effect sothat it is more dynamic
+    // Using useEffect to set up real-time listener for Firestore updates
     useEffect(() => {
-        //a collection that will store the overall values of Business_Main
-        const resourceCollectionRef = collection(db, "PDFS", "Business_Main", "Business")
+        // Reference to the Firestore collection
+        const resourceCollectionRef = collection(db, "PDFS", "Business_Main", "Business");
 
-        const getResources = async () => {
-            //reading the resources
-            try {
-                const data = await getDocs(resourceCollectionRef)
-                //geting the filtered data and only getting data that is verified
-                const filteredData = data.docs.map((doc) => ({...doc.data(), id: doc.id,})).filter((doc) => doc.verified)
-                setResources(filteredData)
-            } catch (err) {
-                console.error(err)
-            }
-        }
-        //getting the resources
-        getResources();
-    }, [])
+        // Set up the Firestore onSnapshot listener
+        const unsubscribe = onSnapshot(resourceCollectionRef, (snapshot) => {
+            // Get the updated resources and only include verified ones
+            const updatedResources = snapshot.docs
+                .map(doc => ({ ...doc.data(), id: doc.id }))
+                .filter(doc => doc.verified);
+
+            setResources(updatedResources); // Update the state with new data
+        }, (error) => {
+            console.error("Error fetching real-time data: ", error);
+        });
+
+        // Cleanup function to unsubscribe from the listener when the component unmounts
+        return () => unsubscribe();
+    }, []);
 
     return (
         <div className="business-page">
