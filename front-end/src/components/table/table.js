@@ -17,6 +17,7 @@ export function CreateTable({ resources, collectionOne, mainDoc, CollectionTwo }
                 <thead>
                     <tr>
                         <th>Title</th>
+                        <th>Tags</th>
                         <th>Last Modified Date</th>
                         <th>Last Modified User</th>
                         <th>Rating</th>
@@ -26,13 +27,14 @@ export function CreateTable({ resources, collectionOne, mainDoc, CollectionTwo }
                 <tbody>
                 {resources.map((resource) => {
                     // Round the rating to 2 decimal places for display
-                    const displayRating = roundToDecimalPlaces(resource.rating, 2);
+                    const displayRating = roundToDecimalPlaces(resource.rating, 1);
                     return (
                         <tr key={resource.id}>
                                 <td>
                                     <a href={resource.file_url} target="_blank" rel="noopener noreferrer">{resource.title}</a>
                                 </td>
-                            
+                                {resource.tags != null ?
+                                    (<td> {resource.tags.join(', ')}</td>) : (<td> {" "}</td>)}
                             <td>{resource.modifiedAt ? resource.modifiedAt.toDate().toLocaleString() : 'N/A'}</td>
                             <td>{resource.userID}</td>
                             <td><RatingReview rating={displayRating} /></td>
