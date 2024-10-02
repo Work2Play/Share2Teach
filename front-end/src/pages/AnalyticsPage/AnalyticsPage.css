@@ -3,34 +3,6 @@
     text-align: center;
   }
   
-  .filter-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .filter-buttons button {
-    background-color: #61dafb;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .filter-buttons button:hover {
-    background-color: #21a1f1;
-  }
-  
-  .filter-buttons .selected {
-    background-color: #21a1f1; /* Darker background for selected filter */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  }
-  
   .analytics-overview {
     display: flex;
     justify-content: space-around;
@@ -55,16 +27,31 @@
     margin: 0;
   }
   
-  .top-pages-section {
+  .time-range-buttons {
+    margin: 20px 0;
+  }
+  
+  .time-range-buttons button {
+    background-color: #61dafb;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .time-range-buttons button:hover {
+    background-color: #21a1f1;
+  }
+  
+  .chart-container {
     margin-top: 40px;
   }
   
-  .top-pages-section h2 {
+  .chart-container h2 {
     font-size: 1.8em;
-  }
-  
-  .top-pages-section canvas {
-    max-width: 600px;
-    margin: 0 auto;
+    margin-bottom: 20px;
   }
   
