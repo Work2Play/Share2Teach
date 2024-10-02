@@ -25,6 +25,7 @@ import RoleAssign from './pages/RoleAssignPage/RoleAssign';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
 import SignInPage from './pages/SignInPage/SignInPage';
 import ModerationPage from './pages/ModerationPage/ModerationPage'; // Import Moderation Page
+import AnalyticsPage from './pages/AnalyticsPage/AnalyticsPage';
 
 //import { AuthContext } from './components/auth';
 
@@ -102,7 +103,9 @@ function App() {
                   <li><Link to="/self-directed-learning" onClick={() => setMenuOpen(false)}>Self-Directed Learning</Link></li>
                   <li><Link to="/contributors" onClick={() => setMenuOpen(false)}>Contributors</Link></li>
                   <li><Link to="/about-us" onClick={() => setMenuOpen(false)}>About Us</Link></li>
-                    <li><Link to="/role-assign" onClick={() => setMenuOpen(false)}>Role Assign</Link></li>
+                  <li><Link to="/role-assign" onClick={() => setMenuOpen(false)}>Role Assign</Link></li>
+                  <li><Link to="/analytics">Analytics</Link></li>
+
                 </ul>
               </nav>
             )}
@@ -149,6 +152,7 @@ function App() {
             <Route path="/sign-up" element={<SignUpPage />} />
             <Route path="/sign-in" element={<SignInPage />} />
             <Route path="/moderation" element={<ModerationPage />} /> {/* Moderation page route */}
+            <Route path="/analytics" element={<AnalyticsPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <FAQPage isOpen={faqOpen} onClose={() => setFaqOpen(false)} />
