@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAnalytics } from 'firebase/analytics'; // Import Firebase Analytics
+import { analytics } from '../../config/firebase';
 import './AnalyticsPage.css'; 
 import { Bar } from 'react-chartjs-2'; // Import Chart.js for bar chart
 import 'chart.js/auto'; // Automatically import required chart components
@@ -18,8 +18,9 @@ const AnalyticsPage = () => {
 
   useEffect(() => {
     const fetchAnalyticsData = async () => {
-      const analytics = getAnalytics(); 
       
+      //analytics.getAnalyticsData gets the analytics data, not sure what to use for
+
       // Mocking data fetching (replace this with real Google Analytics reporting API logic)
       const mockData = {
         totalUsers: 1000,
