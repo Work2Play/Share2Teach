@@ -2,80 +2,89 @@
 
 /* Page container */
 .user-list-page {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Header styling */
-  .user-header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .user-header h1 {
-    font-size: 24px;
-    color: #333;
-  }
-  
-  /* Container for the user table */
-  .user-container {
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Table styling */
-  .user-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .user-table th, .user-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .user-table th {
-    background-color: #f2f2f2;
-    color: #555;
-    font-weight: bold;
-  }
-  
-  .user-table tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .user-table td {
-    color: #333;
-  }
-  
-  /* No users message */
-  .user-container p {
-    color: #999;
-    text-align: center;
-    font-size: 16px;
-  }
-  
-  .save-button {
-    background-color: grey;
-    color: white;
-    cursor: not-allowed;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-  }
-  
-  .save-button.active {
-    background-color: green;
-    cursor: pointer;
-  }
-  
-  .save-button:disabled {
-    cursor: not-allowed;
-  }
-  
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+/* Header styling */
+.user-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.user-header h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Container for the user table */
+.user-container {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table styling */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.user-table th, .user-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.user-table th {
+  background-color: #f2f2f2;
+  color: #555;
+  font-weight: bold;
+}
+
+.user-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.user-table td {
+  color: #333;
+}
+
+/* No users message */
+.user-container p {
+  color: #999;
+  text-align: center;
+  font-size: 16px;
+}
+
+.save-button {
+  background-color: grey;
+  color: white;
+  cursor: not-allowed;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+.save-button.active {
+  background-color: green;
+  cursor: pointer;
+}
+
+.save-button:disabled {
+  cursor: not-allowed;
+}

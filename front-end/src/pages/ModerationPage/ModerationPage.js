@@ -1,54 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import './ModerationPage.css';
-import { db, storage } from '../../config/firebase'; // Update this path if necessary
+import { db, storage } from '../../config/firebase';
 import { getDocs, collectionGroup, updateDoc, deleteDoc } from 'firebase/firestore';
 import { deleteObject, ref } from 'firebase/storage';
 
 const ModerationPage = () => {
     const [unverifiedPDFs, setUnverifiedPDFs] = useState([]);
     const [reportedPDFs, setReportedPDFs] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortConfig, setSortConfig] = useState({ key: '', direction: 'ascending' });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch documents from subcollections like 'Afrikaans'
-                const collectionsToQuery = [collectionGroup(db, "Afrikaans"), 
-                    collectionGroup(db, "Business"), 
-                    collectionGroup(db, "English"), 
-                    collectionGroup(db, "Geography"), 
-                    collectionGroup(db, "History"),
-                    collectionGroup(db, "LifeScience"),
-                    collectionGroup(db, "LifeSkills"),
-                    collectionGroup(db, "Math"),
-                    collectionGroup(db, "NaturalScience"),
-                    collectionGroup(db, "Technology")
-                ]
+                const collectionsToQuery = [
+                    collectionGroup(db, "Afrikaans"), collectionGroup(db, "Business"),
+                    collectionGroup(db, "English"), collectionGroup(db, "Geography"),
+                    collectionGroup(db, "History"), collectionGroup(db, "LifeScience"),
+                    collectionGroup(db, "LifeSkills"), collectionGroup(db, "Math"),
+                    collectionGroup(db, "NaturalScience"), collectionGroup(db, "Technology")
+                ];
 
                 const queryPromises = collectionsToQuery.map(collectionRef => getDocs(collectionRef));
-
                 const pdfQuerySnapshot = await Promise.all(queryPromises);
-
                 const allDocs = pdfQuerySnapshot.flatMap(snapshot => snapshot.docs);
-
                 const allPDFs = allDocs.map((doc) => ({
                     ...doc.data(),
                     id: doc.id,
                     ref: doc.ref,
                 }));
 
-                // Filter PDFs without 'verified' field for unverified section
-                const unverified = allPDFs.filter((pdf) => pdf.verified === undefined);
-                const reported = allPDFs.filter((pdf) => pdf.reportAmount > 0); // Filter for reported PDFs
-
-                setUnverifiedPDFs(unverified);
-                setReportedPDFs(reported);
+                setUnverifiedPDFs(allPDFs.filter((pdf) => pdf.verified === undefined));
+                setReportedPDFs(allPDFs.filter((pdf) => pdf.reportAmount > 0));
             } catch (err) {
                 console.error("Error fetching PDFs:", err);
             }
         };
-
         fetchData();
     }, []);
+
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const sortData = (data, key) => {
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            return [...data].sort((a, b) => (a[key] > b[key] ? -1 : 1));
+        }
+        return [...data].sort((a, b) => (a[key] > b[key] ? 1 : -1));
+    };
+
+    const requestSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const filteredAndSortedData = (data) => {
+        return sortData(
+            data.filter((pdf) =>
+                pdf.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                pdf.subject.toLowerCase().includes(searchTerm.toLowerCase())
+            ),
+            sortConfig.key
+        );
+    };
 
     // Approve unverified PDF and add necessary fields
     const approvePDF = async (pdf) => {
@@ -119,27 +137,29 @@ const ModerationPage = () => {
     return (
         <div className="moderation-page">
             <h1>Moderation Page</h1>
-
+            <input
+                type="text"
+                placeholder="Search Title and Subject"
+                value={searchTerm}
+                onChange={handleSearch}
+                className="overall-search"
+            />
             <h2>Unverified PDFs</h2>
             {unverifiedPDFs.length > 0 ? (
                 <table className="moderation-table">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Subject</th>
-                            <th>Uploaded By</th>
-                            <th>Upload Date</th>
+                            <th onClick={() => requestSort('title')}>Title</th>
+                            <th onClick={() => requestSort('subject')}>Subject</th>
+                            <th onClick={() => requestSort('userID')}>Uploaded By</th>
+                            <th onClick={() => requestSort('modifiedAt')}>Upload Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {unverifiedPDFs.map((pdf) => (
+                        {filteredAndSortedData(unverifiedPDFs).map((pdf) => (
                             <tr key={pdf.id}>
-                                <td>
-                                    <a href={pdf.file_url} target="_blank" rel="noopener noreferrer">
-                                        {pdf.title}
-                                    </a>
-                                </td>
+                                <td><a href={pdf.file_url} target="_blank" rel="noopener noreferrer">{pdf.title}</a></td>
                                 <td>{pdf.subject}</td>
                                 <td>{pdf.userID}</td>
                                 <td>{pdf.modifiedAt ? pdf.modifiedAt.toDate().toLocaleString() : 'N/A'}</td>
@@ -160,22 +180,18 @@ const ModerationPage = () => {
                 <table className="moderation-table">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Subject</th>
-                            <th>Amount Reported</th>
-                            <th>Uploaded By</th>
-                            <th>Upload Date</th>
+                            <th onClick={() => requestSort('title')}>Title</th>
+                            <th onClick={() => requestSort('subject')}>Subject</th>
+                            <th onClick={() => requestSort('reportAmount')}>Amount Reported</th>
+                            <th onClick={() => requestSort('userID')}>Uploaded By</th>
+                            <th onClick={() => requestSort('modifiedAt')}>Upload Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {reportedPDFs.map((pdf) => (
+                        {filteredAndSortedData(reportedPDFs).map((pdf) => (
                             <tr key={pdf.id}>
-                                <td>
-                                    <a href={pdf.file_url} target="_blank" rel="noopener noreferrer">
-                                        {pdf.title}
-                                    </a>
-                                </td>
+                                <td><a href={pdf.file_url} target="_blank" rel="noopener noreferrer">{pdf.title}</a></td>
                                 <td>{pdf.subject}</td>
                                 <td>{pdf.reportAmount}</td>
                                 <td>{pdf.userID}</td>

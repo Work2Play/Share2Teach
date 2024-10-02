@@ -1,52 +1,102 @@
+/* General table container */
 .theTable {
     margin-top: 20px;
-    padding: 20px; /* Added padding for spacing around the table */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    background-color: #ffffff; /* White background for contrast */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
 }
 
+/* The table itself */
 .resource-table {
     width: 100%;
     border-collapse: collapse;
-    overflow: hidden; /* Prevent overflow of table content */
+    overflow: hidden;
 }
 
+/* Table headers and cells */
 .resource-table th, .resource-table td {
     border: 1px solid #ffffff;
-    padding: 12px; /* Increased padding for better readability */
-    text-align: left; /* Align text to the left for better structure */
+    padding: 12px;
+    text-align: left;
 }
 
+/* Table header styling */
 .resource-table th {
-    background-color: #61dafb; /* Green background for table headers */
-    color: rgb(2, 2, 2); /* White text for headers */
-    font-weight: bold; /* Bold text for headers */
-    text-transform: uppercase; /* Uppercase headers for a modern look */
+    background-color: #61dafb;
+    color: rgb(2, 2, 2);
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer; /* Add cursor pointer to indicate sorting ability */
+    user-select: none; /* Disable text selection on headers */
 }
 
+/* Sorting arrows */
+.resource-table th:after {
+    content: ''; /* Placeholder for sorting arrows */
+    margin-left: 5px;
+}
+
+/* Ascending and descending sorting arrows */
+.resource-table th.ascending:after {
+    content: '↑'; /* Ascending arrow */
+}
+
+.resource-table th.descending:after {
+    content: '↓'; /* Descending arrow */
+}
+
+/* Table row styling */
 .resource-table tr:nth-child(even) {
-    background-color: #f9f9f9; /* Light grey background for even rows */
+    background-color: #f9f9f9;
 }
 
 .resource-table tr:hover {
-    background-color: #f1f1f1; /* Slightly darker background on hover */
+    background-color: #f1f1f1;
 }
 
+/* Links inside the table */
 .resource-table a {
-    color: #007BFF; /* Blue color for links */
-    text-decoration: none; /* No underline on links */
+    color: #007BFF;
+    text-decoration: none;
 }
 
 .resource-table a:hover {
-    text-decoration: underline; /* Underline links on hover */
+    text-decoration: underline;
 }
 
+/* Vertical align content in table cells */
 .resource-table td {
-    vertical-align: middle; /* Center-align content vertically */
+    vertical-align: middle;
 }
 
+/* Actions column for buttons */
 .resource-table .actions {
     display: flex;
-    gap: 10px; /* Space between action buttons */
+    gap: 10px;
+}
+
+/* Input filters for each column */
+.filters {
+    margin-bottom: 10px; /* Space between filter inputs and table */
+}
+
+.filters input {
+    margin-right: 10px; /* Spacing between filter inputs */
+    padding: 8px; /* Padding for filter input */
+    border: 1px solid #ccc; /* Light border around inputs */
+    border-radius: 4px; /* Rounded corners */
+    width: 200px; /* Set a reasonable width for inputs */
+    font-size: 14px; /* Adjust font size */
+}
+
+/* Overall search input styling */
+.overall-search {
+    margin-bottom: 20px; /* Space between search bar and table */
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
 }

@@ -9,6 +9,7 @@ const RoleAssignPage = () => {
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
   const [modifiedUsers, setModifiedUsers] = useState({}); // Track modified roles
+  const [searchQuery, setSearchQuery] = useState(""); // State for search input
 
   useEffect(() => {
     const fetchUsersAndRoles = async () => {
@@ -59,13 +60,25 @@ const RoleAssignPage = () => {
     }
   };
 
+  const filteredUsers = users.filter(user =>
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.full_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="user-list-page">
       <div className="user-header">
         <h1>User List</h1>
+        <input
+          type="text"
+          placeholder="Search by email or name"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+        />
       </div>
       <div className="user-container">
-        {users.length > 0 ? (
+        {filteredUsers.length > 0 ? (
           <table className="user-table">
             <thead>
               <tr>
@@ -76,7 +89,7 @@ const RoleAssignPage = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => {
+              {filteredUsers.map((user) => {
                 const isModified = modifiedUsers[user.id] !== undefined;
                 return (
                   <tr key={user.id}>
@@ -118,4 +131,3 @@ const RoleAssignPage = () => {
 };
 
 export default RoleAssignPage;
-  
