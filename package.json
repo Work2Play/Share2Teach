@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "build": "^0.1.4",
     "javascript": "^1.0.0"
   }
 }

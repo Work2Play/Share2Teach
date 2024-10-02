@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Link,} from 'react-router-dom';
-import ScrollToTop from './components/ScrollToTop'; // Import ScrollToTop component
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/HomePage/Home';
 import MathPage from './pages/MathPage/MathPage';
 import BusinessStudiesPage from './pages/BusinessStudiesPage/BusinessStudiesPage';
@@ -24,17 +24,17 @@ import SearchResultsPage from './pages/SearchPage/SearchResultsPage';
 import RoleAssign from './pages/RoleAssignPage/RoleAssign';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
 import SignInPage from './pages/SignInPage/SignInPage';
-import ModerationPage from './pages/ModerationPage/ModerationPage'; // Import Moderation Page
+import ModerationPage from './pages/ModerationPage/ModerationPage';
 import AnalyticsPage from './pages/AnalyticsPage/AnalyticsPage';
-
-//import { AuthContext } from './components/auth';
-
-
-
-
-// Adding auth for the login and logout button view
-import { Auth } from './components/auth';
+import { Auth } from './components/auth';  
 import CCImage from './Images/CC.png';
+import { getAuth } from 'firebase/auth';  
+import { doc, getDoc } from 'firebase/firestore';  
+import { db } from './config/firebase'; 
+//import { AuthContext } from './components/auth';
+// Adding auth for the login and logout button view
+// import { Auth } from './components/auth';
+// import CCImage from './Images/CC.png';
 //import { Upload } from './components/fileupload';
 
 
@@ -44,23 +44,40 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovering, setHovering] = useState(false);
   const [faqOpen, setFaqOpen] = useState(false);
+  const [role, setRole] = useState('');
 
-  // Toggle the menu visibility
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+  useEffect(() => {
+      const fetchUserRole = async () => {
+          try {
+              const auth = getAuth();
+              const user = auth.currentUser;
 
-    
-  };
+              if (user) {
+                  const docRef = doc(db, 'users', user.uid); // Assuming you store user roles in Firestore
+                  const docSnap = await getDoc(docRef);
 
-  // Handle mouse enter event to keep the menu open
-  const handleMouseEnter = () => {
-    setHovering(true);
-  };
+                  if (docSnap.exists()) {
+                      setRole(docSnap.data().role); // Set the role from the Firestore document
+                  } else {
+                      console.log('No such document!');
+                  }
+              } else {
+                  console.log('No user is logged in');
+              }
+          } catch (error) {
+              console.error('Error fetching user role: ', error);
+          }
+      };
 
-  // Handle mouse leave event to close the menu after a delay
-  const handleMouseLeave = () => {
-    setHovering(false);
-  };
+      fetchUserRole();
+  }, []);
+
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const handleMouseEnter = () => setHovering(true);
+
+  const handleMouseLeave = () => setHovering(false);
 
   // Close the menu if not hovering over it
   useEffect(() => {
@@ -103,23 +120,28 @@ function App() {
                   <li><Link to="/self-directed-learning" onClick={() => setMenuOpen(false)}>Self-Directed Learning</Link></li>
                   <li><Link to="/contributors" onClick={() => setMenuOpen(false)}>Contributors</Link></li>
                   <li><Link to="/about-us" onClick={() => setMenuOpen(false)}>About Us</Link></li>
-                  <li><Link to="/role-assign" onClick={() => setMenuOpen(false)}>Role Assign</Link></li>
+                  {(role === 'admin') && (
+                    <>
+                      <li><Link to="/role-assign" onClick={() => setMenuOpen(false)}>Role Assign</Link></li>
+                    </>   
+                  )}
                   <li><Link to="/analytics">Analytics</Link></li>
-
                 </ul>
               </nav>
             )}
             {/* Title of the website with a link to home */}
             <Link to="/" className="logo-title">Share2Teach</Link>
           </div>
-          
-
 
           <div className="header-right">
-            <div className="header-center">
-            <Link to="/moderation" className="moderation-button">Moderation</Link> {/* Moderation button link */}
-              
-            </div>
+          <div className="header-center">
+
+              {(role === 'moderator') && (
+                <>
+                  <Link to="/moderation" className="moderation-button">Moderation</Link>
+                </>
+              )}
+          </div>
 
             <SearchComponent />
               <button onClick={() => setFaqOpen(true)} className="faq-button">FAQ</button>
@@ -151,7 +173,7 @@ function App() {
             <Route path="/role-assign" element={<RoleAssign />} />
             <Route path="/sign-up" element={<SignUpPage />} />
             <Route path="/sign-in" element={<SignInPage />} />
-            <Route path="/moderation" element={<ModerationPage />} /> {/* Moderation page route */}
+            <Route path="/moderation" element={<ModerationPage />} /> 
             <Route path="/analytics" element={<AnalyticsPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>

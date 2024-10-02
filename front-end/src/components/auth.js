@@ -20,11 +20,13 @@ export const Auth = () => {
             setLoggedIn(false);
             setUserEmail("");
             console.log("User logged out.");
-            navigate("/"); // Redirect to home page after logout
+            navigate("/"); 
+            window.location.reload(); 
         } catch (err) {
             console.error("Logout error:", err);
         }
     };
+    
 
     // Handle the initial login button click to redirect to sign-in page
     const handleLoginClick = () => {
