@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+/*import React, { useState, useEffect } from 'react';
 import { analytics } from '../../config/firebase';
 import './AnalyticsPage.css'; 
 import { Bar } from 'react-chartjs-2'; // Import Chart.js for bar chart
@@ -89,16 +89,16 @@ const AnalyticsPage = () => {
         </div>
       </div>
 
-      {/* Time Range Buttons */}
-      <div className="time-range-buttons">
+      /* Time Range Buttons */
+     /* <div className="time-range-buttons">
         <button onClick={() => handleTimeRangeChange('all')}>All Data</button>
         <button onClick={() => handleTimeRangeChange('90days')}>Last 90 Days</button>
         <button onClick={() => handleTimeRangeChange('30days')}>Last 30 Days</button>
         <button onClick={() => handleTimeRangeChange('today')}>Today</button>
       </div>
 
-      {/* Bar Chart */}
-      <div className="chart-container">
+      /* Bar Chart */
+      /*<div className="chart-container">
         <h2>Page Views by Page</h2>
         <Bar data={chartData} />
       </div>
@@ -106,4 +106,4 @@ const AnalyticsPage = () => {
   );
 };
 
-export default AnalyticsPage;
+export default AnalyticsPage;*/

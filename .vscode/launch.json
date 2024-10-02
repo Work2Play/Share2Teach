@@ -9,6 +9,7 @@
             "request": "launch",
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:8080",
+            //"url": "https://share2teach-83c7.onrender.com/",
             "webRoot": "${workspaceFolder}"
         }
     ]

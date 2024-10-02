@@ -25,6 +25,8 @@ const SignInPage = () => {
             console.error("Email sign-in error:", err);
         }
     };
+   
+        
 
     const handleGoogleSignIn = async () => {
         try {
@@ -37,6 +39,10 @@ const SignInPage = () => {
             console.error("Google sign-in error:", err);
         }
     };
+    useEffect(() => {
+        console.log("SignInPage component loaded");
+    }, []);
+    
 
     return (
         <div className="center-wrapper">
