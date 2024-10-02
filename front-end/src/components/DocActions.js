@@ -49,88 +49,104 @@ export function RatingReview({ rating }) {
   );
 }
 
-//a function that allows the creation of a popup
-function ratingPopUp() {
-  const ratingInput = document.getElementById('ratingInput');
-  const rateButton = document.getElementById('rateButton');
-
-  // Set attributes for the spin edit
-  ratingInput.min = 1;
-  ratingInput.max = 5;
-  ratingInput.step = 0.1;
-
-  // Event listener for rating input
-  ratingInput.addEventListener('input', () => {
-    let value = ratingInput.value.replace(/[^0-9.]/g, '');
-    value = Math.max(1, Math.min(5, parseFloat(value) || 3));
-    ratingInput.value = value;
-  });
-
-  // Event listener for rate button
-  rateButton.addEventListener('click', () => {
-    const rating = parseFloat(ratingInput.value);
-    if (window.opener) {
-      window.opener.postMessage(rating, '*');
-    }
-    window.close();
-  });
-}
-
 export function DocumentActions({ document, oneCollection, docMain, twoCollection }) {
 
   const doRating = async () => {
     try {
       const popupContent = `
         <!DOCTYPE html>
-  <html>
-  <head>
-    <title>Rate Us</title>
-    <style>
-      body {
-        font-family: sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        margin: 0;
-        background-color: #f0f0f0;
-      }
+        <html>
+        <head>
+          <title>Rate Us</title>
+          <style>
+            body {
+              font-family: sans-serif;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              min-height: 100vh;
+              margin: 0;
+              background-color: #f0f0f0;
+            }
 
-      #ratingInput {
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 80%;
-        text-align: center;
-      }
+            .stars {
+              display: flex;
+              justify-content: center;
+              margin-bottom: 15px;
+            }
 
-      .rateButton {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Rate Document</h2>
-    <input type="number" id="ratingInput" min="1" max="5" step="0.5" />
-    <button id="rateButton" class="rateButton">Rate</button> 
-    <script>
-      ${ratingPopUp.toString()} 
-      ratingPopUp(); 
-    </script>
-  </body>
-  </html>
-`;
+            .star {
+              font-size: 35px;
+              cursor: pointer;
+              color: gray;
+              margin: 0 5px;
+              transition: color 0.2s;
+            }
+
+            .star.selected {
+              color: gold;
+            }
+
+            .rateButton {
+              background-color: #4CAF50;
+              border: none;
+              color: white;
+              padding: 10px 20px;
+              font-size: 16px;
+              border-radius: 5px;
+              cursor: pointer;
+            }
+          </style>
+        </head>
+        <body>
+          <h2>Rate Document</h2>
+          <div id="stars" class="stars">
+            <span class="star" data-value="1">&#9733;</span>
+            <span class="star" data-value="2">&#9733;</span>
+            <span class="star" data-value="3">&#9733;</span>
+            <span class="star" data-value="4">&#9733;</span>
+            <span class="star" data-value="5">&#9733;</span>
+          </div>
+          <button id="rateButton" class="rateButton">Submit Rating</button>
+          <script>
+            (function() {
+              let selectedRating = 0;
+              const stars = document.querySelectorAll('.star');
+
+              // Star hover effect and click event
+              stars.forEach(star => {
+                star.addEventListener('click', function() {
+                  selectedRating = this.getAttribute('data-value');
+                  updateStars(selectedRating);
+                });
+              });
+
+              // Function to update star colors based on selection
+              function updateStars(rating) {
+                stars.forEach(star => {
+                  if (star.getAttribute('data-value') <= rating) {
+                    star.classList.add('selected');
+                  } else {
+                    star.classList.remove('selected');
+                  }
+                });
+              }
+
+              // Handle rating submission
+              document.getElementById('rateButton').addEventListener('click', function() {
+                if (selectedRating > 0) {
+                  window.opener.postMessage(selectedRating, '*');
+                  window.close();
+                } else {
+                  alert('Please select a rating');
+                }
+              });
+            })();
+          </script>
+        </body>
+        </html>
+      `;
 
       const screenWidth = window.screen.width;
       const screenHeight = window.screen.height;
