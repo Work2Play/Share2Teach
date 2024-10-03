@@ -22,8 +22,15 @@ export function Upload({ isOpen, onClose }) {
   const [subjects, setSubjects] = useState({});
 
   useEffect(() => {
-    setUserID(auth.currentUser.email);
     fetchSubjects();
+
+    if (auth.currentUser == null)
+      {
+        setUserID("Default")
+      } else
+      {
+        setUserID(auth.currentUser.email)
+      }
   }, []);
 
   const fetchSubjects = async () => {
