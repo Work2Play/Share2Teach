@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, } from 'react';
 import './ModerationPage.css';
 import { db, storage } from '../../config/firebase';
 import { getDocs, collectionGroup, updateDoc, deleteDoc } from 'firebase/firestore';
 import { deleteObject, ref } from 'firebase/storage';
+import { CSVLink } from 'react-csv'; // To handle CSV export
 
 const ModerationPage = () => {
     const [unverifiedPDFs, setUnverifiedPDFs] = useState([]);
@@ -60,13 +61,37 @@ const ModerationPage = () => {
 
     const filteredAndSortedData = (data) => {
         return sortData(
-            data.filter((pdf) =>
-                pdf.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                pdf.subject.toLowerCase().includes(searchTerm.toLowerCase())
-            ),
+            data.filter((pdf) => {
+                const searchLower = searchTerm.toLowerCase();
+                const tagsMatch = pdf.tags && pdf.tags.some(tag => tag.toLowerCase().includes(searchLower));
+                const titleMatch = pdf.title.toLowerCase().includes(searchLower);
+                const subjectMatch = pdf.subject.toLowerCase().includes(searchLower);
+                return titleMatch || subjectMatch || tagsMatch;
+            }),
             sortConfig.key
         );
     };
+
+    // CSV Export
+    const csvHeaders = [
+        { label: "Title", key: "title" },
+        { label: "Tags", key: "tags" },
+        { label: "Subject", key: "subject" },
+        { label: "Uploaded By", key: "userID" },
+        { label: "Upload Date", key: "modifiedAt" },
+        { label: "Verified", key: "verified" },
+        { label: "Reported", key: "reportAmount" }
+    ];
+
+    const csvData = filteredAndSortedData([...unverifiedPDFs, ...reportedPDFs]).map(pdf => ({
+        title: pdf.title,
+        tags: pdf.tags ? pdf.tags.join(', ') : '',
+        subject: pdf.subject,
+        userID: pdf.userID,
+        modifiedAt: pdf.modifiedAt ? pdf.modifiedAt.toDate().toLocaleString() : 'N/A',
+        verified: pdf.verified ? 'Yes' : 'No',
+        reportAmount: pdf.reportAmount
+    }));
 
     // Approve unverified PDF and add necessary fields
     const approvePDF = async (pdf) => {
@@ -139,17 +164,29 @@ const ModerationPage = () => {
             <h1>Moderation Page</h1>
             <input
                 type="text"
-                placeholder="Search Title and Subject"
+                placeholder="Search Title, Subject, or Tags"
                 value={searchTerm}
                 onChange={handleSearch}
                 className="overall-search"
             />
+            <CSVLink
+                data={csvData}
+                headers={csvHeaders}
+                filename="pdf_moderation_data.csv"
+                className="csv-export"
+                target="_blank"
+            >
+                Export to CSV
+            </CSVLink>
+            
+            {/* Unverified PDFs */}
             <h2>Unverified PDFs</h2>
             {unverifiedPDFs.length > 0 ? (
                 <table className="moderation-table">
                     <thead>
                         <tr>
                             <th onClick={() => requestSort('title')}>Title</th>
+                            <th>Tags</th>
                             <th onClick={() => requestSort('subject')}>Subject</th>
                             <th onClick={() => requestSort('userID')}>Uploaded By</th>
                             <th onClick={() => requestSort('modifiedAt')}>Upload Date</th>
@@ -160,6 +197,7 @@ const ModerationPage = () => {
                         {filteredAndSortedData(unverifiedPDFs).map((pdf) => (
                             <tr key={pdf.id}>
                                 <td><a href={pdf.file_url} target="_blank" rel="noopener noreferrer">{pdf.title}</a></td>
+                                <td>{pdf.tags ? pdf.tags.join(', ') : 'No Tags'}</td>
                                 <td>{pdf.subject}</td>
                                 <td>{pdf.userID}</td>
                                 <td>{pdf.modifiedAt ? pdf.modifiedAt.toDate().toLocaleString() : 'N/A'}</td>
@@ -175,12 +213,14 @@ const ModerationPage = () => {
                 <p>No unverified PDFs found.</p>
             )}
 
+            {/* Reported PDFs */}
             <h2>Reported PDFs</h2>
             {reportedPDFs.length > 0 ? (
                 <table className="moderation-table">
                     <thead>
                         <tr>
                             <th onClick={() => requestSort('title')}>Title</th>
+                            <th>Tags</th>
                             <th onClick={() => requestSort('subject')}>Subject</th>
                             <th onClick={() => requestSort('reportAmount')}>Amount Reported</th>
                             <th onClick={() => requestSort('userID')}>Uploaded By</th>
@@ -192,6 +232,7 @@ const ModerationPage = () => {
                         {filteredAndSortedData(reportedPDFs).map((pdf) => (
                             <tr key={pdf.id}>
                                 <td><a href={pdf.file_url} target="_blank" rel="noopener noreferrer">{pdf.title}</a></td>
+                                <td>{pdf.tags ? pdf.tags.join(', ') : 'No Tags'}</td>
                                 <td>{pdf.subject}</td>
                                 <td>{pdf.reportAmount}</td>
                                 <td>{pdf.userID}</td>
