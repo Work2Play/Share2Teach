@@ -7,8 +7,6 @@ import './fileupload.css';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_FILE_TYPES = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-
-// Add grades from Kindergarten to Grade 12
 const GRADES = ['Grade K', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
 
 export function Upload({ isOpen, onClose }) {
@@ -20,7 +18,7 @@ export function Upload({ isOpen, onClose }) {
   const [subjects, setSubjects] = useState([]);
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState('');
-  const [selectedGrades, setSelectedGrades] = useState([]); // New state for selected grades
+  const [selectedGrades, setSelectedGrades] = useState([]); 
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -58,7 +56,6 @@ export function Upload({ isOpen, onClose }) {
         setFile(selectedFile);
         setError('');
 
-        // If title is empty, set the title to the name of the file
         if (!title) {
           setTitle(selectedFile.name);
         }
@@ -115,9 +112,9 @@ export function Upload({ isOpen, onClose }) {
           await addDoc(collection(db, `PDFS/${subject}_Main/${subject}`), {
             userID,
             subject,
-            title: title || file.name, // Use file name if title is empty
+            title: title || file.name,
             file_url: downloadURL,
-            tags: [...tags, ...selectedGrades], // Combine tags and selected grades
+            tags: [...tags, ...selectedGrades],
             modifiedAt: Timestamp.now(),
           });
           alert('File uploaded successfully!');
@@ -126,7 +123,7 @@ export function Upload({ isOpen, onClose }) {
           setTitle('');
           setFile(null);
           setTags([]);
-          setSelectedGrades([]); // Reset selected grades
+          setSelectedGrades([]);
           onClose();
         }
       );
@@ -142,21 +139,13 @@ export function Upload({ isOpen, onClose }) {
     <div className="upload-popup">
       <div className="upload-header">
         <p>User: {userID}</p>
-        <button className="close-button" onClick={onClose}>X</button>
+        <button className="close-button" onClick={onClose}>X</button> {/* Close button */}
       </div>
       <form onSubmit={uploadHandler} className="upload-form">
-        <select
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          required
-        >
-          <option value="" disabled>
-            Select Subject
-          </option>
+        <select value={subject} onChange={(e) => setSubject(e.target.value)} required>
+          <option value="" disabled>Select Subject</option>
           {subjects.map((subj) => (
-            <option key={subj} value={subj}>
-              {subj}
-            </option>
+            <option key={subj} value={subj}>{subj}</option>
           ))}
         </select>
 
@@ -173,21 +162,18 @@ export function Upload({ isOpen, onClose }) {
         <select onChange={handleGradeSelect}>
           <option value="">Select Grade</option>
           {GRADES.map((grade) => (
-            <option key={grade} value={grade}>
-             {grade === 'K' ? 'K' : grade}
-            </option>
+            <option key={grade} value={grade}>{grade}</option>
           ))}
         </select>
         <div>
           {selectedGrades.map((grade, index) => (
             <span key={index} className="tag">
-                {grade}
+              {grade}
               <button type="button" onClick={() => handleRemoveGrade(grade)}>x</button>
             </span>
           ))}
         </div>
 
-        {/* Tags functionality */}
         <div>
           <input
             type="text"

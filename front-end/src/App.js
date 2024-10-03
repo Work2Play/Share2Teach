@@ -26,57 +26,49 @@ import SignUpPage from './pages/SignUpPage/SignUpPage';
 import SignInPage from './pages/SignInPage/SignInPage';
 import ModerationPage from './pages/ModerationPage/ModerationPage';
 import AnalyticsPage from './pages/AnalyticsPage/AnalyticsPage';
-import { Auth } from './components/auth';  
+import { Auth } from './components/auth';
 import CCImage from './Images/CC.png';
-import { getAuth } from 'firebase/auth';  
-import { doc, getDoc } from 'firebase/firestore';  
-import { db } from './config/firebase'; 
-//import { AuthContext } from './components/auth';
-// Adding auth for the login and logout button view
-// import { Auth } from './components/auth';
-// import CCImage from './Images/CC.png';
-//import { Upload } from './components/fileupload';
-
-
+import { getAuth } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from './config/firebase';
 
 function App() {
-  // State to manage the visibility of the menu
+  // State to manage the visibility of the menu and other UI elements
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovering, setHovering] = useState(false);
   const [faqOpen, setFaqOpen] = useState(false);
   const [role, setRole] = useState('');
 
+  // Fetch user role from Firestore
   useEffect(() => {
-      const fetchUserRole = async () => {
-          try {
-              const auth = getAuth();
-              const user = auth.currentUser;
+    const fetchUserRole = async () => {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
 
-              if (user) {
-                  const docRef = doc(db, 'users', user.uid); // Assuming you store user roles in Firestore
-                  const docSnap = await getDoc(docRef);
+        if (user) {
+          const docRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(docRef);
 
-                  if (docSnap.exists()) {
-                      setRole(docSnap.data().role); // Set the role from the Firestore document
-                  } else {
-                      console.log('No such document!');
-                  }
-              } else {
-                  console.log('No user is logged in');
-              }
-          } catch (error) {
-              console.error('Error fetching user role: ', error);
+          if (docSnap.exists()) {
+            setRole(docSnap.data().role);
+          } else {
+            console.log('No such document!');
           }
-      };
+        } else {
+          console.log('No user is logged in');
+        }
+      } catch (error) {
+        console.error('Error fetching user role: ', error);
+      }
+    };
 
-      fetchUserRole();
+    fetchUserRole();
   }, []);
 
-
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
 
   const handleMouseEnter = () => setHovering(true);
-
   const handleMouseLeave = () => setHovering(false);
 
   // Close the menu if not hovering over it
@@ -86,7 +78,6 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [hovering]);
-
 
   return (
     <Router>
@@ -104,51 +95,119 @@ function App() {
                 onMouseLeave={handleMouseLeave}
               >
                 <ul className="nav-links">
-                  <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
-                  <li><Link to="/mathematics" onClick={() => setMenuOpen(false)}>Mathematics</Link></li>
-                  <li><Link to="/business-studies" onClick={() => setMenuOpen(false)}>Business Studies</Link></li>
-                  <li><Link to="/history" onClick={() => setMenuOpen(false)}>History</Link></li>
-                  <li><Link to="/geography" onClick={() => setMenuOpen(false)}>Geography</Link></li>
-                  <li><Link to="/natural-science" onClick={() => setMenuOpen(false)}>Natural Science</Link></li>
-                  <li><Link to="/life-science" onClick={() => setMenuOpen(false)}>Life Science</Link></li>
-                  <li><Link to="/english" onClick={() => setMenuOpen(false)}>English</Link></li>
-                  <li><Link to="/technology" onClick={() => setMenuOpen(false)}>Technology</Link></li>
-                  <li><Link to="/afrikaans" onClick={() => setMenuOpen(false)}>Afrikaans</Link></li>
-                  <li><Link to="/life-skills" onClick={() => setMenuOpen(false)}>Life Skills</Link></li>
-                  <li><Link to="/computer-science" onClick={() => setMenuOpen(false)}>Computer Science</Link></li>
-                  <li><Link to="/other-oers" onClick={() => setMenuOpen(false)}>Other useful OER's</Link></li>
-                  <li><Link to="/self-directed-learning" onClick={() => setMenuOpen(false)}>Self-Directed Learning</Link></li>
-                  <li><Link to="/contributors" onClick={() => setMenuOpen(false)}>Contributors</Link></li>
-                  <li><Link to="/about-us" onClick={() => setMenuOpen(false)}>About Us</Link></li>
-                  {(role === 'admin') && (
-                    <>
-                      <li><Link to="/role-assign" onClick={() => setMenuOpen(false)}>Role Assign</Link></li>
-                    </>   
+                  <li>
+                    <Link to="/" onClick={() => setMenuOpen(false)}>
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/mathematics" onClick={() => setMenuOpen(false)}>
+                      Mathematics
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/business-studies" onClick={() => setMenuOpen(false)}>
+                      Business Studies
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/history" onClick={() => setMenuOpen(false)}>
+                      History
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/geography" onClick={() => setMenuOpen(false)}>
+                      Geography
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/natural-science" onClick={() => setMenuOpen(false)}>
+                      Natural Science
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/life-science" onClick={() => setMenuOpen(false)}>
+                      Life Science
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/english" onClick={() => setMenuOpen(false)}>
+                      English
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/technology" onClick={() => setMenuOpen(false)}>
+                      Technology
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/afrikaans" onClick={() => setMenuOpen(false)}>
+                      Afrikaans
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/life-skills" onClick={() => setMenuOpen(false)}>
+                      Life Skills
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/computer-science" onClick={() => setMenuOpen(false)}>
+                      Computer Science
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/other-oers" onClick={() => setMenuOpen(false)}>
+                      Other useful OER's
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/self-directed-learning" onClick={() => setMenuOpen(false)}>
+                      Self-Directed Learning
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/contributors" onClick={() => setMenuOpen(false)}>
+                      Contributors
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/about-us" onClick={() => setMenuOpen(false)}>
+                      About Us
+                    </Link>
+                  </li>
+                  {role === 'admin' && (
+                    <li>
+                      <Link to="/role-assign" onClick={() => setMenuOpen(false)}>
+                        Role Assign
+                      </Link>
+                    </li>
                   )}
-                  <li><Link to="/analytics">Analytics</Link></li>
+                  <li>
+                    <Link to="/analytics" onClick={() => setMenuOpen(false)}>
+                      Analytics
+                    </Link>
+                  </li>
                 </ul>
               </nav>
             )}
-            {/* Title of the website with a link to home */}
-            <Link to="/" className="logo-title">Share2Teach</Link>
+            <Link to="/" className="logo-title">
+              Share2Teach
+            </Link>
           </div>
 
           <div className="header-right">
-          <div className="header-center">
-
-              {(role === 'moderator') && (
-                <>
-                  <Link to="/moderation" className="moderation-button">Moderation</Link>
-                </>
-              )}
-          </div>
-
+            {role === 'moderator' && (
+              <Link to="/moderation" className="moderation-button">
+                Moderation
+              </Link>
+            )}
             <SearchComponent />
-              <button onClick={() => setFaqOpen(true)} className="faq-button">FAQ</button>
+            <button onClick={() => setFaqOpen(true)} className="faq-button">
+              FAQ
+            </button>
             <Auth />
           </div>
         </header>
-
 
         <main className="main-content">
           <Routes>
@@ -173,29 +232,30 @@ function App() {
             <Route path="/role-assign" element={<RoleAssign />} />
             <Route path="/sign-up" element={<SignUpPage />} />
             <Route path="/sign-in" element={<SignInPage />} />
-            <Route path="/moderation" element={<ModerationPage />} /> 
+            <Route path="/moderation" element={<ModerationPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <FAQPage isOpen={faqOpen} onClose={() => setFaqOpen(false)} />
-          <footer className="footer">
-            <div className="footer-content">
-              <img src={CCImage} alt="Creative Commons License" className="cc-image" />
-              <div className="disclaimer">
-                <p><strong>Disclaimer:</strong></p>
-                <p>
-                  The resources available on this website are primarily the work of students. While we strive to maintain a high standard of quality, we cannot guarantee the accuracy, reliability, or completeness of the content provided. Users are encouraged to critically evaluate the materials and adopt them at their own discretion. Neither the founders nor North-West University assume responsibility for any errors, omissions, or for the results obtained from the use of this information. Design images are generated by ChatGPT (Open AI, 2023).
-                </p>
-              </div>
-              <div className="reference">
-                <p><strong>Reference:</strong></p>
-                <p>
-                  OpenAI. (2023). <em>ChatGPT (Mar 14 version)</em> [Large language model]. <a href="https://chat.openai.com/chat">https://chat.openai.com/chat</a>
-                </p>
-              </div>
-            </div>
-          </footer>
         </main>
+
+        <footer className="footer">
+          <div className="footer-content">
+            <img src={CCImage} alt="Creative Commons License" className="cc-image" />
+            <div className="disclaimer">
+              <p><strong>Disclaimer:</strong></p>
+              <p>
+                The resources available on this website are primarily the work of students. While we strive to maintain a high standard of quality, we cannot guarantee the accuracy, reliability, or completeness of the content provided. Users are encouraged to critically evaluate the materials and adopt them at their own discretion. Neither the founders nor North-West University assume responsibility for any errors, omissions, or for the results obtained from the use of this information. Design images are generated by ChatGPT (OpenAI, 2023).
+              </p>
+            </div>
+            <div className="reference">
+              <p><strong>Reference:</strong></p>
+              <p>
+                OpenAI. (2023). <em>ChatGPT (Mar 14 version)</em> [Large language model]. <a href="https://chat.openai.com/chat">https://chat.openai.com/chat</a>
+              </p>
+            </div>
+          </div>
+        </footer>
       </div>
     </Router>
   );

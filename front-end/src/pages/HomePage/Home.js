@@ -5,6 +5,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase'; // Adjust this path to your firebase config file
 import './Home.css';
 import Logo from '../../Images/logo.png';
+import Background from '../../Images/share-teacher-incentive-idea.jpg';
 
 //contribute stuff
 import { Upload } from '../../components/fileupload';
@@ -42,8 +43,9 @@ function Home() {
     return (
         <div className="home-page">
         <div className="hero-image">
+        <img src={Background} alt="share-teacher-incentive-idea" className="background-logo" />
             <h1>Share2Teach</h1>
-            <p>Open Educational Resources</p>
+            <h2>Open Educational Resources</h2>
             
 
             {(role === 'moderator' || role === 'admin') && (          
@@ -59,6 +61,8 @@ function Home() {
             )}
                 <Upload isOpen={contriOpen} onClose={() => setContriOpen(false)} />
         </div>
+
+            <h2>Available Subjects and More:</h2>
 
         <div className="subject-gallery">
             <div className="subject-card">
