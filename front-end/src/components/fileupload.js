@@ -209,7 +209,6 @@ export function Upload({ isOpen, onClose }) {
         <button type="submit" disabled={!!error}>Upload Document</button>
         {uploadProg > 0 && <progress value={uploadProg} max="100" />}
       </form>
-      <p className="help-text">Note: If the title field is left blank, the file name will be used as the title.</p>
     </div>
   );
 }
