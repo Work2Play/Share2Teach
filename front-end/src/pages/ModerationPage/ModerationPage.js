@@ -17,7 +17,7 @@ const ModerationPage = () => {
                     collectionGroup(db, "Afrikaans"), collectionGroup(db, "Business"),
                     collectionGroup(db, "English"), collectionGroup(db, "Geography"),
                     collectionGroup(db, "History"), collectionGroup(db, "LifeScience"),
-                    collectionGroup(db, "LifeSkills"), collectionGroup(db, "Math"),
+                    collectionGroup(db, "LifeSkills"), collectionGroup(db, "Maths"),
                     collectionGroup(db, "NaturalScience"), collectionGroup(db, "Technology")
                 ];
 

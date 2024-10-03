@@ -1,47 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { db, storage } from '../config/firebase';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc, Timestamp, getDocs } from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL, listAll } from 'firebase/storage';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { auth } from '../config/firebase';
 import './fileupload.css';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_FILE_TYPES = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
-const GRADES = ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+// Add grades from Kindergarten to Grade 12
+const GRADES = ['Grade K', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
 
 export function Upload({ isOpen, onClose }) {
   const [userID, setUserID] = useState('');
   const [subject, setSubject] = useState('');
-  const [subSubject, setSubSubject] = useState('');
-  const [grade, setGrade] = useState('');
   const [title, setTitle] = useState('');
   const [file, setFile] = useState(null);
   const [uploadProg, setUploadProg] = useState(0);
+  const [subjects, setSubjects] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [newTag, setNewTag] = useState('');
+  const [selectedGrades, setSelectedGrades] = useState([]); // New state for selected grades
   const [error, setError] = useState('');
-  const [subjects, setSubjects] = useState({});
 
   useEffect(() => {
     fetchSubjects();
 
-    if (auth.currentUser == null)
-      {
-        console.log("no one signed in")
-      } else
-      {
-        setUserID(auth.currentUser.email)
-      }
+    if (auth.currentUser == null) {
+      setUserID("Default");
+    } else {
+      setUserID(auth.currentUser.email);
+    }
+
   }, []);
 
   const fetchSubjects = async () => {
     try {
-      const subjectsRef = collection(db, 'Subjects');
-      const subjectsSnapshot = await getDocs(subjectsRef);
-      const subjectsData = {};
-      subjectsSnapshot.forEach(doc => {
-        subjectsData[doc.id] = doc.data().subSubjects;
-      });
-      setSubjects(subjectsData);
+      const rootRef = ref(storage);
+      const result = await listAll(rootRef);
+      const subjectNames = result.prefixes.map((folderRef) => folderRef.name);
+      setSubjects(subjectNames);
     } catch (error) {
       console.error('Error fetching subjects:', error);
     }
@@ -59,20 +57,47 @@ export function Upload({ isOpen, onClose }) {
       } else {
         setFile(selectedFile);
         setError('');
+
+        // If title is empty, set the title to the name of the file
+        if (!title) {
+          setTitle(selectedFile.name);
+        }
       }
     }
+  };
+
+  const handleAddTag = () => {
+    if (newTag && !tags.includes(newTag)) {
+      setTags([...tags, newTag]);
+      setNewTag('');
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  };
+
+  const handleGradeSelect = (e) => {
+    const grade = e.target.value;
+    if (!selectedGrades.includes(grade)) {
+      setSelectedGrades([...selectedGrades, grade]);
+    }
+  };
+
+  const handleRemoveGrade = (gradeToRemove) => {
+    setSelectedGrades(selectedGrades.filter(grade => grade !== gradeToRemove));
   };
 
   const uploadHandler = async (e) => {
     e.preventDefault();
 
-    if (!file || !subject || !subSubject || !grade || !title) {
+    if (!file || !subject) {
       setError('Please fill in all required fields and select a file.');
       return;
     }
 
     try {
-      const storageRef = ref(storage, `${subject}/${subSubject}/${file.name}`);
+      const storageRef = ref(storage, `${subject}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on(
@@ -87,25 +112,21 @@ export function Upload({ isOpen, onClose }) {
         },
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          await addDoc(collection(db, 'PDFS'), {
+          await addDoc(collection(db, `PDFS/${subject}_Main/${subject}`), {
             userID,
             subject,
-            subSubject,
-            grade,
-            title,
+            title: title || file.name, // Use file name if title is empty
             file_url: downloadURL,
-            file_name: file.name,
-            file_type: file.type,
-            created_at: Timestamp.now(),
+            tags: [...tags, ...selectedGrades], // Combine tags and selected grades
+            modifiedAt: Timestamp.now(),
           });
           alert('File uploaded successfully!');
           setUploadProg(0);
           setSubject('');
-          setSubSubject('');
-          setGrade('');
           setTitle('');
           setFile(null);
-          setError('');
+          setTags([]);
+          setSelectedGrades([]); // Reset selected grades
           onClose();
         }
       );
@@ -118,54 +139,77 @@ export function Upload({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <form onSubmit={uploadHandler} className="upload-form">
-      <p>User: {userID}</p>
-      <select
-        value={subject}
-        onChange={(e) => {
-          setSubject(e.target.value);
-          setSubSubject('');
-        }}
-        required
-      >
-        <option value="">Select Subject</option>
-        {Object.keys(subjects).map((subj) => (
-          <option key={subj} value={subj}>{subj}</option>
-        ))}
-      </select>
-      {subject && (
+    <div className="upload-popup">
+      <div className="upload-header">
+        <p>User: {userID}</p>
+        <button className="close-button" onClick={onClose}>X</button>
+      </div>
+      <form onSubmit={uploadHandler} className="upload-form">
         <select
-          value={subSubject}
-          onChange={(e) => setSubSubject(e.target.value)}
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
           required
         >
-          <option value="">Select Sub-Subject</option>
-          {subjects[subject].map((subSubj) => (
-            <option key={subSubj} value={subSubj}>{subSubj}</option>
+          <option value="" disabled>
+            Select Subject
+          </option>
+          {subjects.map((subj) => (
+            <option key={subj} value={subj}>
+              {subj}
+            </option>
           ))}
         </select>
-      )}
-      <select
-        value={grade}
-        onChange={(e) => setGrade(e.target.value)}
-        required
-      >
-        <option value="">Select Grade</option>
-        {GRADES.map((g) => (
-          <option key={g} value={g}>Grade {g}</option>
-        ))}
-      </select>
-      <input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
-      <input type="file" onChange={handleFileChange} required />
-      {error && <p className="error-message">{error}</p>}
-      <button type="submit" disabled={!!error}>Upload Document</button>
-      {uploadProg > 0 && <progress value={uploadProg} max="100" />}
-    </form>
+
+        <input
+          type="text"
+          placeholder="Title (If left blank, the file name will be used)"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <input type="file" onChange={handleFileChange} required />
+        {error && <p className="error-message">{error}</p>}
+
+        {/* Grade Selector */}
+        <select onChange={handleGradeSelect}>
+          <option value="">Select Grade</option>
+          {GRADES.map((grade) => (
+            <option key={grade} value={grade}>
+             {grade === 'K' ? 'K' : grade}
+            </option>
+          ))}
+        </select>
+        <div>
+          {selectedGrades.map((grade, index) => (
+            <span key={index} className="tag">
+                {grade}
+              <button type="button" onClick={() => handleRemoveGrade(grade)}>x</button>
+            </span>
+          ))}
+        </div>
+
+        {/* Tags functionality */}
+        <div>
+          <input
+            type="text"
+            placeholder="Add a tag"
+            value={newTag}
+            onChange={(e) => setNewTag(e.target.value)}
+          />
+          <button type="button" onClick={handleAddTag}>Add Tag</button>
+        </div>
+        <div>
+          {tags.map((tag, index) => (
+            <span key={index} className="tag">
+              {tag}
+              <button type="button" onClick={() => handleRemoveTag(tag)}>x</button>
+            </span>
+          ))}
+        </div>
+
+        <button type="submit" disabled={!!error}>Upload Document</button>
+        {uploadProg > 0 && <progress value={uploadProg} max="100" />}
+      </form>
+      <p className="help-text">Note: If the title field is left blank, the file name will be used as the title.</p>
+    </div>
   );
 }

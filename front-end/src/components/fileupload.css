@@ -1,40 +1,138 @@
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    max-width: 500px;
-    margin: auto;
-    background-color: #f9f9f9;
-  }
-  
-  input[type="text"],
-  input[type="file"],
-  select {
-    margin: 10px 0;
-    padding: 10px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  button {
-    margin: 10px 0;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  progress {
-    margin: 10px 0;
-    width: 100%;
-  }
+/* General styling for file upload /
+.upload-popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  width: 80%;
+  max-width: 600px;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 1001;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+/ Make sure the page content moves down when the popup opens /
+body.uploading-active {
+  margin-top: 300px; / Adjust this value to control the height of the push /
+}
+
+/ Header styling with close button /
+.upload-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.upload-header p {
+  margin: 0;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5em;
+  color: #333;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #ff0000;
+}
+
+/ Form styling */
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.upload-form select,
+.upload-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.upload-form input[type="file"] {
+  padding: 5px;
+}
+
+.upload-form button {
+  background-color: #61dafb;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.upload-form button:hover {
+  background-color: #21a1f1;
+}
+/* Tags and grades styling /
+.tag {
+  display: inline-block;
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  margin: 5px 5px 0 0;
+  border-radius: 3px;
+  font-size: 0.9em;
+  position: relative;
+}
+
+.tag button {
+  background-color: transparent;
+  border: none;
+  font-size: 1em;
+  margin-left: 5px;
+  color: #ff0000;
+  cursor: pointer;
+}
+
+.tag button:hover {
+  color: #cc0000;
+}
+
+/ Progress bar styling /
+progress {
+  width: 100%;
+  height: 20px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #f1f1f1;
+}
+
+progress::-webkit-progress-value {
+  background-color: #61dafb;
+}
+
+/ Help text styling /
+.help-text {
+  font-size: 0.9em;
+  color: #888;
+  margin-top: 10px;
+}
+
+/ Background overlay */
+.upload-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
