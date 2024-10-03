@@ -26,7 +26,7 @@ export function Upload({ isOpen, onClose }) {
 
     if (auth.currentUser == null)
       {
-        setUserID("Default")
+        console.log("no one signed in")
       } else
       {
         setUserID(auth.currentUser.email)
