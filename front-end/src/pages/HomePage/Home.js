@@ -6,6 +6,7 @@ import { db } from '../../config/firebase'; // Adjust this path to your firebase
 import './Home.css';
 import Logo from '../../Images/logo.png';
 import Background from '../../Images/share-teacher-incentive-idea.jpg';
+import { logPageView } from '../../components/analyticsLogger';
 
 //contribute stuff
 import { Upload } from '../../components/fileupload';
@@ -36,9 +37,14 @@ function Home() {
                 console.error('Error fetching user role: ', error);
             }
         };
-
+        
         fetchUserRole();
     }, []);
+
+        // Log page view when component mounts
+        useEffect(() => {
+            logPageView('Home');
+        }, []);
 
     return (
         <div className="home-page">

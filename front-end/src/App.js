@@ -28,7 +28,7 @@ import ModerationPage from './pages/ModerationPage/ModerationPage';
 import AnalyticsPage from './pages/AnalyticsPage/AnalyticsPage';
 import { Auth } from './components/auth';
 import CCImage from './Images/CC.png';
-import { getAuth } from 'firebase/auth';
+import { getAuth, signInAnonymously } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './config/firebase';
 
@@ -38,6 +38,20 @@ function App() {
   const [hovering, setHovering] = useState(false);
   const [faqOpen, setFaqOpen] = useState(false);
   const [role, setRole] = useState('');
+
+  // Initialize Anonymous Authentication
+  useEffect(() => {
+    const auth = getAuth();
+    if (!auth.currentUser) {
+      signInAnonymously(auth)
+        .then(() => {
+          console.log('Signed in anonymously');
+        })
+        .catch((error) => {
+          console.error('Anonymous sign-in failed:', error);
+        });
+    }
+  }, []);
 
   // Fetch user role from Firestore
   useEffect(() => {
