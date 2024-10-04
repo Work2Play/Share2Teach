@@ -4,7 +4,7 @@ import { getFirestore, doc, updateDoc, FieldValue } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 // Function to track page views
-export const trackPageView = async (pageName) => {
+export const logPageView = async (pageName) => {
   const db = getFirestore();
   const analyticsDoc = doc(db, 'analytics', 'site');
 
