@@ -85,6 +85,21 @@ export function Upload({ isOpen, onClose }) {
     setSelectedGrades(selectedGrades.filter(grade => grade !== gradeToRemove));
   };
 
+  // the logAnalyticsEvent function log the analytics to firestore
+  const logAnalyticsEvent = async (userId, subject, title) => {
+    try {
+      await addDoc(collection(db, "analytics_data"), {
+        userID,
+        event: "file_upload",
+        subject,
+        title,
+        timestamp: Timestamp.now(),
+      });
+    } catch (error) {
+      console.error('Error logging event:', error);
+    }
+  };
+
   const uploadHandler = async (e) => {
     e.preventDefault();
 
@@ -117,6 +132,10 @@ export function Upload({ isOpen, onClose }) {
             tags: [...tags, ...selectedGrades],
             modifiedAt: Timestamp.now(),
           });
+
+          // call the logAnalyticsEvent function
+          await logAnalyticsEvent(userID, subject, title); 
+
           alert('File uploaded successfully!');
           setUploadProg(0);
           setSubject('');

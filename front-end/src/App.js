@@ -32,6 +32,10 @@ import { getAuth, signInAnonymously } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './config/firebase';
 
+import Display_Analytics from './components/Display_Analytics';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from './config/firebase';
+
 function App() {
   // State to manage the visibility of the menu and other UI elements
   const [menuOpen, setMenuOpen] = useState(false);
@@ -201,6 +205,7 @@ function App() {
                       Analytics
                     </Link>
                   </li>
+                  <li><Link to="/analytic" onClick={() => setMenuOpen(false)}>Analytics</Link></li>
                 </ul>
               </nav>
             )}
@@ -248,6 +253,7 @@ function App() {
             <Route path="/sign-in" element={<SignInPage />} />
             <Route path="/moderation" element={<ModerationPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/analytic" element={<Display_Analytics />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <FAQPage isOpen={faqOpen} onClose={() => setFaqOpen(false)} />

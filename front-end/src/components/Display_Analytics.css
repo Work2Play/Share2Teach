@@ -1,0 +1,26 @@
+.analytics-container {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.analytics-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.analytics-container li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    background-color: #f9f9f9;
+}
+
+.analytics-header {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
