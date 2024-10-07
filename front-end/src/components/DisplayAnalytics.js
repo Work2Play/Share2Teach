@@ -3,7 +3,7 @@ import { db } from '../config/firebase';
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { Line } from 'react-chartjs-2';
 //import { logPageView } from '../components/Fetch_Analytics';
-import './Display_Analytics.css';
+import './DisplayAnalytics.css';
 
 
 const Display_Analytics = () => {
