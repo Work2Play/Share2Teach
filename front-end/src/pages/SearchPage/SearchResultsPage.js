@@ -3,77 +3,51 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './SearchResultsPage.css';
 
 import { db } from '../../config/firebase';
-import { getDocs, collection, query, where } from 'firebase/firestore';
-
-const GRADES = ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 const SearchResultsPage = () => {
   const [results, setResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedSubject, setSelectedSubject] = useState('');
-  const [selectedSubSubject, setSelectedSubSubject] = useState('');
-  const [selectedGrade, setSelectedGrade] = useState('');
-  const [subjects, setSubjects] = useState({});
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchSubjects();
     const searchParams = new URLSearchParams(location.search);
     const queryTerm = searchParams.get('q');
-    const subject = searchParams.get('subject');
-    const subSubject = searchParams.get('subSubject');
-    const grade = searchParams.get('grade');
     setSearchTerm(queryTerm || '');
-    setSelectedSubject(subject || '');
-    setSelectedSubSubject(subSubject || '');
-    setSelectedGrade(grade || '');
 
     if (queryTerm) {
-      fetchResults(queryTerm, subject, subSubject, grade);
+      fetchResults(queryTerm);
     }
   }, [location]);
 
-  const fetchSubjects = async () => {
+  const fetchResults = async (term) => {
     try {
-      const subjectsRef = collection(db, 'Subjects');
-      const subjectsSnapshot = await getDocs(subjectsRef);
-      const subjectsData = {};
-      subjectsSnapshot.forEach(doc => {
-        subjectsData[doc.id] = doc.data().subSubjects;
+      const subjects = [
+        'Afrikaans', 'Business', 'English', 'Geography',
+        'History', 'LifeScience', 'LifeSkills', 'Maths',
+        'NaturalScience', 'Technology'
+      ];
+      let allResults = [];
+
+      for (const subject of subjects) {
+        const collectionRef = collection(db, `PDFS/${subject}_Main/${subject}`);
+        const q = query(collectionRef, where('verified', '==', true));
+        const querySnapshot = await getDocs(q);
+        const docs = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        allResults = allResults.concat(docs);
+      }
+
+      const termLower = term.toLowerCase();
+
+      const filteredResults = allResults.filter(doc => {
+        const titleMatch = doc.title && doc.title.toLowerCase().includes(termLower);
+        const tagsMatch = doc.tags && doc.tags.some(tag => tag.toLowerCase().includes(termLower));
+        const subjectMatch = doc.subject && doc.subject.toLowerCase().includes(termLower);
+        return titleMatch || tagsMatch || subjectMatch;
       });
-      setSubjects(subjectsData);
-    } catch (error) {
-      console.error('Error fetching subjects:', error);
-    }
-  };
 
-  const fetchResults = async (term, subject, subSubject, grade) => {
-    try {
-      let searchQuery = query(collection(db, 'PDFS'));
-
-      if (term) {
-        searchQuery = query(searchQuery, 
-          where('title', '>=', term),
-          where('title', '<=', term + '\uf8ff')
-        );
-      }
-      if (subject) {
-        searchQuery = query(searchQuery, where('subject', '==', subject));
-      }
-      if (subSubject) {
-        searchQuery = query(searchQuery, where('subSubject', '==', subSubject));
-      }
-      if (grade) {
-        searchQuery = query(searchQuery, where('grade', '==', grade));
-      }
-
-      const data = await getDocs(searchQuery);
-      const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setResults(filteredData);
+      setResults(filteredResults);
     } catch (err) {
       console.error("Error fetching search results:", err);
     }
@@ -81,11 +55,10 @@ const SearchResultsPage = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    if (searchTerm.trim() === '') return;
+
     const searchParams = new URLSearchParams();
     if (searchTerm) searchParams.set('q', searchTerm);
-    if (selectedSubject) searchParams.set('subject', selectedSubject);
-    if (selectedSubSubject) searchParams.set('subSubject', selectedSubSubject);
-    if (selectedGrade) searchParams.set('grade', selectedGrade);
     navigate(`/search?${searchParams.toString()}`);
   };
 
@@ -101,41 +74,6 @@ const SearchResultsPage = () => {
             placeholder="Search by keywords..."
             className="search-input"
           />
-          <select
-            value={selectedSubject}
-            onChange={(e) => {
-              setSelectedSubject(e.target.value);
-              setSelectedSubSubject('');
-            }}
-            className="subject-select"
-          >
-            <option value="">All Subjects</option>
-            {Object.keys(subjects).map((subject) => (
-              <option key={subject} value={subject}>{subject}</option>
-            ))}
-          </select>
-          {selectedSubject && (
-            <select
-              value={selectedSubSubject}
-              onChange={(e) => setSelectedSubSubject(e.target.value)}
-              className="sub-subject-select"
-            >
-              <option value="">All Sub-Subjects</option>
-              {subjects[selectedSubject].map((subSubject) => (
-                <option key={subSubject} value={subSubject}>{subSubject}</option>
-              ))}
-            </select>
-          )}
-          <select
-            value={selectedGrade}
-            onChange={(e) => setSelectedGrade(e.target.value)}
-            className="grade-select"
-          >
-            <option value="">All Grades</option>
-            {GRADES.map((grade) => (
-              <option key={grade} value={grade}>Grade {grade}</option>
-            ))}
-          </select>
           <button type="submit" className="search-button">Search</button>
         </form>
       </div>
@@ -145,26 +83,30 @@ const SearchResultsPage = () => {
             <thead>
               <tr>
                 <th>Title</th>
+                <th>Tags</th>
                 <th>Subject</th>
-                <th>Sub-Subject</th>
                 <th>Grade</th>
                 <th>Last Modified Date</th>
-                <th>Last Modified User</th>
+                <th>Uploaded By</th>
                 <th>Rating</th>
-                <th>Amount Of Ratings Received</th>
+                <th>Number of Ratings</th>
               </tr>
             </thead>
             <tbody>
               {results.map((result) => (
                 <tr key={result.id}>
-                  <td>{result.title}</td>
+                  <td>
+                    <a href={result.file_url} target="_blank" rel="noopener noreferrer">
+                      {result.title}
+                    </a>
+                  </td>
+                  <td>{result.tags ? result.tags.join(', ') : 'No Tags'}</td>
                   <td>{result.subject}</td>
-                  <td>{result.subSubject}</td>
                   <td>{result.grade}</td>
-                  <td>{result.dateMod}</td>
-                  <td>{result.userMod}</td>
-                  <td>{result.rating}</td>
-                  <td>{result.ratingAmount}</td>
+                  <td>{result.modifiedAt ? result.modifiedAt.toDate().toLocaleString() : 'N/A'}</td>
+                  <td>{result.userID}</td>
+                  <td>{result.rating || 0}</td>
+                  <td>{result.ratingAmount || 0}</td>
                 </tr>
               ))}
             </tbody>

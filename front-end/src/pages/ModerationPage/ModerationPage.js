@@ -1,7 +1,7 @@
 import React, { useEffect, useState, } from 'react';
 import './ModerationPage.css';
 import { db, storage } from '../../config/firebase';
-import { getDocs, collectionGroup, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collectionGroup, updateDoc, deleteDoc, onSnapshot } from 'firebase/firestore';
 import { deleteObject, ref } from 'firebase/storage';
 import { CSVLink } from 'react-csv'; // To handle CSV export
 
@@ -10,35 +10,56 @@ const ModerationPage = () => {
     const [reportedPDFs, setReportedPDFs] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: '', direction: 'ascending' });
+    const [allPDFs, setAllPDFs] = useState({}); // To store all PDFs
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const collectionsToQuery = [
-                    collectionGroup(db, "Afrikaans"), collectionGroup(db, "Business"),
-                    collectionGroup(db, "English"), collectionGroup(db, "Geography"),
-                    collectionGroup(db, "History"), collectionGroup(db, "LifeScience"),
-                    collectionGroup(db, "LifeSkills"), collectionGroup(db, "Maths"),
-                    collectionGroup(db, "NaturalScience"), collectionGroup(db, "Technology")
-                ];
+        const unsubscribes = [];
 
-                const queryPromises = collectionsToQuery.map(collectionRef => getDocs(collectionRef));
-                const pdfQuerySnapshot = await Promise.all(queryPromises);
-                const allDocs = pdfQuerySnapshot.flatMap(snapshot => snapshot.docs);
-                const allPDFs = allDocs.map((doc) => ({
-                    ...doc.data(),
-                    id: doc.id,
-                    ref: doc.ref,
-                }));
+        // List of collection groups to listen to
+        const collectionsToQuery = [
+            collectionGroup(db, "Afrikaans"), collectionGroup(db, "Business"),
+            collectionGroup(db, "English"), collectionGroup(db, "Geography"),
+            collectionGroup(db, "History"), collectionGroup(db, "LifeScience"),
+            collectionGroup(db, "LifeSkills"), collectionGroup(db, "Maths"),
+            collectionGroup(db, "NaturalScience"), collectionGroup(db, "Technology")
+        ];
 
-                setUnverifiedPDFs(allPDFs.filter((pdf) => pdf.verified === undefined));
-                setReportedPDFs(allPDFs.filter((pdf) => pdf.reportAmount > 0));
-            } catch (err) {
-                console.error("Error fetching PDFs:", err);
-            }
+        // Set up real-time listeners
+        collectionsToQuery.forEach((collectionRef) => {
+            const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
+                setAllPDFs(prevAllPDFs => {
+                    const updatedAllPDFs = { ...prevAllPDFs };
+                    snapshot.docChanges().forEach((change) => {
+                        const pdfData = {
+                            ...change.doc.data(),
+                            id: change.doc.id,
+                            ref: change.doc.ref,
+                        };
+                        if (change.type === "added" || change.type === "modified") {
+                            updatedAllPDFs[change.doc.id] = pdfData;
+                        } else if (change.type === "removed") {
+                            delete updatedAllPDFs[change.doc.id];
+                        }
+                    });
+                    return updatedAllPDFs;
+                });
+            });
+
+            unsubscribes.push(unsubscribe);
+        });
+
+        // Clean up listeners on unmount
+        return () => {
+            unsubscribes.forEach(unsubscribe => unsubscribe());
         };
-        fetchData();
     }, []);
+
+    // Update unverifiedPDFs and reportedPDFs whenever allPDFs changes
+    useEffect(() => {
+        const allPDFsArray = Object.values(allPDFs);
+        setUnverifiedPDFs(allPDFsArray.filter((pdf) => pdf.verified === undefined));
+        setReportedPDFs(allPDFsArray.filter((pdf) => pdf.reportAmount > 0));
+    }, [allPDFs]);
 
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
@@ -102,7 +123,7 @@ const ModerationPage = () => {
                 ratingAmount: pdf.ratingAmount || 0,
                 reportAmount: pdf.reportAmount || 0,
             });
-            setUnverifiedPDFs(unverifiedPDFs.filter((item) => item.id !== pdf.id));
+            // No need to update state manually; listeners will handle it
         } catch (err) {
             console.error("Error approving PDF:", err);
         }
@@ -112,17 +133,17 @@ const ModerationPage = () => {
         try {
             await deleteDoc(pdf.ref);
 
-            //to delete the file in firebase storage aswell
+            // Delete the file in Firebase Storage
             try {
-                const storageRef = ref(storage, pdf.file_url); // Create a reference from the URL
+                const storageRef = ref(storage, pdf.file_url);
                 await deleteObject(storageRef);
                 console.log('File deleted successfully');
-                } catch (error) {
-                console.error('Error deleting file:', error);   
-                }
-            setUnverifiedPDFs(unverifiedPDFs.filter((item) => item.id !== pdf.id));
+            } catch (error) {
+                console.error('Error deleting file:', error);   
+            }
+            // No need to update state manually; listeners will handle it
         } catch (err) {
-            console.error("Error approving PDF:", err);
+            console.error("Error deleting PDF:", err);
         }
     };
 
@@ -133,7 +154,7 @@ const ModerationPage = () => {
                 reported: false,
                 reportAmount: 0, // Reset report amount to 0
             });
-            setReportedPDFs(reportedPDFs.filter((item) => item.id !== pdf.id));
+            // No need to update state manually; listeners will handle it
         } catch (err) {
             console.error("Error approving reported PDF:", err);
         }
@@ -144,16 +165,15 @@ const ModerationPage = () => {
         try {
             await deleteDoc(pdf.ref);
 
-            //to delete the file in firebase storage aswell
+            // Delete the file in Firebase Storage
             try {
-                const storageRef = ref(storage, pdf.file_url); // Create a reference from the URL
+                const storageRef = ref(storage, pdf.file_url);
                 await deleteObject(storageRef);
                 console.log('File deleted successfully');
-                } catch (error) {
-                console.error('Error deleting file:', error);   
-                }
-                
-            setReportedPDFs(reportedPDFs.filter((item) => item.id !== pdf.id));
+            } catch (error) {
+                console.error('Error deleting file:', error);   
+            }
+            // No need to update state manually; listeners will handle it
         } catch (err) {
             console.error("Error deleting reported PDF:", err);
         }
