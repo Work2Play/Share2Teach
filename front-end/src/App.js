@@ -25,14 +25,13 @@ import RoleAssign from './pages/RoleAssignPage/RoleAssign';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
 import SignInPage from './pages/SignInPage/SignInPage';
 import ModerationPage from './pages/ModerationPage/ModerationPage';
-import AnalyticsPage from './pages/AnalyticsPage/AnalyticsPage';
 import { Auth } from './components/auth';
 import CCImage from './Images/CC.png';
 import { getAuth, signInAnonymously } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './config/firebase';
 
-import Display_Analytics from './components/Display_Analytics';
+import DisplayAnalytics from './components/DisplayAnalytics';
 import { logEvent } from 'firebase/analytics';
 import { analytics } from './config/firebase';
 
@@ -200,12 +199,11 @@ function App() {
                       </Link>
                     </li>
                   )}
-                  <li>
-                    <Link to="/analytics" onClick={() => setMenuOpen(false)}>
+                  {role === 'admin' && (
+                    <li><Link to="/analytic" onClick={() => setMenuOpen(false)}>
                       Analytics
                     </Link>
-                  </li>
-                  <li><Link to="/analytic" onClick={() => setMenuOpen(false)}>Analytics</Link></li>
+                  </li>)}
                 </ul>
               </nav>
             )}
@@ -252,8 +250,7 @@ function App() {
             <Route path="/sign-up" element={<SignUpPage />} />
             <Route path="/sign-in" element={<SignInPage />} />
             <Route path="/moderation" element={<ModerationPage />} />
-            <Route path="/analytics" element={<AnalyticsPage />} />
-            <Route path="/analytic" element={<Display_Analytics />} />
+            <Route path="/analytic" element={<DisplayAnalytics />} />
             {/* Add more routes for other subjects here */}
           </Routes>
           <FAQPage isOpen={faqOpen} onClose={() => setFaqOpen(false)} />
