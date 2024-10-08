@@ -3,35 +3,35 @@ import './RoleAssign.css'; // Assuming you have a separate CSS file for styling
 
 // Importing Firebase database
 import { db } from '../../config/firebase'; // Adjust the import path as necessary
-import { getDocs, collection, doc, updateDoc } from 'firebase/firestore';
+import { collection, doc, updateDoc, onSnapshot } from 'firebase/firestore';
 
 const RoleAssignPage = () => {
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
   const [modifiedUsers, setModifiedUsers] = useState({}); // Track modified roles
-  const [searchQuery, setSearchQuery] = useState(""); // State for search input
+  const [searchQuery, setSearchQuery] = useState(''); // State for search input
 
   useEffect(() => {
-    const fetchUsersAndRoles = async () => {
-      try {
-        const userCollection = collection(db, "users"); // Reference to the "users" collection
-        const userSnapshot = await getDocs(userCollection);
-        const userList = userSnapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
+    const userCollection = collection(db, 'users'); // Reference to the "users" collection
 
-        const roleList = userList.map((user) => user.role);
-        const uniqueRoles = [...new Set(roleList)];
+    // Set up real-time listener
+    const unsubscribe = onSnapshot(userCollection, (snapshot) => {
+      const userList = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
 
-        setUsers(userList);
-        setRoles(uniqueRoles);
-      } catch (err) {
-        console.error("Error fetching users and roles:", err);
-      }
-    };
+      const roleList = userList.map((user) => user.role || 'user');
+      const uniqueRoles = [...new Set(roleList)];
 
-    fetchUsersAndRoles();
+      setUsers(userList);
+      setRoles(uniqueRoles);
+    }, (error) => {
+      console.error('Error fetching users and roles:', error);
+    });
+
+    // Cleanup listener on unmount
+    return () => unsubscribe();
   }, []);
 
   const handleRoleChange = (userId, newRole) => {
@@ -44,11 +44,13 @@ const RoleAssignPage = () => {
   const handleSaveClick = async (userId) => {
     try {
       const newRole = modifiedUsers[userId];
-      const userDocRef = doc(db, "users", userId);
+      const userDocRef = doc(db, 'users', userId);
 
-      await updateDoc(userDocRef, { role: newRole });  // Update the user's role in Firebase
+      await updateDoc(userDocRef, { role: newRole });
       console.log(`Role updated for user ID: ${userId} to ${newRole}`);
-      
+
+      // No need to update users state manually; onSnapshot listener will handle it
+
       // Clear the modified state after saving
       setModifiedUsers((prev) => {
         const updated = { ...prev };
@@ -56,13 +58,14 @@ const RoleAssignPage = () => {
         return updated;
       });
     } catch (err) {
-      console.error("Error updating role:", err);
+      console.error('Error updating role:', err);
     }
   };
 
-  const filteredUsers = users.filter(user =>
-    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.full_name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredUsers = users.filter(
+    (user) =>
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.full_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -97,7 +100,7 @@ const RoleAssignPage = () => {
                     <td>{user.full_name}</td>
                     <td>
                       <select
-                        value={modifiedUsers[user.id] || user.role}
+                        value={modifiedUsers[user.id] || user.role || 'user'}
                         className="role-dropdown"
                         onChange={(e) => handleRoleChange(user.id, e.target.value)}
                       >

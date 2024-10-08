@@ -1,158 +1,141 @@
-// Your web app's Firebase configuration
-var firebaseConfig = {
-    apiKey: "AIzaSyCppEPoO_OkUSoV6KpYf8P4z8dF4nGF6aU",
-    authDomain: "share2teach-be.firebaseapp.com",
-    projectId: "share2teach-be",
-    storageBucket: "share2teach-be.appspot.com",
-    messagingSenderId: "942441916410",
-    appId: "1:942441916410:web:1c24d5145c785e67886643",
-    databaseURL: "https://share2teach-be-default-rtdb.europe-west1.firebasedatabase.app"
+// UserRoles.js
+
+import React, { useState, useEffect } from 'react';
+import { db } from '../../config/firebase'; // Adjust the import path as necessary
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import './UserRoles.css'; // Assuming you have a separate CSS file
+
+const UserRoles = () => {
+  const [users, setUsers] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [modifiedUsers, setModifiedUsers] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    const fetchUsersAndRoles = async () => {
+      try {
+        const userCollection = collection(db, 'users');
+        const userSnapshot = await getDocs(userCollection);
+        const userList = userSnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+
+        const roleList = userList.map((user) => user.role || 'user');
+        const uniqueRoles = [...new Set(roleList)];
+
+        setUsers(userList);
+        setRoles(uniqueRoles);
+      } catch (err) {
+        console.error('Error fetching users and roles:', err);
+      }
+    };
+
+    fetchUsersAndRoles();
+  }, []);
+
+  const handleRoleChange = (userId, newRole) => {
+    setModifiedUsers((prev) => ({
+      ...prev,
+      [userId]: newRole,
+    }));
+  };
+
+  const handleSaveClick = async (userId) => {
+    try {
+      const newRole = modifiedUsers[userId];
+      const userDocRef = doc(db, 'users', userId);
+
+      await updateDoc(userDocRef, { role: newRole });
+      console.log(`Role updated for user ID: ${userId} to ${newRole}`);
+
+      // Update the users state to reflect the change
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === userId ? { ...user, role: newRole } : user
+        )
+      );
+
+      // Clear the modified state after saving
+      setModifiedUsers((prev) => {
+        const updated = { ...prev };
+        delete updated[userId];
+        return updated;
+      });
+    } catch (err) {
+      console.error('Error updating role:', err);
+    }
+  };
+
+  const filteredUsers = users.filter(
+    (user) =>
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.full_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <div className="user-list-page">
+      <div className="user-header">
+        <h1>User List</h1>
+        <input
+          type="text"
+          placeholder="Search by email or name"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+        />
+      </div>
+      <div className="user-container">
+        {filteredUsers.length > 0 ? (
+          <table className="user-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Full Name</th>
+                <th>Role</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user) => {
+                const isModified = modifiedUsers[user.id] !== undefined;
+                return (
+                  <tr key={user.id}>
+                    <td>{user.email}</td>
+                    <td>{user.full_name}</td>
+                    <td>
+                      <select
+                        value={modifiedUsers[user.id] || user.role || 'user'}
+                        className="role-dropdown"
+                        onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                      >
+                        {roles.map((role, index) => (
+                          <option key={index} value={role}>
+                            {role}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td>
+                      <button
+                        className={`save-button ${isModified ? 'active' : ''}`}
+                        disabled={!isModified}
+                        onClick={() => handleSaveClick(user.id)}
+                      >
+                        Save
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : (
+          <p>No users found.</p>
+        )}
+      </div>
+    </div>
+  );
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
-// Initialize variables
-const auth = firebase.auth();
-const database = firebase.database();
-
-// Set up our register function
-function register() {
-    // Get all our input fields
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const full_name = document.getElementById('full_name').value;
-
-    // Validate input fields
-    if (!validate_email(email) || !validate_password(password)) {
-        alert('Email or Password is incorrect. Try again.');
-        return;
-    }
-    if (!validate_field(full_name)) {
-        alert('Incorrect input. Please try again.');
-        return;
-    }
-
-    // Move on with Auth
-    auth.createUserWithEmailAndPassword(email, password)
-        .then(function() {
-            // Declare user variable
-            var user = auth.currentUser;
-
-            // Add this user to Firebase Database
-            var database_ref = database.ref();
-
-            // Create User data
-            var user_data = {
-                email: email,
-                full_name: full_name,
-                role: 'user', // Assuming a default role
-                last_login: Date.now()
-            };
-
-            // Push to Firebase Database
-            database_ref.child('users/' + user.uid).set(user_data);
-
-            alert('User Created.');
-        })
-        .catch(function(error) {
-            alert(error.message);
-        });
-}
-
-// Reference to the "users" table
-const usersRef = database.ref('users');
-
-// Function to fetch users and populate the table
-function fetchUsers() {
-    const usersRef = database.ref('users');
-    
-    usersRef.on('value', (snapshot) => {
-        const users = snapshot.val();
-
-        // Create a table dynamically
-        const table = document.createElement('table');
-        table.setAttribute('border', '1');
-        const headerRow = document.createElement('tr');
-
-        // Define table headers
-        const headers = ['Email', 'Name', 'Role'];
-        headers.forEach(headerText => {
-            const header = document.createElement('th');
-            header.textContent = headerText;
-            headerRow.appendChild(header);
-        });
-
-        table.appendChild(headerRow);
-
-        // Populate the table rows with user data
-        for (const userId in users) {
-            if (users.hasOwnProperty(userId)) {
-                const user = users[userId];
-                const row = document.createElement('tr');
-                
-                const emailCell = document.createElement('td');
-                emailCell.textContent = user.email;
-                row.appendChild(emailCell);
-
-                const nameCell = document.createElement('td');
-                nameCell.textContent = user.full_name;
-                row.appendChild(nameCell);
-
-                const roleCell = document.createElement('td');
-                roleCell.textContent = user.role;
-                row.appendChild(roleCell);
-
-                table.appendChild(row);
-            }
-        }
-
-        // Append the table to the document body
-        document.body.appendChild(table);
-    });
-}
-
-// Fetch users when the page loads
-window.onload = fetchUsers;
-
-// Set up our login function
-function login() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    if (!validate_email(email) || !validate_password(password)) {
-        alert('Email or Password is incorrect. Try again.');
-        return;
-    }
-
-    auth.signInWithEmailAndPassword(email, password)
-        .then(function() {
-            const user = auth.currentUser;
-            var database_ref = database.ref();
-
-            var user_data = {
-                last_login: Date.now()
-            };
-
-            database_ref.child('users/' + user.uid).update(user_data);
-
-            alert('Logged In');
-        })
-        .catch(function(error) {
-            alert(error.message);
-        });
-}
-
-// Validate Functions
-function validate_email(email) {
-    const expression = /^[^@]+@\w+(\.\w+)+\w$/;
-    return expression.test(email);
-}
-
-function validate_password(password) {
-    return password.length >= 6;
-}
-
-function validate_field(field) {
-    return field != null && field.length > 0;
-}
+export default UserRoles;
