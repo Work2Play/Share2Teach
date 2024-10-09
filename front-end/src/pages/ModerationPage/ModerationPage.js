@@ -109,7 +109,7 @@ const ModerationPage = () => {
         tags: pdf.tags ? pdf.tags.join(', ') : '',
         subject: pdf.subject,
         userID: pdf.userID,
-        modifiedAt: pdf.modifiedAt ? pdf.modifiedAt.toDate().toLocaleString() : 'N/A',
+        //modifiedAt: pdf.modifiedAt ? pdf.modifiedAt.toDate().toLocaleString() : 'N/A',
         verified: pdf.verified ? 'Yes' : 'No',
         reportAmount: pdf.reportAmount
     }));
@@ -209,7 +209,7 @@ const ModerationPage = () => {
                             <th>Tags</th>
                             <th onClick={() => requestSort('subject')}>Subject</th>
                             <th onClick={() => requestSort('userID')}>Uploaded By</th>
-                            <th onClick={() => requestSort('modifiedAt')}>Upload Date</th>
+
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -220,7 +220,7 @@ const ModerationPage = () => {
                                 <td>{pdf.tags ? pdf.tags.join(', ') : 'No Tags'}</td>
                                 <td>{pdf.subject}</td>
                                 <td>{pdf.userID}</td>
-                                <td>{pdf.modifiedAt ? pdf.modifiedAt.toDate().toLocaleString() : 'N/A'}</td>
+
                                 <td>
                                     <button className="approve-button" onClick={() => approvePDF(pdf)}>Approve</button>
                                     <button className="reject-button" onClick={() => deletePDF(pdf)}>Delete</button>
@@ -244,7 +244,6 @@ const ModerationPage = () => {
                             <th onClick={() => requestSort('subject')}>Subject</th>
                             <th onClick={() => requestSort('reportAmount')}>Amount Reported</th>
                             <th onClick={() => requestSort('userID')}>Uploaded By</th>
-                            <th onClick={() => requestSort('modifiedAt')}>Upload Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -256,7 +255,7 @@ const ModerationPage = () => {
                                 <td>{pdf.subject}</td>
                                 <td>{pdf.reportAmount}</td>
                                 <td>{pdf.userID}</td>
-                                <td>{pdf.modifiedAt ? pdf.modifiedAt.toDate().toLocaleString() : 'N/A'}</td>
+
                                 <td>
                                     <button className="approve-button" onClick={() => approveReportedPDF(pdf)}>Approve</button>
                                     <button className="reject-button" onClick={() => deleteReportedPDF(pdf)}>Delete</button>
