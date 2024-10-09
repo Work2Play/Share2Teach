@@ -9,7 +9,8 @@ const SignInPage = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const [loggedIn, setLoggedIn] = useState(false);
-
+    const [loginAttempts, setLoginAttempts] = useState(0);
+    const [showPopup, setShowPopup] = useState(false);
 
     const handleEmailSignIn = async (e) => {
         e.preventDefault();
@@ -18,31 +19,39 @@ const SignInPage = () => {
             console.log("User signed in with email:", auth.currentUser.email);
             setEmail(""); // Clear email field
             setPassword(""); // Clear password field
-            navigate("/"); // Redirect to home page
+            setLoginAttempts(0); // Reset login attempts
             setLoggedIn(true);
-            // You can redirect the user or perform other actions here
+            navigate("/"); // Redirect to home page
         } catch (err) {
             console.error("Email sign-in error:", err);
+            setLoginAttempts(prev => prev + 1);
+            if (loginAttempts >= 2) { // Show pop-up on the 3rd failed attempt
+                setShowPopup(true);
+                // Optionally, disable the account here
+                console.warn("Account may be disabled after multiple failed attempts.");
+            }
         }
     };
-   
-        
 
     const handleGoogleSignIn = async () => {
         try {
             await signInWithPopup(auth, googleProvider);
             console.log("User signed in with Google:", auth.currentUser.email);
-            navigate("/"); // Redirect to home page
+            setLoginAttempts(0); // Reset login attempts
             setLoggedIn(true);
-            // You can redirect the user or perform other actions here
+            navigate("/"); // Redirect to home page
         } catch (err) {
             console.error("Google sign-in error:", err);
         }
     };
+
     useEffect(() => {
         console.log("SignInPage component loaded");
     }, []);
-    
+
+    const closePopup = () => {
+        setShowPopup(false);
+    };
 
     return (
         <div className="center-wrapper">
@@ -89,6 +98,16 @@ const SignInPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Pop-up for too many failed attempts */}
+            {showPopup && (
+                <div className="popup-overlay">
+                    <div className="popup-box">
+                        <p>Too many failed login attempts. Your account may be disabled temporarily for security reasons.</p>
+                        <button className="close-button" onClick={closePopup}>Close</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
