@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { db } from '../config/firebase';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,8 @@ function SearchComponent() {
   const [allPDFs, setAllPDFs] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
+  const suggestionsTimeout = useRef(null);
+  const searchRef = useRef(null);
 
   useEffect(() => {
     fetchData();
@@ -80,6 +82,23 @@ function SearchComponent() {
     });
 
     setSuggestions(filtered.slice(0, 3));
+
+    // Clear previous timeout
+    if (suggestionsTimeout.current) {
+      clearTimeout(suggestionsTimeout.current);
+    }
+
+    // Set new timeout to hide suggestions after 3 seconds
+    suggestionsTimeout.current = setTimeout(() => {
+      setSuggestions([]);
+    }, 3000);
+
+    // Cleanup on unmount
+    return () => {
+      if (suggestionsTimeout.current) {
+        clearTimeout(suggestionsTimeout.current);
+      }
+    };
   }, [searchTerm, allPDFs]);
 
   const handleSearch = (e) => {
@@ -92,8 +111,24 @@ function SearchComponent() {
     navigate(`/search?${searchParams.toString()}`);
   };
 
+  // Hide suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSuggestions([]);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Cleanup event listener on unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="search-container-small">
+    <div className="search-container-small" ref={searchRef}>
       <form className="search-form" onSubmit={handleSearch}>
         <input
           type="text"

@@ -1,10 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './AboutUsPage.css';
+import { getAuth } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../config/firebase'; // Adjust this path to your firebase config file
 import Chantelle from '../../Images/Chantelle.jpg';
 import Dorothy from '../../Images/Dorothy.jpg';
 import NWU_UNESCO from '../../Images/NWU&UNESCO.png';
 
+
+//contribute stuff
+import { Upload } from '../../components/fileupload';
+
+
+
 function AboutUsPage() {
+    const [contriOpen, setContriOpen] = useState(false);
+    const [role, setRole] = useState('');
+
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            try {
+                const auth = getAuth();
+                const user = auth.currentUser;
+    
+                if (user) {
+                    const docRef = doc(db, 'users', user.uid); // Assuming you store user roles in Firestore
+                    const docSnap = await getDoc(docRef);
+    
+                    if (docSnap.exists()) {
+                        setRole(docSnap.data().role); // Set the role from the Firestore document
+                    } else {
+                        console.log('No such document!');
+                    }
+                } else {
+                    console.log('No user is logged in');
+                }
+            } catch (error) {
+                console.error('Error fetching user role: ', error);
+            }
+        };
+        
+        fetchUserRole();
+    }, []);
+
+
     return (
         <div className="about-us-page">
         <div className="about-us-content">
@@ -28,7 +67,10 @@ function AboutUsPage() {
             <p>
             To become a part of this transformative educational journey, please reach out to us. We welcome your interest in sharing your resources and ideas, and we are excited about the possibility of working together to expand the horizons of open education. Contact us to explore how you can contribute to the Share2Teach project and help shape the future of learning. Click on the link below to contribute a resource.
             </p>
-            <button className="contribute-button">Contribute resources</button>
+            {(role === 'educator' || role === 'moderator' || role === 'admin') && (
+                <button onClick={() => setContriOpen(true)}>Contribute Resources</button>
+            )}
+                <Upload isOpen={contriOpen} onClose={() => setContriOpen(false)} />
         </div>
         <div className="contact-info">
             <h2>Contact Information</h2>

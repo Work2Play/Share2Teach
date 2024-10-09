@@ -30,10 +30,8 @@ import CCImage from './Images/CC.png';
 import { getAuth, signInAnonymously } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './config/firebase';
-
 import DisplayAnalytics from './components/DisplayAnalytics';
-import { logEvent } from 'firebase/analytics';
-import { analytics } from './config/firebase';
+
 
 function App() {
   // State to manage the visibility of the menu and other UI elements
@@ -199,11 +197,13 @@ function App() {
                       </Link>
                     </li>
                   )}
+
                   {role === 'admin' && (
                     <li><Link to="/analytic" onClick={() => setMenuOpen(false)}>
-                      Analytics
-                    </Link>
-                  </li>)}
+                        Analytics
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </nav>
             )}
@@ -218,7 +218,9 @@ function App() {
                 Moderation
               </Link>
             )}
-            <SearchComponent />
+            <div className="search-component">
+              <SearchComponent />
+            </div>
             <button onClick={() => setFaqOpen(true)} className="faq-button">
               FAQ
             </button>

@@ -86,7 +86,7 @@ font-weight: bold;
 z-index: 1;
 }
 
-.hero-image button, .moderation-link, .roleassign-link {
+.hero-image button, .moderation-link, .roleassign-link, .analytics-link {
 padding: 0.8em 1.5em;
 font-size: 1rem;
 border: none;
@@ -102,11 +102,11 @@ position: relative;
 z-index: 1;
 }
 
-.hero-image button:hover, .moderation-link:hover, .roleassign-link:hover {
+.hero-image button:hover, .moderation-link:hover, .roleassign-link:hover, .analytics-link:hover {
 background-color: var(--primary-hover-color);
 transform: scale(1.05);
 }
-.hero-image button:focus, .moderation-link:focus, .roleassign-link:focus {
+.hero-image button:focus, .moderation-link:focus, .roleassign-link:focus, .analytics-link:focus{
 outline: 2px dashed var(--primary-hover-color);
 outline-offset: 2px;
 }
@@ -168,7 +168,8 @@ height: auto;
 
 .button,
 .moderation-link,
-.roleassign-link {
+.roleassign-link,
+.analytics-link {
     font-size: 0.9rem;
     padding: 0.7em 1.2em;
 }

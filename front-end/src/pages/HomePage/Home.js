@@ -55,7 +55,10 @@ function Home() {
             )}
 
             {(role === 'admin') && (         
-                <Link to="/role-assign" className="roleassign-link">Role Assign</Link>
+                <Link to="/role-assign" className="roleassign-link">Role Assign</Link> 
+            )}
+            {(role === 'admin') && (  
+            <Link to="/analytic" className='analytics-link'>Analytics</Link>
             )}
 
             {(role === 'educator' || role === 'moderator' || role === 'admin') && (

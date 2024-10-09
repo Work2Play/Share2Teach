@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../config/firebase';
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
-import { Line } from 'react-chartjs-2';
-//import { logPageView } from '../components/Fetch_Analytics';
 import './DisplayAnalytics.css';
 
 
