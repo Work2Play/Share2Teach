@@ -94,7 +94,7 @@ const SignInPage = () => {
                     </div>
                     <div className="sign-up-link">
                         <span>Don't have an account? </span>
-                            <div className="subject-card">
+                            <div className="sign-in-box">
                                 <Link to="/sign-up">Sign Up</Link>
                             </div>
                         </div>
