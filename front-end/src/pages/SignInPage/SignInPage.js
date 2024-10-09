@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { auth, googleProvider } from "../../config/firebase";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./SignInPage.css";
 
 const SignInPage = () => {
@@ -94,10 +94,12 @@ const SignInPage = () => {
                     </div>
                     <div className="sign-up-link">
                         <span>Don't have an account? </span>
-                        <a href="/sign-up">Sign Up</a>
+                            <div className="subject-card">
+                                <Link to="/sign-up">Sign Up</Link>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
             {/* Pop-up for too many failed attempts */}
             {showPopup && (
