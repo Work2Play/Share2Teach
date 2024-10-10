@@ -91,7 +91,7 @@ function SearchComponent() {
     // Set new timeout to hide suggestions after 3 seconds
     suggestionsTimeout.current = setTimeout(() => {
       setSuggestions([]);
-    }, 3000);
+    }, 6000);
 
     // Cleanup on unmount
     return () => {
