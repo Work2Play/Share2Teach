@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { db, storage } from '../config/firebase';
-import { ref, uploadBytesResumable, getDownloadURL, listAll } from 'firebase/storage';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { storage, db } from '../config/firebase';
+import { ref, uploadBytesResumable, listAll } from 'firebase/storage';
+import { collection, addDoc } from 'firebase/firestore';
 import { auth } from '../config/firebase';
 import './fileupload.css';
 
@@ -18,7 +18,7 @@ export function Upload({ isOpen, onClose }) {
   const [subjects, setSubjects] = useState([]);
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState('');
-  const [selectedGrades, setSelectedGrades] = useState([]); 
+  const [selectedGrades, setSelectedGrades] = useState([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -85,21 +85,6 @@ export function Upload({ isOpen, onClose }) {
     setSelectedGrades(selectedGrades.filter(grade => grade !== gradeToRemove));
   };
 
-  // the logAnalyticsEvent function log the analytics to firestore
-  const logAnalyticsEvent = async (userId, subject, title) => {
-    try {
-      await addDoc(collection(db, "analytics_data"), {
-        userID,
-        event: "file_upload",
-        subject,
-        title,
-        timestamp: Timestamp.now(),
-      });
-    } catch (error) {
-      console.error('Error logging event:', error);
-    }
-  };
-
   const uploadHandler = async (e) => {
     e.preventDefault();
 
@@ -109,9 +94,20 @@ export function Upload({ isOpen, onClose }) {
     }
 
     try {
-      const storageRef = ref(storage, `${subject}/${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      // Create a Firestore document entry first
+      await addDoc(collection(db, `PDFS`), {
+        userID,
+        subject,
+        title: title || file.name,
+        file_url: '', // Placeholder, will be updated later
+        tags: [...tags, ...selectedGrades],
+        modifiedAt: new Date().toISOString(),
+      });
 
+      const fileName = `${title || file.name}`;
+      const storageRef = ref(storage, `uploads/${fileName}`);
+
+      const uploadTask = uploadBytesResumable(storageRef, file);
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -123,18 +119,7 @@ export function Upload({ isOpen, onClose }) {
           setError('File upload failed. Please try again.');
         },
         async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          await addDoc(collection(db, `PDFS/${subject}_Main/${subject}`), {
-            userID,
-            subject,
-            title: title || file.name,
-            file_url: downloadURL,
-            tags: [...tags, ...selectedGrades],
-            modifiedAt: Timestamp.now(),
-          });
-
-          // call the logAnalyticsEvent function
-          await logAnalyticsEvent(userID, subject, title); 
+          console.log('File uploaded successfully!');
 
           alert('File uploaded successfully!');
           setUploadProg(0);
@@ -158,7 +143,7 @@ export function Upload({ isOpen, onClose }) {
     <div className="upload-popup">
       <div className="upload-header">
         <p>User: {userID}</p>
-        <button className="close-button" onClick={onClose}>X</button> {/* Close button */}
+        <button className="close-button" onClick={onClose}>X</button>
       </div>
       <form onSubmit={uploadHandler} className="upload-form">
         <select value={subject} onChange={(e) => setSubject(e.target.value)} required>
@@ -170,14 +155,14 @@ export function Upload({ isOpen, onClose }) {
 
         <input
           type="text"
-          placeholder="Title (If left blank, the file name will be used)"
+          placeholder="Title, will use the file's name"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          readOnly // Make the input uneditable
         />
-        <input type="file" onChange={handleFileChange} required />
+        <input type="file" onChange={handleFileChange} required disabled={!isOpen} /> {/* Disable file input */}
         {error && <p className="error-message">{error}</p>}
 
-        {/* Grade Selector */}
         <select onChange={handleGradeSelect}>
           <option value="">Select Grade</option>
           {GRADES.map((grade) => (
